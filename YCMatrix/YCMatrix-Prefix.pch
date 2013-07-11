@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'YCMatrix' target in the 'YCMatrix' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif
