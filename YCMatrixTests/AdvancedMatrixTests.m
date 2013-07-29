@@ -37,7 +37,7 @@
     {
         resstr = [resstr stringByAppendingString: [NSString stringWithFormat:@"%g, ", res[i]]];
     }
-    CleanNSLog(resstr);
+    CleanNSLog(@"%@", resstr);
     
     double *arr2 = calloc(6, sizeof(double));
     arr2[0] = 1;
@@ -54,7 +54,7 @@
     {
         resstr2 = [resstr2 stringByAppendingString: [NSString stringWithFormat:@"%g, ", res2[i]]];
     }
-    CleanNSLog(resstr2);
+    CleanNSLog(@"%@", resstr2);
     
     //
     // QR Decomposition Test (A:4x3)
