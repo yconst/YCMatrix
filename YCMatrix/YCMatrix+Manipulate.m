@@ -86,7 +86,7 @@
     NSMutableArray *columnsArray = [NSMutableArray arrayWithCapacity:columns];
     for (int i=0; i<columns; i++)
     {
-        [columnsArray addObject: [[self getRow:i] transpose]];
+        [columnsArray addObject: [self getColumn:i]];
     }
     return columnsArray;
 }
@@ -248,5 +248,17 @@
         memcpy(newMatrix + columnNumber, self->matrix + columnNumber + 1, (newCols - columnNumber) * sizeof(double));
     }
     return [YCMatrix matrixFromArray:newMatrix Rows:rows Columns:newCols];
+}
+- (YCMatrix *)appendValueAsRow:(double)value
+{
+    if(columns != 1)
+        @throw [NSException exceptionWithName:@"MatrixSizeException"
+                                       reason:@"appendValueAsRow can only be performed on vectors."
+                                     userInfo:nil];
+    int newRows = rows + 1;
+    double *newArray = malloc(columns * newRows * sizeof(double));
+    memcpy(newArray, matrix, columns * rows * sizeof(double));
+    newArray[columns * newRows - 1] = value;
+    return [YCMatrix matrixFromArray:newArray Rows:newRows Columns:columns];
 }
 @end

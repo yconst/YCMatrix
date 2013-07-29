@@ -88,6 +88,46 @@
     YCMatrix *removedColumn = [removedRow removeColumn:2];
     CleanNSLog(@"Remove column: %@", removedColumn);
     
+    //
+    // Rows as NSArray
+    //
+    TitleNSLog(@"Rows as NSArray");
+    double rowsColumnsArrayTest[12] = { 1.0, 2.0, 3.0, 4.0,
+        5.0, 6.0, 7.0, 8.0,
+        9.0, 10.0, 11.0, 12.0};
+    double firstRow[4] = { 1.0, 2.0, 3.0, 4.0 };
+    YCMatrix *firstRowMatrix = [YCMatrix matrixFromArray:firstRow Rows:1 Columns:4];
+    double secondRow[4] = { 5.0, 6.0, 7.0, 8.0 };
+    YCMatrix *secondRowMatrix = [YCMatrix matrixFromArray:secondRow Rows:1 Columns:4];
+    double thirdRow[4] = { 9.0, 10.0, 11.0, 12.0 };
+    YCMatrix *thirdRowMatrix = [YCMatrix matrixFromArray:thirdRow Rows:1 Columns:4];
+    
+    YCMatrix *rowsColumnsTestMatrix = [YCMatrix matrixFromArray:rowsColumnsArrayTest Rows:3 Columns:4];
+    NSArray *rowsTestRows = [rowsColumnsTestMatrix RowsAsNSArray];
+    STAssertEqualObjects([rowsTestRows objectAtIndex:0], firstRowMatrix, @"Error with conversion to rows array(1).");
+    STAssertEqualObjects([rowsTestRows objectAtIndex:1], secondRowMatrix, @"Error with conversion to rows array(2).");
+    STAssertEqualObjects([rowsTestRows objectAtIndex:2], thirdRowMatrix, @"Error with conversion to rows array(3).");
+    CleanNSLog(@"Passed");
+    
+    //
+    // Columns as NSArray
+    //
+    TitleNSLog(@"Columns as NSArray");
+    double firstColumn[3] = { 1.0, 5.0, 9.0 };
+    YCMatrix *firstColumnMatrix = [YCMatrix matrixFromArray:firstColumn Rows:3 Columns:1];
+    double secondColumn[3] = { 2.0, 6.0, 10.0 };
+    YCMatrix *secondColumnMatrix = [YCMatrix matrixFromArray:secondColumn Rows:3 Columns:1];
+    double thirdColumn[3] = { 3.0, 7.0, 11.0 };
+    YCMatrix *thirdColumnMatrix = [YCMatrix matrixFromArray:thirdColumn Rows:3 Columns:1];
+    double fourthColumn[3] = { 4.0, 8.0, 12.0 };
+    YCMatrix *fourthColumnMatrix = [YCMatrix matrixFromArray:fourthColumn Rows:3 Columns:1];
+
+    NSArray *columnsTestColumns = [rowsColumnsTestMatrix ColumnsAsNSArray];
+    STAssertEqualObjects([columnsTestColumns objectAtIndex:0], firstColumnMatrix, @"Error with conversion to columns array(1).");
+    STAssertEqualObjects([columnsTestColumns objectAtIndex:1], secondColumnMatrix, @"Error with conversion to columns array(2).");
+    STAssertEqualObjects([columnsTestColumns objectAtIndex:2], thirdColumnMatrix, @"Error with conversion to columns array(3).");
+    STAssertEqualObjects([columnsTestColumns objectAtIndex:3], fourthColumnMatrix, @"Error with conversion to columns array(4).");
+    CleanNSLog(@"Passed");
 }
 
 @end

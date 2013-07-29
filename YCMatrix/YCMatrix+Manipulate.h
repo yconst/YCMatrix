@@ -26,5 +26,6 @@
 - (YCMatrix *)appendColumn:(YCMatrix *) column;
 - (YCMatrix *)removeRow:(int) rowNumber;
 - (YCMatrix *)removeColumn:(int) columnNumber;
+- (YCMatrix *)appendValueAsRow:(double) value;
 
 @end
