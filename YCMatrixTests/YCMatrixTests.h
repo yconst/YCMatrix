@@ -7,6 +7,8 @@
 //
 
 #import <SenTestingKit/SenTestingKit.h>
+#import "YCMatrix.h"
+#import "YCMatrix+Advanced.h"
 
 @interface YCMatrixTests : SenTestCase
 
