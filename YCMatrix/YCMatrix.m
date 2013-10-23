@@ -10,7 +10,10 @@
 
 @implementation YCMatrix
 
-+ (instancetype)matrixOfRows:(int)m Columns:(int)n {
+#pragma mark Factory Methods
+
++ (instancetype)matrixOfRows:(int)m Columns:(int)n
+{
     YCMatrix *mt = [[YCMatrix alloc] init];
     double *new_m = calloc(m*n, sizeof(double));
     mt->rows = m;
@@ -18,6 +21,7 @@
     mt->matrix = new_m;
     return mt;
 }
+
 + (instancetype)matrixOfRows:(int)m Columns:(int)n WithValue:(double)val
 {
     YCMatrix *mt = [YCMatrix matrixOfRows:m Columns:n];
@@ -28,7 +32,9 @@
     }
     return mt;
 }
-+ (instancetype)matrixFromArray:(double *)arr Rows:(int)m Columns:(int)n {
+
++ (instancetype)matrixFromArray:(double *)arr Rows:(int)m Columns:(int)n
+{
     YCMatrix *mt = [[YCMatrix alloc] init];
     double *new_m = malloc(m*n*sizeof(double));
     memcpy(new_m, arr, m*n*sizeof(double));
@@ -37,6 +43,7 @@
     mt->columns = n;
     return mt;
 }
+
 + (instancetype)matrixFromNSArray:(NSArray *)arr Rows:(int)m Columns:(int)n
 {
     if([arr count] != m*n)
@@ -52,11 +59,15 @@
     }
     return newMatrix;
 }
-+ (instancetype) matrixFromMatrix:(YCMatrix *)other {
+
++ (instancetype) matrixFromMatrix:(YCMatrix *)other
+{
     YCMatrix *mt = [YCMatrix matrixFromArray:other->matrix Rows:other->rows Columns:other->columns];
     return mt;
 }
-+ (instancetype)identityOfRows:(int)m Columns:(int)n {
+
++ (instancetype)identityOfRows:(int)m Columns:(int)n
+{
     double *new_m = calloc(m*n, sizeof(double));
     int minsize = m;
     if (n < m) minsize = n;
@@ -65,16 +76,21 @@
     }
     return [YCMatrix matrixFromArray:new_m Rows:m Columns:n];
 }
+
+#pragma mark Instance Methods
+
 - (double)getValueAtRow:(int)row Column:(int)column
 {
     [self checkBoundsForRow:row Column:column];
     return matrix[row*columns + column];
 }
+
 - (void)setValue:(double)vl Row:(int)row Column:(int)column
 {
     [self checkBoundsForRow:row Column:column];
     matrix[row*columns + column] = vl;
 }
+
 - (void)checkBoundsForRow:(int)row Column:(int)column
 {
     if(column >= columns)
@@ -86,7 +102,9 @@
                                        reason:@"Rows index input is out of bounds."
                                      userInfo:nil];
 }
-- (YCMatrix *)addWith:(YCMatrix *)addend {
+
+- (YCMatrix *)addWith:(YCMatrix *)addend
+{
     if(columns != addend->columns || rows != addend->rows || sizeof(matrix) != sizeof(addend->matrix))
         @throw [NSException exceptionWithName:@"MatrixSizeException"
                                        reason:@"Matrix size mismatch."
@@ -99,7 +117,9 @@
     }
     return sum;
 }
-- (YCMatrix *)subtract:(YCMatrix *)subtrahend {
+
+- (YCMatrix *)subtract:(YCMatrix *)subtrahend
+{
     if(columns != subtrahend->columns || rows != subtrahend->rows || sizeof(matrix) != sizeof(subtrahend->matrix))
         @throw [NSException exceptionWithName:@"MatrixSizeException"
                                        reason:@"Matrix size mismatch."
@@ -112,7 +132,9 @@
     }
     return diff;
 }
-- (YCMatrix *)multiplyWithRight:(YCMatrix *)mt {
+
+- (YCMatrix *)multiplyWithRight:(YCMatrix *)mt
+{
     if(columns != mt->rows)
         @throw [NSException exceptionWithName:@"MatrixSizeException"
                                        reason:@"Matrix size unsuitable for multiplication."
@@ -121,11 +143,15 @@
     cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, rows, mt->columns, columns, 1, matrix, columns, mt->matrix, mt->columns, 1, result->matrix, result->columns);
     return result;
 }
-- (YCMatrix *)multiplyWithLeft:(YCMatrix *)mt {
+
+- (YCMatrix *)multiplyWithLeft:(YCMatrix *)mt
+{
     YCMatrix *result = [mt multiplyWithRight:self];
     return result;
 }
-- (YCMatrix *)multiplyWithScalar:(double)ms {
+
+- (YCMatrix *)multiplyWithScalar:(double)ms
+{
     int lng = rows*columns;
     YCMatrix *product = [YCMatrix matrixOfRows:rows Columns:columns];
     double *multArray = product->matrix;
@@ -134,9 +160,12 @@
     }
     return product;
 }
-- (YCMatrix *)negate {
+
+- (YCMatrix *)negate
+{
     return [self multiplyWithScalar:-1];
 }
+
 // http://rosettacode.org/wiki/Matrix_transposition
 - (YCMatrix *)transpose {
     YCMatrix *trans = [YCMatrix matrixFromMatrix:self];
@@ -163,6 +192,7 @@
 	}
     return trans;
 }
+
 - (double)trace
 {
     if(columns != rows)
@@ -176,6 +206,7 @@
     }
     return trace;
 }
+
 - (double)dotWith:(YCMatrix *)other
 {
     // A few more checks need to be made here.
@@ -195,6 +226,7 @@
     }
     return result;
 }
+
 - (YCMatrix *)unit
 {
     if(columns != 1 && rows != 1)
@@ -217,15 +249,19 @@
     }
     return norm;
 }
-- (double *)getArray {
+
+- (double *)getArray
+{
     return matrix;
 }
+
 - (double *)getArrayCopy
 {
     double *resArr = calloc(self->rows*self->columns, sizeof(double));
     memcpy(resArr, matrix, self->rows*self->columns*sizeof(double));
     return resArr;
 }
+
 - (BOOL)isEqual:(id)anObject {
     if (![anObject isKindOfClass:[self class]]) return false;
     YCMatrix *other = (YCMatrix *)anObject;
@@ -237,6 +273,7 @@
     }
     return true;
 }
+
 - (NSString *)description {
     NSString *s = @"\n";
     for ( int i=0; i<rows*columns; ++i ) {
@@ -245,8 +282,43 @@
     }
     return s;
 }
--(void)dealloc {
+
+#pragma mark Object Destruction
+
+- (void)dealloc {
     free(self->matrix);
+}
+
+#pragma mark NSCoding Implementation
+
+- (void)encodeWithCoder:(NSCoder *)encoder
+{
+    long len = self->rows * self->columns;
+    NSMutableArray *matrixContent = [NSMutableArray arrayWithCapacity:len];
+    for (int i=0; i<len; i++)
+    {
+        matrixContent[i] = @(self->matrix[i]);
+    }
+    [encoder encodeObject:matrixContent forKey:@"matrixContent"];
+    [encoder encodeObject:@(self->rows) forKey:@"rows"];
+    [encoder encodeObject:@(self->columns) forKey:@"columns"];
+}
+
+- (id)initWithCoder:(NSCoder *)decoder
+{
+    if (self = [super init])
+    {
+        self->rows = [[decoder decodeObjectForKey:@"rows"] intValue];
+        self->columns = [[decoder decodeObjectForKey:@"columns"] intValue];
+        NSArray *matrixContent = [decoder decodeObjectForKey:@"matrixContent"];
+        long len = self->rows*self->columns;
+        self->matrix = malloc(len*sizeof(double));
+        for (int i=0; i<len; i++)
+        {
+            self->matrix[i] = [matrixContent[i] doubleValue];
+        }
+    }
+    return self;
 }
 
 @end
