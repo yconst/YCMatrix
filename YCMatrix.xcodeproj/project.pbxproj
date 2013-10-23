@@ -24,6 +24,8 @@
 		CBBE02E9178F218600744F77 /* ManipulateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBE02E7178F218600744F77 /* ManipulateTests.m */; };
 		CBBE02EB178F22BD00744F77 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBE02EA178F22BD00744F77 /* Accelerate.framework */; };
 		CBBE0301178F258B00744F77 /* YCMatrix.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBE02BC178F215000744F77 /* YCMatrix.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CFB25E2817DB5823001EE243 /* YCMatrix+NestedArrayConverter.h in Headers */ = {isa = PBXBuildFile; fileRef = CFB25E2617DB5823001EE243 /* YCMatrix+NestedArrayConverter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CFB25E2917DB5823001EE243 /* YCMatrix+NestedArrayConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = CFB25E2717DB5823001EE243 /* YCMatrix+NestedArrayConverter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +66,8 @@
 		CBBE02E6178F218600744F77 /* ManipulateTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManipulateTests.h; sourceTree = "<group>"; };
 		CBBE02E7178F218600744F77 /* ManipulateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManipulateTests.m; sourceTree = "<group>"; };
 		CBBE02EA178F22BD00744F77 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		CFB25E2617DB5823001EE243 /* YCMatrix+NestedArrayConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "YCMatrix+NestedArrayConverter.h"; sourceTree = "<group>"; };
+		CFB25E2717DB5823001EE243 /* YCMatrix+NestedArrayConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "YCMatrix+NestedArrayConverter.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +142,8 @@
 				CBBE02DD178F216800744F77 /* YCMatrix+Advanced.m */,
 				CBBE02DE178F216800744F77 /* YCMatrix+Manipulate.h */,
 				CBBE02DF178F216800744F77 /* YCMatrix+Manipulate.m */,
+				CFB25E2617DB5823001EE243 /* YCMatrix+NestedArrayConverter.h */,
+				CFB25E2717DB5823001EE243 /* YCMatrix+NestedArrayConverter.m */,
 				CBBE02B6178F215000744F77 /* Supporting Files */,
 			);
 			path = YCMatrix;
@@ -188,6 +194,7 @@
 				CBBE02E0178F216800744F77 /* YCMatrix+Advanced.h in Headers */,
 				CBBE02E2178F216800744F77 /* YCMatrix+Manipulate.h in Headers */,
 				CBBE0301178F258B00744F77 /* YCMatrix.h in Headers */,
+				CFB25E2817DB5823001EE243 /* YCMatrix+NestedArrayConverter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -301,6 +308,7 @@
 				CBBE02BE178F215000744F77 /* YCMatrix.m in Sources */,
 				CBBE02E1178F216800744F77 /* YCMatrix+Advanced.m in Sources */,
 				CBBE02E3178F216800744F77 /* YCMatrix+Manipulate.m in Sources */,
+				CFB25E2917DB5823001EE243 /* YCMatrix+NestedArrayConverter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

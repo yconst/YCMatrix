@@ -10,7 +10,7 @@
 
 @implementation YCMatrix
 
-+ (id)matrixOfRows:(int)m Columns:(int)n {
++ (instancetype)matrixOfRows:(int)m Columns:(int)n {
     YCMatrix *mt = [[YCMatrix alloc] init];
     double *new_m = calloc(m*n, sizeof(double));
     mt->rows = m;
@@ -18,7 +18,7 @@
     mt->matrix = new_m;
     return mt;
 }
-+ (id)matrixOfRows:(int)m Columns:(int)n WithValue:(double)val
++ (instancetype)matrixOfRows:(int)m Columns:(int)n WithValue:(double)val
 {
     YCMatrix *mt = [YCMatrix matrixOfRows:m Columns:n];
     int len = m*n;
@@ -28,7 +28,7 @@
     }
     return mt;
 }
-+ (id)matrixFromArray:(double *)arr Rows:(int)m Columns:(int)n {
++ (instancetype)matrixFromArray:(double *)arr Rows:(int)m Columns:(int)n {
     YCMatrix *mt = [[YCMatrix alloc] init];
     double *new_m = malloc(m*n*sizeof(double));
     memcpy(new_m, arr, m*n*sizeof(double));
@@ -37,7 +37,7 @@
     mt->columns = n;
     return mt;
 }
-+ (id)matrixFromNSArray:(NSArray *)arr Rows:(int)m Columns:(int)n
++ (instancetype)matrixFromNSArray:(NSArray *)arr Rows:(int)m Columns:(int)n
 {
     if([arr count] != m*n)
         @throw [NSException exceptionWithName:@"MatrixSizeException"
@@ -52,11 +52,11 @@
     }
     return newMatrix;
 }
-+ (id) matrixFromMatrix:(YCMatrix *)other {
++ (instancetype) matrixFromMatrix:(YCMatrix *)other {
     YCMatrix *mt = [YCMatrix matrixFromArray:other->matrix Rows:other->rows Columns:other->columns];
     return mt;
 }
-+ (id)identityOfRows:(int)m Columns:(int)n {
++ (instancetype)identityOfRows:(int)m Columns:(int)n {
     double *new_m = calloc(m*n, sizeof(double));
     int minsize = m;
     if (n < m) minsize = n;

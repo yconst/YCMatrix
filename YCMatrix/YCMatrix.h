@@ -18,12 +18,12 @@
 
 }
 
-+ (id)matrixOfRows:(int) m Columns:(int) n;
-+ (id)matrixOfRows:(int) m Columns:(int) n WithValue:(double) val;
-+ (id)matrixFromArray:(double *) arr Rows:(int) m Columns:(int) n;
-+ (id)matrixFromNSArray:(NSArray *)arr Rows:(int) m Columns:(int) n;
-+ (id)matrixFromMatrix:(YCMatrix *) other;
-+ (id)identityOfRows:(int) m Columns:(int) n;
++ (instancetype)matrixOfRows:(int) m Columns:(int) n;
++ (instancetype)matrixOfRows:(int) m Columns:(int) n WithValue:(double) val;
++ (instancetype)matrixFromArray:(double *) arr Rows:(int) m Columns:(int) n;
++ (instancetype)matrixFromNSArray:(NSArray *)arr Rows:(int) m Columns:(int) n;
++ (instancetype)matrixFromMatrix:(YCMatrix *) other;
++ (instancetype)identityOfRows:(int) m Columns:(int) n;
 - (double)getValueAtRow:(int) row Column:(int) column;
 - (void)setValue:(double) vl Row:(int) row Column:(int) column;
 - (void)checkBoundsForRow:(int) row Column:(int) column;

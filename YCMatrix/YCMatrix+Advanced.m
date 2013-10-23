@@ -47,36 +47,6 @@
     R = [R transpose]; // -> k x n
     return [NSDictionary dictionaryWithObjectsAndKeys:Q, @"Q", R, @"R", nil];
 }
-/*
- * WA Decomposition
- * Like in Chen et al., 1991
- * This needs some fine-tuning to be more efficient
- */
-- (NSDictionary *)WA 
-{
-    YCMatrix *allCenters = [self transpose];
-    YCMatrix *orthoCenters = [allCenters getColumn:0];
-    YCMatrix *A = [YCMatrix identityOfRows:allCenters->columns Columns:allCenters->columns];
-    double *WiTWis = malloc(allCenters->columns * sizeof(double)); // Stores all calculated WiTWis
-    for (int k=1; k< allCenters->columns; k++)
-    {
-        YCMatrix *Pk = [allCenters getColumn:k];
-        YCMatrix *Wk = [YCMatrix matrixFromMatrix:Pk];
-        YCMatrix *Wip = [orthoCenters getColumn:k-1];
-        WiTWis[k-1] = [Wip dotWith:Wip];
-        for (int i=0; i<k; i++)
-        {
-            YCMatrix *Wi = [orthoCenters getColumn:i];
-            double WiTPk = [Wi dotWith:Pk];
-            double aik = WiTPk / WiTWis[i];
-            [A setValue:aik Row:i Column:k];
-            Wk = [Wk subtract:[Wi multiplyWithScalar:aik]];
-        }
-        orthoCenters = [orthoCenters appendColumn:Wk];
-    }
-    free(WiTWis);
-    return [NSDictionary dictionaryWithObjectsAndKeys:orthoCenters, @"W", A, @"A", nil];
-}
 - (YCMatrix *)RowMean
 {
     YCMatrix *means = [YCMatrix matrixOfRows:self->rows Columns:1];

@@ -15,7 +15,6 @@
 - (YCMatrix *)inverse;
 - (YCMatrix *)pseudoInverse;
 - (NSDictionary *)QR;
-- (NSDictionary *)WA;
 - (YCMatrix *)RowMean;
 - (YCMatrix *)ColumnMean;
 + (void)getPinvOf:(double *)A Rows:(int)rows Columns:(int)columns Out:(double *)Aplus;
