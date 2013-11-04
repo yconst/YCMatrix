@@ -12,6 +12,8 @@
 
 @interface YCMatrix (NestedDictionaryConverter)
 
++ (YCMatrix *)convertToMatrix:(NSDictionary *)input Order:(NSArray *)order;
++ (NSMutableDictionary *)generateDatasetFrom:(YCMatrix *)input Order:(NSArray *)order;
 + (YCMatrix *)convertToMatrix:(NSDictionary *)input Types:(NSDictionary *)types Selector:(int)selector Order:(NSArray *)order;
 + (NSMutableDictionary *)generateDatasetFromInput:(YCMatrix *)input Output:(YCMatrix *)output Types:(NSDictionary *)types Order:(NSArray *)order;
 

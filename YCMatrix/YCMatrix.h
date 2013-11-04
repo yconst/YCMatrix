@@ -37,10 +37,10 @@
 + (instancetype)identityOfRows:(int)m Columns:(int)n;
 
 // Returns value at |row| and |column|
-- (double)getValueAtRow:(int)row Column:(int)column;
+- (double)getValueAtRow:(long)row Column:(long)column;
 
 // Sets value |vl| at |row| and |column|
-- (void)setValue:(double)vl Row:(int)row Column:(int)column;
+- (void)setValue:(double)vl Row:(long)row Column:(long)column;
 
 // Returns a new YCMatrix by adding this matrix to |addend|
 - (YCMatrix *)addWith:(YCMatrix *)addend;

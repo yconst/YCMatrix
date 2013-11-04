@@ -79,19 +79,19 @@
 
 #pragma mark Instance Methods
 
-- (double)getValueAtRow:(int)row Column:(int)column
+- (double)getValueAtRow:(long)row Column:(long)column
 {
     [self checkBoundsForRow:row Column:column];
     return matrix[row*columns + column];
 }
 
-- (void)setValue:(double)vl Row:(int)row Column:(int)column
+- (void)setValue:(double)vl Row:(long)row Column:(long)column
 {
     [self checkBoundsForRow:row Column:column];
     matrix[row*columns + column] = vl;
 }
 
-- (void)checkBoundsForRow:(int)row Column:(int)column
+- (void)checkBoundsForRow:(long)row Column:(long)column
 {
     if(column >= columns)
         @throw [NSException exceptionWithName:@"IndexOutOfBoundsException"

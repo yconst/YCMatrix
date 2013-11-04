@@ -10,6 +10,8 @@
 
 @interface YCMatrix (Manipulate)
 
++ (YCMatrix *)matrixFromRows:(NSArray *)rows;
++ (YCMatrix *)matrixFromColumns:(NSArray *)columns;
 - (YCMatrix *)getRow:(int) rowNumber;
 - (void)setRow:(int) rowNumber Value:(YCMatrix *) rowValue;
 - (NSArray *)RowsAsNSArray;
@@ -27,5 +29,9 @@
 - (YCMatrix *)removeRow:(int) rowNumber;
 - (YCMatrix *)removeColumn:(int) columnNumber;
 - (YCMatrix *)appendValueAsRow:(double) value;
+- (YCMatrix *)newFromShufflingRows;
+- (void)shuffleRows;
+- (YCMatrix *)newFromShufflingColumns;
+- (void)shuffleColumns;
 
 @end

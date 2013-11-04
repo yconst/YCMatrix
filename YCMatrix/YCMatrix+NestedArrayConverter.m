@@ -10,6 +10,43 @@
 
 @implementation YCMatrix (NestedDictionaryConverter)
 
++ (YCMatrix *)convertToMatrix:(NSDictionary *)input Order:(NSArray *)order
+{
+    int sampleCount = (int)[[[input allValues] objectAtIndex:0] count];
+    if (sampleCount == 0) return nil;
+    YCMatrix *convertedMatrix = [YCMatrix matrixOfRows:0 Columns:sampleCount];
+    for (NSString *label in order)
+    {
+        YCMatrix *rowMatrix = [YCMatrix matrixOfRows:1 Columns:sampleCount];
+        int iter = 0;
+        for (NSNumber *val in [input objectForKey:label])
+        {
+            [rowMatrix setValue:[val doubleValue] Row:0 Column:iter++];
+        }
+        convertedMatrix = [convertedMatrix appendRow:rowMatrix];
+    }
+    return convertedMatrix;
+}
+
++ (NSMutableDictionary *)generateDatasetFrom:(YCMatrix *)input Order:(NSArray *)order
+{
+    int sampleCount = input->columns;
+    NSMutableDictionary *convertedDictionary = [NSMutableDictionary dictionary];
+    int iter = 0;
+    for (NSString *label in order)
+    {
+        NSMutableArray *featureSamples = [NSMutableArray array];
+        for (int i=0; i<sampleCount; i++)
+        {
+            double value = [input getValueAtRow:iter Column:i];
+            [featureSamples addObject:@(value)];
+        }
+        iter++;
+        [convertedDictionary setValue:featureSamples forKey:label];
+    }
+    return convertedDictionary;
+}
+
 + (YCMatrix *)convertToMatrix:(NSDictionary *)input Types:(NSDictionary *)types Selector:(int)selector Order:(NSArray *)order
 {
     if ([types count] != [order count])
@@ -32,6 +69,7 @@
     }
     return convertedMatrix;
 }
+
 + (NSMutableDictionary *)generateDatasetFromInput:(YCMatrix *)input Output:(YCMatrix *)output Types:(NSDictionary *)types Order:(NSArray *)order
 {
     if (input->rows != output->rows)
@@ -60,7 +98,7 @@
         for (int i=0; i<sampleCount; i++)
         {
             double value = [selectedMatrix getValueAtRow:iter Column:i];
-            [featureSamples addObject:[NSNumber numberWithDouble:value]];
+            [featureSamples addObject:@(value)];
         }
         [convertedDictionary setValue:featureSamples forKey:label];
     }

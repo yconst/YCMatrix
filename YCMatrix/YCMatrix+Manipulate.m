@@ -10,11 +10,23 @@
 
 @implementation YCMatrix (Manipulate)
 
++ (YCMatrix *)matrixFromRows:(NSArray *)rows
+{
+    
+}
+
++ (YCMatrix *)matrixFromColumns:(NSArray *)columns
+{
+    
+}
+
 - (YCMatrix *)getRow:(int) rowNumber
 {
     if (rowNumber > self->rows - 1)
     {
-        @throw [NSException exceptionWithName:@"IndexOutOfBoundsException" reason:@"Row index input is out of bounds." userInfo:nil];
+        @throw [NSException exceptionWithName:@"IndexOutOfBoundsException"
+                                       reason:@"Row index input is out of bounds."
+                                     userInfo:nil];
     }
     // http://stackoverflow.com/questions/5850000/how-to-split-array-into-two-arrays-in-c
     int rowIndex = rowNumber * self->columns;
@@ -33,7 +45,9 @@
     }
     if (rowValue->rows != 1 || rowValue->columns != columns)
     {
-        @throw [NSException exceptionWithName:@"MatrixSizeException" reason:@"Matrix size mismatch." userInfo:nil];
+        @throw [NSException exceptionWithName:@"MatrixSizeException"
+                                       reason:@"Matrix size mismatch."
+                                     userInfo:nil];
     }
     memcpy(self->matrix + columns * rowNumber, rowValue->matrix, columns * sizeof(double));
 }
@@ -261,4 +275,29 @@
     newArray[columns * newRows - 1] = value;
     return [YCMatrix matrixFromArray:newArray Rows:newRows Columns:columns];
 }
+
+// Fisher-Yates Inside-out Shuffle
+- (YCMatrix *)newFromShufflingRows
+{
+    
+}
+
+// Fisher-Yates Shuffle
+- (void)shuffleRows
+{
+    
+}
+
+// Fisher-Yates Inside-out Shuffle
+- (YCMatrix *)newFromShufflingColumns
+{
+    
+}
+
+// Fisher-Yates Shuffle
+- (void)shuffleColumns
+{
+    
+}
+
 @end
