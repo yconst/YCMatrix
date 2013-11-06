@@ -12,12 +12,25 @@
 
 + (YCMatrix *)matrixFromRows:(NSArray *)rows
 {
-    
+    long rowCount = [rows count];
+    if (rowCount == 0) return [YCMatrix matrixOfRows:0 Columns:0];
+    YCMatrix *firstRow = rows[0];
+    long columnCount = firstRow->columns;
+    YCMatrix *ret = [YCMatrix matrixOfRows:(int)rowCount Columns:(int)columnCount];
+    for (int i=0; i<rowCount; i++)
+    {
+        for (int j=0; j<columnCount; j++)
+        {
+            YCMatrix *currentRow = rows[i];
+            [ret setValue:currentRow->matrix[j] Row:i Column:j];
+        }
+    }
+    return ret;
 }
 
 + (YCMatrix *)matrixFromColumns:(NSArray *)columns
 {
-    
+    return [[YCMatrix matrixFromRows:columns] transpose];
 }
 
 - (YCMatrix *)getRow:(int) rowNumber
@@ -276,28 +289,77 @@
     return [YCMatrix matrixFromArray:newArray Rows:newRows Columns:columns];
 }
 
-// Fisher-Yates Inside-out Shuffle
+// Fisher-Yates Inside-out Shuffle (UNTESTED!)
 - (YCMatrix *)newFromShufflingRows
 {
-    
+    YCMatrix *ret = [YCMatrix matrixFromMatrix:self];
+    long rowCount = self->rows;
+    long colCount = self->columns;
+    for (long i=0; i<rowCount; i++)
+    {
+        long o = arc4random_uniform((int)i);
+        if (o == i) continue;
+        for (long j=0; j<colCount; j++)
+        {
+            ret->matrix[i*rowCount + j] = ret->matrix[o*rowCount + j];
+            ret->matrix[o*rowCount + j] = self->matrix[o*rowCount + j];
+        }
+    }
+    return ret;
 }
 
-// Fisher-Yates Shuffle
+// Fisher-Yates Shuffle (UNTESTED!)
 - (void)shuffleRows
 {
-    
+    long rowCount = self->rows;
+    long colCount = self->columns;
+    double tmp;
+    for (long i = rowCount - 1; i>=0; --i)
+    {
+        long o = arc4random_uniform((int)i);
+        for (long j=0; j<colCount; j++)
+        {
+            tmp = self->matrix[i*rowCount + j];
+            self->matrix[i*rowCount + j] = self->matrix[o*rowCount + j];
+            self->matrix[o*rowCount + j] = tmp;
+        }
+    }
 }
 
-// Fisher-Yates Inside-out Shuffle
+// Fisher-Yates Inside-out Shuffle (UNTESTED!)
 - (YCMatrix *)newFromShufflingColumns
 {
-    
+    YCMatrix *ret = [YCMatrix matrixFromMatrix:self];
+    long rowCount = self->rows;
+    long colCount = self->columns;
+    for (long i=0; i<colCount; i++)
+    {
+        long o = arc4random_uniform((int)i);
+        for (long j=0; j<colCount; j++)
+        {
+            ret->matrix[j*rowCount + i] = ret->matrix[j*rowCount + o];
+            ret->matrix[j*rowCount + o] = self->matrix[j*rowCount + o];
+        }
+    }
+    return ret;
 }
 
-// Fisher-Yates Shuffle
+// Fisher-Yates Shuffle (UNTESTED!)
 - (void)shuffleColumns
 {
-    
+    long rowCount = self->rows;
+    long colCount = self->columns;
+    double tmp;
+    for (long i = colCount - 1; i>=0; --i)
+    {
+        long o = arc4random_uniform((int)i);
+        for (long j=0; j<rowCount; j++)
+        {
+            tmp = self->matrix[j*rowCount + i];
+            self->matrix[j*rowCount + i] = self->matrix[j*rowCount + o];
+            self->matrix[j*rowCount + o] = tmp;
+        }
+    }
 }
 
 @end
