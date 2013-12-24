@@ -19,9 +19,9 @@
     YCMatrix *ret = [YCMatrix matrixOfRows:(int)rowCount Columns:(int)columnCount];
     for (int i=0; i<rowCount; i++)
     {
+        YCMatrix *currentRow = rows[i];
         for (int j=0; j<columnCount; j++)
         {
-            YCMatrix *currentRow = rows[i];
             [ret setValue:currentRow->matrix[j] Row:i Column:j];
         }
     }
@@ -30,7 +30,20 @@
 
 + (YCMatrix *)matrixFromColumns:(NSArray *)columns
 {
-    return [[YCMatrix matrixFromRows:columns] transpose];
+    long columnCount = [columns count];
+    if (columnCount == 0) return [YCMatrix matrixOfRows:0 Columns:0];
+    YCMatrix *firstCol = columns[0];
+    long rowCount = firstCol->rows;
+    YCMatrix *ret = [YCMatrix matrixOfRows:(int)rowCount Columns:(int)columnCount];
+    for (int i=0; i<columnCount; i++)
+    {
+        YCMatrix *currentCol = columns[i];
+        for (int j=0; j<rowCount; j++)
+        {
+            [ret setValue:currentCol->matrix[j] Row:j Column:i];
+        }
+    }
+    return ret;
 }
 
 - (YCMatrix *)getRow:(int) rowNumber
@@ -141,7 +154,7 @@
 }
 - (YCMatrix *)subtractRowFromAllRows:(YCMatrix *)subtrahend
 {
-    return [self addRowToAllRows:[subtrahend negate]];
+    return [self addRowToAllRows:[subtrahend matrixByNegating]];
 }
 - (YCMatrix *)multiplyAllRowsWithRow:(YCMatrix *)factor{
     if (factor->rows != 1 || factor->columns != self->columns)
@@ -188,7 +201,7 @@
 }
 - (YCMatrix *)subtractColumnFromAllColumns:(YCMatrix *)subtrahend
 {
-    return [self addColumnToAllColumns:[subtrahend negate]];
+    return [self addColumnToAllColumns:[subtrahend matrixByNegating]];
 }
 - (YCMatrix *)multiplyAllColumnsWithColumn:(YCMatrix *)factor
 {

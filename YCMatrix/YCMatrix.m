@@ -22,6 +22,16 @@
     return mt;
 }
 
++ (instancetype)dirtyMatrixOfRows:(int)m Columns:(int)n
+{
+    YCMatrix *mt = [[YCMatrix alloc] init];
+    double *new_m = malloc(m*n * sizeof(double));
+    mt->rows = m;
+    mt->columns = n;
+    mt->matrix = new_m;
+    return mt;
+}
+
 + (instancetype)matrixOfRows:(int)m Columns:(int)n WithValue:(double)val
 {
     YCMatrix *mt = [YCMatrix matrixOfRows:m Columns:n];
@@ -102,95 +112,117 @@
                                        reason:@"Rows index input is out of bounds."
                                      userInfo:nil];
 }
+- (void)checkMultiplicationRows:(long)mrows Columns:(long)mcolumns
+{
+    if(mcolumns != mrows)
+    {
+        @throw [NSException exceptionWithName:@"MatrixSizeException"
+                                       reason:@"Matrix size unsuitable for multiplication."
+                                     userInfo:nil];
+    }
+}
 
-- (YCMatrix *)addWith:(YCMatrix *)addend
+- (YCMatrix *)matrixByAdding:(YCMatrix *)addend
+{
+    return [self matrixByMultiplyingWithScalar:1 AndAdding:addend];
+}
+
+- (YCMatrix *)matrixBySubtracting:(YCMatrix *)subtrahend
+{
+    return [subtrahend matrixByMultiplyingWithScalar:-1 AndAdding:self];
+}
+
+- (YCMatrix *)matrixByMultiplyingWithRight:(YCMatrix *)mt
+{
+    return [self matrixByMultiplyingWithRight:mt AndFactor:1];
+}
+
+- (YCMatrix *)matrixByMultiplyingWithRight:(YCMatrix *)mt AndTransposing:(bool)trans
+{
+    // OK, seriously, FUCK BLAS. This cost me a full day of debugging and I'm still
+    // not sure its fully functional. FUCK YOU.
+    if (!trans) return [self matrixByMultiplyingWithRight:mt];
+    [self checkMultiplicationRows:mt->rows Columns:columns];
+    YCMatrix *A = mt;
+    YCMatrix *B = self;
+    YCMatrix *C = [YCMatrix matrixOfRows:A->columns Columns:B->rows];
+    cblas_dgemm(CblasRowMajor, CblasTrans, CblasTrans, A->columns, B->rows, A->rows, 1, A->matrix, A->columns, B->matrix, B->columns, 1, C->matrix, C->columns);
+    return C;
+}
+
+- (YCMatrix *)matrixByMultiplyingWithRight:(YCMatrix *)mt AndAdding:(YCMatrix *)ma
+{
+    [self checkMultiplicationRows:mt->rows Columns:columns];
+    YCMatrix *result = [YCMatrix matrixFromMatrix:ma];
+    cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, rows, mt->columns, columns, 1, matrix, columns, mt->matrix, mt->columns, 1, result->matrix, result->columns);
+    return result;
+}
+
+- (YCMatrix *)matrixByMultiplyingWithRight:(YCMatrix *)mt AndFactor:(double)sf
+{
+    [self checkMultiplicationRows:mt->rows Columns:columns];
+    YCMatrix *result = [YCMatrix matrixOfRows:rows Columns:mt->columns];
+    cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, rows, mt->columns, columns, sf, matrix, columns, mt->matrix, mt->columns, 1, result->matrix, result->columns);
+    return result;
+}
+
+- (YCMatrix *)matrixByMultiplyingWithScalar:(double)ms
+{
+    YCMatrix *product = [YCMatrix matrixFromMatrix:self];
+    cblas_dscal(rows*columns, ms, product->matrix, 1);
+    return product;
+}
+
+- (YCMatrix *)matrixByMultiplyingWithScalar:(double)ms AndAdding:(YCMatrix *)addend
 {
     if(columns != addend->columns || rows != addend->rows || sizeof(matrix) != sizeof(addend->matrix))
         @throw [NSException exceptionWithName:@"MatrixSizeException"
                                        reason:@"Matrix size mismatch."
                                      userInfo:nil];
-    int lng = rows*columns;
-    YCMatrix *sum = [YCMatrix matrixOfRows:rows Columns:columns];
-    double *sumArray = sum->matrix;
-    for (int i=0; i<lng; i++) {
-        sumArray[i] = matrix[i] + addend->matrix[i];
-    }
+    YCMatrix *sum = [YCMatrix matrixFromMatrix:addend];
+    cblas_daxpy(rows*columns, ms, self->matrix, 1, sum->matrix, 1);
     return sum;
 }
 
-- (YCMatrix *)subtract:(YCMatrix *)subtrahend
+- (YCMatrix *)matrixByNegating
+{
+    return [self matrixByMultiplyingWithScalar:-1];
+}
+
+- (YCMatrix *)matrixByTransposing
+{
+    YCMatrix *trans = [YCMatrix dirtyMatrixOfRows:columns Columns:rows];
+    vDSP_mtransD(self->matrix, 1, trans->matrix, 1, trans->rows, trans->columns);
+    return trans;
+}
+
+
+- (void)add:(YCMatrix *)addend
+{
+    if(columns != addend->columns || rows != addend->rows || sizeof(matrix) != sizeof(addend->matrix))
+        @throw [NSException exceptionWithName:@"MatrixSizeException"
+                                       reason:@"Matrix size mismatch."
+                                     userInfo:nil];
+    cblas_daxpy(rows*columns, 1, addend->matrix, 1, self->matrix, 1);
+}
+
+- (void)subtract:(YCMatrix *)subtrahend
 {
     if(columns != subtrahend->columns || rows != subtrahend->rows || sizeof(matrix) != sizeof(subtrahend->matrix))
         @throw [NSException exceptionWithName:@"MatrixSizeException"
                                        reason:@"Matrix size mismatch."
                                      userInfo:nil];
-    int lng = rows*columns;
-    YCMatrix *diff = [YCMatrix matrixOfRows:rows Columns:columns];
-    double *diffArray = diff->matrix;
-    for (int i = 0;i < lng; i++) {
-        diffArray[i] = matrix[i] - subtrahend->matrix[i];
-    }
-    return diff;
+    cblas_daxpy(rows*columns, 1, subtrahend->matrix, -1, self->matrix, 1);
 }
 
-- (YCMatrix *)multiplyWithRight:(YCMatrix *)mt
+- (void)multiplyWithScalar:(double)ms
 {
-    if(columns != mt->rows)
-        @throw [NSException exceptionWithName:@"MatrixSizeException"
-                                       reason:@"Matrix size unsuitable for multiplication."
-                                     userInfo:nil];
-    YCMatrix *result = [YCMatrix matrixOfRows:rows Columns:mt->columns];
-    cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, rows, mt->columns, columns, 1, matrix, columns, mt->matrix, mt->columns, 1, result->matrix, result->columns);
-    return result;
+    cblas_dscal(rows*columns, ms, matrix, 1);
 }
 
-- (YCMatrix *)multiplyWithLeft:(YCMatrix *)mt
+- (void)negate
 {
-    YCMatrix *result = [mt multiplyWithRight:self];
-    return result;
-}
-
-- (YCMatrix *)multiplyWithScalar:(double)ms
-{
-    int lng = rows*columns;
-    YCMatrix *product = [YCMatrix matrixOfRows:rows Columns:columns];
-    double *multArray = product->matrix;
-    for (int i = 0;i < lng; i++) {
-        multArray[i] = matrix[i] * ms;
-    }
-    return product;
-}
-
-- (YCMatrix *)negate
-{
-    return [self multiplyWithScalar:-1];
-}
-
-// http://rosettacode.org/wiki/Matrix_transposition
-- (YCMatrix *)transpose {
-    YCMatrix *trans = [YCMatrix matrixFromMatrix:self];
-    trans->columns = rows;
-    trans->rows = columns;
-    double *m = trans->matrix;
-    int start, next, i;
-	double tmp;
-    
-	for (start = 0; start <= columns * rows - 1; start++) {
-		next = start;
-		i = 0;
-		do {	i++;
-			next = (next % rows) * columns + next / rows;
-		} while (next > start);
-		if (next < start || i == 1) continue;
-        
-		tmp = m[next = start];
-		do {
-			i = (next % rows) * columns + next / rows;
-			m[next] = (i == start) ? tmp : m[i];
-			next = i;
-		} while (next > start);
-	}
-    return trans;
+    [self multiplyWithScalar:-1];
 }
 
 - (double)trace
@@ -207,6 +239,53 @@
     return trace;
 }
 
+- (double)determinant
+{
+//    /* Lapack routines with a convenient Matrix wrapper.
+//     */
+//    
+//#include <malloc.h>
+//#include <math.h>
+//#include "matrix.h"
+//#include <tpm/memcheck.h>
+//    
+//    /* The Fortran routines expect column-major matrices, but our Matrices are
+//     * row-major. These functions try to hide this difference as much as possible.
+//     */
+//    
+//    /* Returns the determinant of A. */
+//    Real MatrixDeterminant(Matrix A)
+//    {
+//        int   *ipvt;
+//        int    info;
+//        Real   det = 1.0;
+//        int    c1, neg = 0;
+//        Matrix tmp;
+//        
+//        tmp = MatrixCopy(A);
+//        ipvt = Allocate(tmp->height, int);
+//        /* Note width and height are reversed */
+//        F77_FCN(dgetrf)(&tmp->width, &tmp->height, tmp->data[0],
+//                        &tmp->height, ipvt, &info);
+//        if(info > 0) {
+//            /* singular matrix */
+//            return 0.0;
+//        }
+//        
+//        /* Take the product of the diagonal elements */
+//        for (c1 = 0; c1 < tmp->height; c1++) {
+//            det *= tmp->data[c1][c1];
+//            if (ipvt[c1] != (c1+1)) neg = !neg;
+//        }
+//        free(ipvt);
+//        MatrixFree(tmp);
+//        
+//        /* Since tmp is an LU decomposition of a rowwise permutation of A,
+//         multiply by appropriate sign */
+//        return neg?-det:det;
+//    }
+}
+
 - (double)dotWith:(YCMatrix *)other
 {
     // A few more checks need to be made here.
@@ -218,16 +297,10 @@
         @throw [NSException exceptionWithName:@"MatrixSizeException"
                                        reason:@"Dot can only be performed on vectors."
                                      userInfo:nil];
-    int size = self->rows * self->columns;
-    double result = 0;
-    for (int i=0; i<size; i++)
-    {
-        result += self->matrix[i] * other->matrix[i];
-    }
-    return result;
+    return cblas_ddot(self->rows * self->columns, self->matrix, 1, other->matrix, 1);
 }
 
-- (YCMatrix *)unit
+- (YCMatrix *)matrixByUnitizing
 {
     if(columns != 1 && rows != 1)
         @throw [NSException exceptionWithName:@"MatrixSizeException"
@@ -260,6 +333,11 @@
     double *resArr = calloc(self->rows*self->columns, sizeof(double));
     memcpy(resArr, matrix, self->rows*self->columns*sizeof(double));
     return resArr;
+}
+
+- (BOOL)isSquare
+{
+    return self->rows == self->columns;
 }
 
 - (BOOL)isEqual:(id)anObject {

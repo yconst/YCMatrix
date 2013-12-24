@@ -43,35 +43,73 @@
 - (void)setValue:(double)vl Row:(long)row Column:(long)column;
 
 // Returns a new YCMatrix by adding this matrix to |addend|
-- (YCMatrix *)addWith:(YCMatrix *)addend;
+- (YCMatrix *)matrixByAdding:(YCMatrix *)addend;
 
 // Returns a new YCMatrix by subtracting |subtrahend|
-- (YCMatrix *)subtract:(YCMatrix *)subtrahend;
+- (YCMatrix *)matrixBySubtracting:(YCMatrix *)subtrahend;
 
 // Returns a new YCMatrix by multiplying with right matrix |mt|
-- (YCMatrix *)multiplyWithRight:(YCMatrix *)mt;
+- (YCMatrix *)matrixByMultiplyingWithRight:(YCMatrix *)mt;
 
-// Returns a new YCMatrix by multiplying with left matrix |mt|
-- (YCMatrix *)multiplyWithLeft:(YCMatrix *)ml;
+// Returns a new YCMatrix by multiplying with right matrix |mt| and optionally transposing
+- (YCMatrix *)matrixByMultiplyingWithRight:(YCMatrix *)mt AndTransposing:(bool)trans;
+
+// Returns a new YCMatrix by multiplying with right matrix |mt| and afterwards adding |ma|
+- (YCMatrix *)matrixByMultiplyingWithRight:(YCMatrix *)mt AndAdding:(YCMatrix *)ma;
+
+// Returns a new YCMatrix by multiplying with right matrix |mt| and
+// afterwards with scaling factor |sf|
+- (YCMatrix *)matrixByMultiplyingWithRight:(YCMatrix *)mt AndFactor:(double)sf;
 
 // Returns a new YCMatrix by multiplying with scalar |ms|
-- (YCMatrix *)multiplyWithScalar:(double)ms;
+- (YCMatrix *)matrixByMultiplyingWithScalar:(double)ms;
+
+// Returns a new YCMatrix by multiplying with scalar |ms| and adding matrix |addend|
+- (YCMatrix *)matrixByMultiplyingWithScalar:(double)ms AndAdding:(YCMatrix *)addend;
 
 // Returns a new YCMatrix by negating
-- (YCMatrix *)negate;
+- (YCMatrix *)matrixByNegating;
 
 // Returns a new YCMatrix by transposing
-- (YCMatrix *)transpose;
+- (YCMatrix *)matrixByTransposing;
+
+// Performs an in-place addition
+- (void)add:(YCMatrix *)addend;
+
+// Performs an in-place subtraction
+- (void)subtract:(YCMatrix *)subtrahend;
+
+// Performs an in-place right multiplication
+- (void)multiplyWithRight:(YCMatrix *)mt;
+
+// Performs an in-place scalar multiplication
+- (void)multiplyWithScalar:(double)ms;
+
+// Performs an in-place negation
+- (void)negate;
+
+// Performs an in-place transposition
+- (void)transpose;
 
 // Returns the trace
 - (double)trace;
+
+// Returns the determinant of the matrix. NOTE: Untested!
+- (double)determinant;
 
 // Returns a scalar value resulting from the summation of element-to-element multiplication with |other|
 - (double)dotWith:(YCMatrix *)other;
 
 // Returns a unitized copy (only applicable to vectors)
-- (YCMatrix *)unit;
+- (YCMatrix *)matrixByUnitizing;
+
+// Returns a reference to the matrix's elements array
 - (double *)getArray;
+
+// Returns a copy of the matrix's elements array
 - (double *)getArrayCopy;
+
+// Returns whether the matrix is square or not
+- (BOOL)isSquare;
 
 @end

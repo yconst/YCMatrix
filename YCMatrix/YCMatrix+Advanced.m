@@ -28,7 +28,7 @@
  */
 - (NSDictionary *)QR
 {
-    YCMatrix *A = [self transpose];
+    YCMatrix *A = [self matrixByTransposing];
     
     // Here initialize Q and R placeholders with TRANSPOSED rows/columns values, 
     // so that we can transpose back to normal row-major later.
@@ -43,8 +43,8 @@
     [YCMatrix getQROf:A->matrix Rows:rows Columns:columns OutQ:Q->matrix OutR:R->matrix];
     
     // Now transpose Q and R to get row-major matrices
-    Q = [Q transpose]; // -> m x k
-    R = [R transpose]; // -> k x n
+    Q = [Q matrixByTransposing]; // -> m x k
+    R = [R matrixByTransposing]; // -> k x n
     return [NSDictionary dictionaryWithObjectsAndKeys:Q, @"Q", R, @"R", nil];
 }
 - (YCMatrix *)RowMean
