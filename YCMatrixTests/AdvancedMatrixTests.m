@@ -11,8 +11,23 @@
 
 @implementation AdvancedMatrixTests
 
+- (void)setUp
+{
+    [super setUp];
+    
+    // Set-up code here.
+    TitleNSLog(@"Advanced Matrix Unit Tests");
+}
+
+- (void)tearDown
+{
+    // Tear-down code here.
+    TitleNSLog(@"End Of Advanced Matrix Unit Tests");
+    [super tearDown];
+}
+
 // All code under test must be linked into the Unit Test bundle
-- (void)testMath
+- (void)testAdvancedMatrixFunctions
 {
     STAssertTrue((1 + 1) == 2, @"Compiler isn't feeling well today :-(");
     
@@ -71,7 +86,7 @@
     CleanNSLog(@"Q: %@",Q);
     YCMatrix *R = [QR objectForKey:@"R"];
     CleanNSLog(@"R: %@",R);
-    YCMatrix *A = [Q multiplyWithRight:R];
+    YCMatrix *A = [Q matrixByMultiplyingWithRight:R];
     CleanNSLog(@"Q*R: %@",A);
     
     //
@@ -87,7 +102,7 @@
     CleanNSLog(@"Q: %@",Q2);
     YCMatrix *R2 = [QR2 objectForKey:@"R"];
     CleanNSLog(@"R: %@",R2);
-    YCMatrix *A2 = [Q2 multiplyWithRight:R2];
+    YCMatrix *A2 = [Q2 matrixByMultiplyingWithRight:R2];
     CleanNSLog(@"Q*R: %@",A2);
     
     // STAssertTrue([A isEqualTo: simple_matrix] , @"Error in QR decomposition. QR != A");

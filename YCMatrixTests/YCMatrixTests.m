@@ -15,17 +15,17 @@
     [super setUp];
     
     // Set-up code here.
-    TitleNSLog(@"Matrix Unit Tests");
+    TitleNSLog(@"Basic Matrix Unit Tests");
 }
 
 - (void)tearDown
 {
     // Tear-down code here.
-    TitleNSLog(@"End Of Matrix Unit Tests");
+    TitleNSLog(@"Basic End Of Matrix Unit Tests");
     [super tearDown];
 }
 
-- (void)testExample
+- (void)testBasicFunctions
 {
     //
     // Array Test
@@ -69,8 +69,8 @@
         7.0, 8.0, 9.0 };
     YCMatrix *testm1 = [YCMatrix matrixFromArray:matrix_array Rows:3 Columns:3];
     YCMatrix *testm2 = [YCMatrix matrixFromMatrix:testm1];
-    YCMatrix *testm_add = [testm1 addWith:testm2];
-    YCMatrix *testm_ms = [testm1 multiplyWithScalar:2];
+    YCMatrix *testm_add = [testm1 matrixByAdding:testm2];
+    YCMatrix *testm_ms = [testm1 matrixByMultiplyingWithScalar:2];
     STAssertTrue([testm_ms isEqual: testm_add], @"M+M != 2*M");
     
     //
@@ -79,7 +79,7 @@
     TitleNSLog(@"Matrix Multiplication");
     CleanNSLog(@"Test Matrix 1: %ix%i",testm1->rows, testm1->columns);
     CleanNSLog(@"Test Matrix 2: %ix%i",testm2->rows, testm2->columns);
-    YCMatrix *multResult = [testm1 multiplyWithRight:testm2];
+    YCMatrix *multResult = [testm1 matrixByMultiplyingWithRight:testm2];
     CleanNSLog(@"Resulting Matrix: %ix%i",multResult->rows, multResult->columns);
     CleanNSLog(@"%@",multResult);
     
@@ -94,7 +94,7 @@
         3.0, 6.0 };
     YCMatrix *orig = [YCMatrix matrixFromArray:matrix_orig_arr Rows:2 Columns:3];
     YCMatrix *trans = [YCMatrix matrixFromArray:matrix_trans_arr Rows:3 Columns:2];
-    YCMatrix *trans2 = [orig transpose];
+    YCMatrix *trans2 = [orig matrixByTransposing];
     CleanNSLog(@"%@",orig);
     CleanNSLog(@"%@",trans);
     CleanNSLog(@"%@",trans2);
@@ -105,7 +105,7 @@
     //
     TitleNSLog(@"Trace");
     YCMatrix *tracetestm = [YCMatrix matrixFromArray:matrix_array Rows:3 Columns:3];
-    double trace = [[tracetestm multiplyWithRight:tracetestm] trace];
+    double trace = [[tracetestm matrixByMultiplyingWithRight:tracetestm] trace];
     CleanNSLog(@"%f",trace);
     STAssertEquals(trace, 261.000, @"Trace is not correct!");
     
@@ -142,4 +142,17 @@
     
 }
 
+- (void)testTransposedMultiply
+{
+    double simple_array[6] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0 };
+    YCMatrix *A = [YCMatrix matrixFromArray:simple_array Rows:2 Columns:3];
+    CleanNSLog(@"%@",A);
+    
+    double simple_array_2[6] = { 2.0, 3.0, 1.0, 4.0, 0.0, 5.0 };
+    YCMatrix *B = [YCMatrix matrixFromArray:simple_array_2 Rows:3 Columns:2];
+    CleanNSLog(@"%@",B);
+    
+    YCMatrix *C = [A matrixByMultiplyingWithRight:B AndTransposing:YES];
+    CleanNSLog(@"%@",C);
+}
 @end

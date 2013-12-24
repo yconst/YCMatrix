@@ -10,8 +10,23 @@
 
 @implementation ManipulateTests
 
+- (void)setUp
+{
+    [super setUp];
+    
+    // Set-up code here.
+    TitleNSLog(@"Manipulate Matrix Unit Tests");
+}
+
+- (void)tearDown
+{
+    // Tear-down code here.
+    TitleNSLog(@"End Of Manipulate Matrix Unit Tests");
+    [super tearDown];
+}
+
 // All code under test must be linked into the Unit Test bundle
-- (void)testMath
+- (void)testManipulateMatrixFunctions
 {
     STAssertTrue((1 + 1) == 2, @"Compiler isn't feeling well today :-(");
     
@@ -60,7 +75,7 @@
     // Append column
     //
     YCMatrix *testappendcolumn = [YCMatrix matrixFromMatrix:testappendedrow];
-    YCMatrix *testcolumn = [[YCMatrix matrixFromMatrix:testrow] transpose];
+    YCMatrix *testcolumn = [[YCMatrix matrixFromMatrix:testrow] matrixByTransposing];
     YCMatrix *testappendedcolumn = [testappendcolumn appendColumn:testcolumn];
     CleanNSLog(@"Test Appended Column: %@", testappendedcolumn);
     
