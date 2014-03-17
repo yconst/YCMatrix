@@ -79,17 +79,11 @@
 // Performs an in-place subtraction
 - (void)subtract:(YCMatrix *)subtrahend;
 
-// Performs an in-place right multiplication
-- (void)multiplyWithRight:(YCMatrix *)mt;
-
 // Performs an in-place scalar multiplication
 - (void)multiplyWithScalar:(double)ms;
 
 // Performs an in-place negation
 - (void)negate;
-
-// Performs an in-place transposition
-- (void)transpose;
 
 // Returns the trace
 - (double)trace;
