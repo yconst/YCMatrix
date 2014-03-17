@@ -8,10 +8,10 @@
 
 //  Logic unit tests contain unit test code that is designed to be linked into an independent test executable.
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import "YCMatrix.h"
 #import "YCMatrix+Manipulate.h"
 
-@interface ManipulateTests : SenTestCase
+@interface ManipulateTests : XCTestCase
 
 @end

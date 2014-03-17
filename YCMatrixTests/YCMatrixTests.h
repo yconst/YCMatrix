@@ -6,10 +6,10 @@
 //  Copyright (c) 2013 Ioannis Chatzikonstantinou. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import "YCMatrix.h"
 #import "YCMatrix+Advanced.h"
 
-@interface YCMatrixTests : SenTestCase
+@interface YCMatrixTests : XCTestCase
 
 @end

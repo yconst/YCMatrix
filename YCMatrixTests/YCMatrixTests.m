@@ -44,12 +44,12 @@
     CleanNSLog(@"Value at 2,1: %f",[simple_matrix getValueAtRow:2 Column:1]);
     CleanNSLog(@"Value at 1,2: %f",[simple_matrix getValueAtRow:1 Column:2]);
     CleanNSLog(@"Value at 2,2: %f",[simple_matrix getValueAtRow:2 Column:2]);
-    STAssertTrue([simple_matrix getValueAtRow:0 Column:0] == 1.0, @"GetValue error!");
-    STAssertTrue([simple_matrix getValueAtRow:1 Column:0] == 4.0, @"GetValue error!");
-    STAssertTrue([simple_matrix getValueAtRow:2 Column:0] == 7.0, @"GetValue error!");
-    STAssertTrue([simple_matrix getValueAtRow:0 Column:1] == 2.0, @"GetValue error!");
-    STAssertTrue([simple_matrix getValueAtRow:0 Column:2] == 3.0, @"GetValue error!");
-    STAssertTrue([simple_matrix getValueAtRow:2 Column:1] == 8.0, @"GetValue error!");
+    XCTAssertTrue([simple_matrix getValueAtRow:0 Column:0] == 1.0, @"GetValue error!");
+    XCTAssertTrue([simple_matrix getValueAtRow:1 Column:0] == 4.0, @"GetValue error!");
+    XCTAssertTrue([simple_matrix getValueAtRow:2 Column:0] == 7.0, @"GetValue error!");
+    XCTAssertTrue([simple_matrix getValueAtRow:0 Column:1] == 2.0, @"GetValue error!");
+    XCTAssertTrue([simple_matrix getValueAtRow:0 Column:2] == 3.0, @"GetValue error!");
+    XCTAssertTrue([simple_matrix getValueAtRow:2 Column:1] == 8.0, @"GetValue error!");
     
     //
     // Identity Matrix
@@ -71,7 +71,7 @@
     YCMatrix *testm2 = [YCMatrix matrixFromMatrix:testm1];
     YCMatrix *testm_add = [testm1 matrixByAdding:testm2];
     YCMatrix *testm_ms = [testm1 matrixByMultiplyingWithScalar:2];
-    STAssertTrue([testm_ms isEqual: testm_add], @"M+M != 2*M");
+    XCTAssertTrue([testm_ms isEqual: testm_add], @"M+M != 2*M");
     
     //
     // Matrix Multiplication
@@ -98,7 +98,7 @@
     CleanNSLog(@"%@",orig);
     CleanNSLog(@"%@",trans);
     CleanNSLog(@"%@",trans2);
-    STAssertTrue([trans isEqual: trans2], @"M^T != Mt");
+    XCTAssertTrue([trans isEqual: trans2], @"M^T != Mt");
     
     //
     // Trace
@@ -107,7 +107,7 @@
     YCMatrix *tracetestm = [YCMatrix matrixFromArray:matrix_array Rows:3 Columns:3];
     double trace = [[tracetestm matrixByMultiplyingWithRight:tracetestm] trace];
     CleanNSLog(@"%f",trace);
-    STAssertEquals(trace, 261.000, @"Trace is not correct!");
+    XCTAssertEqual(trace, 261.000, @"Trace is not correct!");
     
     //
     // Dot

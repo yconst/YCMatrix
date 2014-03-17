@@ -28,8 +28,6 @@
 // All code under test must be linked into the Unit Test bundle
 - (void)testManipulateMatrixFunctions
 {
-    STAssertTrue((1 + 1) == 2, @"Compiler isn't feeling well today :-(");
-    
     //
     // Matrix row retrieval
     //
@@ -40,7 +38,7 @@
     CleanNSLog(@"%@", rowm);
     double templatermatrixarr[3] = { 4.0, 5.0, 6.0 };
     YCMatrix *templatemr = [YCMatrix matrixFromArray:templatermatrixarr Rows:1 Columns:3];
-    STAssertTrue([rowm isEqual: templatemr], @"Matrix row retrieval is problematic.");
+    XCTAssertTrue([rowm isEqual: templatemr], @"Matrix row retrieval is problematic.");
     
     //
     // Matrix column retrieval
@@ -52,7 +50,7 @@
     CleanNSLog(@"%@", columnm);
     double templatecmatrixarr[3] = { 4.0, 5.0, 6.0 };
     YCMatrix *templatemc = [YCMatrix matrixFromArray:templatecmatrixarr Rows:3 Columns:1];
-    STAssertTrue([columnm isEqual: templatemc], @"Matrix column retrieval is problematic.");
+    XCTAssertTrue([columnm isEqual: templatemc], @"Matrix column retrieval is problematic.");
     
     //
     // Subtract from all cols
@@ -119,9 +117,9 @@
     
     YCMatrix *rowsColumnsTestMatrix = [YCMatrix matrixFromArray:rowsColumnsArrayTest Rows:3 Columns:4];
     NSArray *rowsTestRows = [rowsColumnsTestMatrix RowsAsNSArray];
-    STAssertEqualObjects([rowsTestRows objectAtIndex:0], firstRowMatrix, @"Error with conversion to rows array(1).");
-    STAssertEqualObjects([rowsTestRows objectAtIndex:1], secondRowMatrix, @"Error with conversion to rows array(2).");
-    STAssertEqualObjects([rowsTestRows objectAtIndex:2], thirdRowMatrix, @"Error with conversion to rows array(3).");
+    XCTAssertEqualObjects([rowsTestRows objectAtIndex:0], firstRowMatrix, @"Error in conversion to rows array(1).");
+    XCTAssertEqualObjects([rowsTestRows objectAtIndex:1], secondRowMatrix, @"Error in conversion to rows array(2).");
+    XCTAssertEqualObjects([rowsTestRows objectAtIndex:2], thirdRowMatrix, @"Error in conversion to rows array(3).");
     CleanNSLog(@"Passed");
     
     //
@@ -138,10 +136,10 @@
     YCMatrix *fourthColumnMatrix = [YCMatrix matrixFromArray:fourthColumn Rows:3 Columns:1];
 
     NSArray *columnsTestColumns = [rowsColumnsTestMatrix ColumnsAsNSArray];
-    STAssertEqualObjects([columnsTestColumns objectAtIndex:0], firstColumnMatrix, @"Error with conversion to columns array(1).");
-    STAssertEqualObjects([columnsTestColumns objectAtIndex:1], secondColumnMatrix, @"Error with conversion to columns array(2).");
-    STAssertEqualObjects([columnsTestColumns objectAtIndex:2], thirdColumnMatrix, @"Error with conversion to columns array(3).");
-    STAssertEqualObjects([columnsTestColumns objectAtIndex:3], fourthColumnMatrix, @"Error with conversion to columns array(4).");
+    XCTAssertEqualObjects([columnsTestColumns objectAtIndex:0], firstColumnMatrix, @"Error in conversion to columns array(1).");
+    XCTAssertEqualObjects([columnsTestColumns objectAtIndex:1], secondColumnMatrix, @"Error in conversion to columns array(2).");
+    XCTAssertEqualObjects([columnsTestColumns objectAtIndex:2], thirdColumnMatrix, @"Error in conversion to columns array(3).");
+    XCTAssertEqualObjects([columnsTestColumns objectAtIndex:3], fourthColumnMatrix, @"Error in conversion to columns array(4).");
     CleanNSLog(@"Passed");
 }
 

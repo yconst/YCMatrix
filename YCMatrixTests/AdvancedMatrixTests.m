@@ -29,8 +29,6 @@
 // All code under test must be linked into the Unit Test bundle
 - (void)testAdvancedMatrixFunctions
 {
-    STAssertTrue((1 + 1) == 2, @"Compiler isn't feeling well today :-(");
-    
     //
     // PseudoInverse Derivation
     //
@@ -122,8 +120,8 @@
     YCMatrix *meanMatrix = [YCMatrix matrixFromArray:mean_array Rows:4 Columns:3];
     YCMatrix *rowMeans = [meanMatrix RowMean];
     YCMatrix *columnMeans = [meanMatrix ColumnMean];
-    STAssertTrue([rowMeans isEqualTo: rowMeanTargetMatrix] , @"Error in calculating Row Means.");
-    STAssertTrue([columnMeans isEqualTo: columnMeanTargetMatrix] , @"Error in calculating Column Means.");
+    XCTAssertTrue([rowMeans isEqualTo: rowMeanTargetMatrix] , @"Error in calculating Row Means.");
+    XCTAssertTrue([columnMeans isEqualTo: columnMeanTargetMatrix] , @"Error in calculating Column Means.");
     CleanNSLog(@"%@", rowMeans);
     CleanNSLog(@"%@", columnMeans);
     

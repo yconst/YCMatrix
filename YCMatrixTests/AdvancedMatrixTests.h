@@ -6,10 +6,10 @@
 //
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import "YCMatrix.h"
 #import "YCMatrix+Advanced.h"
 
-@interface AdvancedMatrixTests : SenTestCase
+@interface AdvancedMatrixTests : XCTestCase
 
 @end
