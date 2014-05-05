@@ -375,4 +375,68 @@
     }
 }
 
+// Returns a new YCMatrix by sampling |sampleCount| rows. If |replacement| is YES, it does
+// so using replacement
+- (YCMatrix *)matrixBySamplingRows:(long)sampleCount Replacement:(BOOL)replacement
+{
+    long rowSize = self->rows;
+    long colSize = self->columns;
+    long colMemory = colSize * sizeof(double);
+    YCMatrix *new = [YCMatrix matrixOfRows:(int)sampleCount Columns:(int)colSize];
+    if (replacement)
+    {
+        for (int i=0; i<sampleCount; i++)
+        {
+            long rnd = arc4random_uniform((int)self->rows);
+            memcpy(new->matrix + i * colMemory, new->matrix + rnd * colMemory, colSize);
+        }
+    }
+    else
+    {
+        long toGo = sampleCount;
+        for (int i=0; i<rowSize; i++)
+        {
+            long rnd = arc4random_uniform((int)rowSize);
+            if (rnd < toGo)
+            {
+                toGo--;
+                memcpy(new->matrix + toGo * colMemory, new->matrix + i * colMemory, colSize);
+            }
+        }
+    }
+    return new;
+}
+
+// Returns a new YCMatrix by sampling |sampleCount| columns. If |replacement| is YES, it does
+// so using replacement
+- (YCMatrix *)matrixBySamplingColumns:(long)sampleCount Replacement:(BOOL)replacement
+{
+    long rowSize = self->rows;
+    long colSize = self->columns;
+    long colMemory = colSize * sizeof(double);
+    YCMatrix *new = [YCMatrix matrixOfRows:(int)rowSize Columns:(int)sampleCount];
+    if (replacement)
+    {
+        for (int i=0; i<sampleCount; i++)
+        {
+            //long rnd = arc4random_uniform((int)self->rows);
+            // copy column
+        }
+    }
+    else
+    {
+        long toGo = sampleCount;
+        for (int i=0; i<colSize; i++)
+        {
+            long rnd = arc4random_uniform((int)colSize);
+            if (rnd < toGo)
+            {
+                toGo--;
+                // copy column
+            }
+        }
+    }
+    return new;
+}
+
 @end

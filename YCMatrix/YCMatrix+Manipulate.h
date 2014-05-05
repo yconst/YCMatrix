@@ -10,50 +10,81 @@
 
 @interface YCMatrix (Manipulate)
 
+// Returns a new YCMatrix from an array of rows
 + (YCMatrix *)matrixFromRows:(NSArray *)rows;
 
+// Returns a new YCMatrix from an array of columns
 + (YCMatrix *)matrixFromColumns:(NSArray *)columns;
 
-- (YCMatrix *)getRow:(int) rowNumber;
+// Returns a new YCMatrix from the elements of row |rowNumber|
+- (YCMatrix *)getRow:(int)rowNumber;
 
-- (void)setRow:(int) rowNumber Value:(YCMatrix *) rowValue;
+// Sets row |rowNumber| to value |rowValue|
+- (void)setRow:(int) rowNumber Value:(YCMatrix *)rowValue;
 
+// Returns an NSArray of YCMatrix objects representing rows
 - (NSArray *)RowsAsNSArray;
 
-- (YCMatrix *)getColumn:(int) colNumber;
+// Returns a new YCMatrix from the elements of column |colNumber|
+- (YCMatrix *)getColumn:(int)colNumber;
 
-- (void)setColumn:(int) colNumber Value:(YCMatrix *) columnValue;
+// Sets column |colNumber| to value |columnValue|
+- (void)setColumn:(int) colNumber Value:(YCMatrix *)columnValue;
 
+// Returns an NSArray of YCMatrix objects representing columns
 - (NSArray *)ColumnsAsNSArray;
 
-- (YCMatrix *)addRowToAllRows:(YCMatrix *) addend;
+// Adds the values in |addend| to all rows
+- (YCMatrix *)addRowToAllRows:(YCMatrix *)addend;
 
-- (YCMatrix *)subtractRowFromAllRows:(YCMatrix *) subtrahend;
+// Subtracts the values in |subtrahend| from all rows
+- (YCMatrix *)subtractRowFromAllRows:(YCMatrix *)subtrahend;
 
-- (YCMatrix *)multiplyAllRowsWithRow:(YCMatrix *) factor;
+// Multiplies element-wise all rows with the values in |factor|
+- (YCMatrix *)multiplyAllRowsWithRow:(YCMatrix *)factor;
 
-- (YCMatrix *)addColumnToAllColumns:(YCMatrix *) addend;
+// Adds the values in |addend| to all columns
+- (YCMatrix *)addColumnToAllColumns:(YCMatrix *)addend;
 
-- (YCMatrix *)subtractColumnFromAllColumns:(YCMatrix *) subtrahend;
+// Subtracts the values in |subtrahend| from all columns
+- (YCMatrix *)subtractColumnFromAllColumns:(YCMatrix *)subtrahend;
 
-- (YCMatrix *)multiplyAllColumnsWithColumn:(YCMatrix *) factor;
+// Multiplies element-wise all columns with the values in |factor|
+- (YCMatrix *)multiplyAllColumnsWithColumn:(YCMatrix *)factor;
 
-- (YCMatrix *)appendRow:(YCMatrix *) row;
+// Appends |row|
+- (YCMatrix *)appendRow:(YCMatrix *)row;
 
-- (YCMatrix *)appendColumn:(YCMatrix *) column;
+// Appends |column|
+- (YCMatrix *)appendColumn:(YCMatrix *)column;
 
-- (YCMatrix *)removeRow:(int) rowNumber;
+// Removes row at |rowIndex|
+- (YCMatrix *)removeRow:(int)rowIndex;
 
-- (YCMatrix *)removeColumn:(int) columnNumber;
+// Removes row at |columnIndex|
+- (YCMatrix *)removeColumn:(int)columnIndex;
 
-- (YCMatrix *)appendValueAsRow:(double) value;
+// Creates a 1xn YCMatrix with values equal to |value| and appends it
+- (YCMatrix *)appendValueAsRow:(double)value;
 
+// Returns a new YCMatrix with shuffled rows
 - (YCMatrix *)newFromShufflingRows;
 
+// Shuffles rows in-place
 - (void)shuffleRows;
 
+// Returns a new YCMatrix with shuffled columns
 - (YCMatrix *)newFromShufflingColumns;
 
+// Shuffles columns in-place
 - (void)shuffleColumns;
+
+// Returns a new YCMatrix by sampling |sampleCount| rows. If |replacement| is YES, it does
+// so using replacement
+- (YCMatrix *)matrixBySamplingRows:(long)sampleCount Replacement:(BOOL)replacement;
+
+// Returns a new YCMatrix by sampling |sampleCount| columns. If |replacement| is YES, it does
+// so using replacement
+- (YCMatrix *)matrixBySamplingColumns:(long)sampleCount Replacement:(BOOL)replacement;
 
 @end
