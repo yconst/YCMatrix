@@ -31,10 +31,11 @@
 + (instancetype)matrixFromNSArray:(NSArray *)arr Rows:(int)m Columns:(int)n;
 
 // Returns a new YCMatrix by copying matrix |other|
-+ (instancetype)matrixFromMatrix:(YCMatrix *) other;
++ (instancetype)matrixFromMatrix:(YCMatrix *)other;
 
 // Returns a new Identity Matrix of |m| rows and |n| columns
 + (instancetype)identityOfRows:(int)m Columns:(int)n;
+
 
 // Returns value at |row| and |column|
 - (double)getValueAtRow:(long)row Column:(long)column;
@@ -60,6 +61,14 @@
 // Returns a new YCMatrix by multiplying with right matrix |mt| and
 // afterwards with scaling factor |sf|
 - (YCMatrix *)matrixByMultiplyingWithRight:(YCMatrix *)mt AndFactor:(double)sf;
+
+// Returns a new YCMatrix by first transposing and then multiplying
+// with right matrix |mt|
+- (YCMatrix *)matrixByTransposingAndMultiplyingWithRight:(YCMatrix *)mt;
+
+// Returns a new YCMatrix by first transposing and then multiplying
+// with left matrix |mt|
+- (YCMatrix *)matrixByTransposingAndMultiplyingWithLeft:(YCMatrix *)mt;
 
 // Returns a new YCMatrix by multiplying with scalar |ms|
 - (YCMatrix *)matrixByMultiplyingWithScalar:(double)ms;
@@ -89,7 +98,7 @@
 - (double)trace;
 
 // Returns the determinant of the matrix. NOTE: Untested!
-- (double)determinant;
+//- (double)determinant;
 
 // Returns a scalar value resulting from the summation of element-to-element multiplication with |other|
 - (double)dotWith:(YCMatrix *)other;

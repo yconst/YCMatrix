@@ -62,10 +62,9 @@
                                      userInfo:nil];
     YCMatrix *newMatrix = [YCMatrix matrixOfRows:m Columns:n];
     double *cArray = newMatrix->matrix;
-    int i = 0;
-    for (id item in arr) {
+    for (long i=0, j=[arr count]; i<j; i++)
+    {
         cArray[i] = [[arr objectAtIndex:i] doubleValue];
-        i++;
     }
     return newMatrix;
 }
@@ -112,15 +111,6 @@
                                        reason:@"Rows index input is out of bounds."
                                      userInfo:nil];
 }
-- (void)checkMultiplicationRows:(long)mrows Columns:(long)mcolumns
-{
-    if(mcolumns != mrows)
-    {
-        @throw [NSException exceptionWithName:@"MatrixSizeException"
-                                       reason:@"Matrix size unsuitable for multiplication."
-                                     userInfo:nil];
-    }
-}
 
 - (YCMatrix *)matrixByAdding:(YCMatrix *)addend
 {
@@ -134,35 +124,97 @@
 
 - (YCMatrix *)matrixByMultiplyingWithRight:(YCMatrix *)mt
 {
-    return [self matrixByMultiplyingWithRight:mt AndFactor:1];
+    return [self matrixByTransposing:NO
+                    TransposingRight:NO
+                   MultiplyWithRight:mt
+                              Factor:1
+                              Adding:nil];
 }
 
 - (YCMatrix *)matrixByMultiplyingWithRight:(YCMatrix *)mt AndTransposing:(bool)trans
 {
-    // OK, seriously, FUCK BLAS. This cost me a full day of debugging and I'm still
-    // not sure its fully functional. FUCK YOU.
-    if (!trans) return [self matrixByMultiplyingWithRight:mt];
-    [self checkMultiplicationRows:mt->rows Columns:columns];
-    YCMatrix *A = mt;
-    YCMatrix *B = self;
-    YCMatrix *C = [YCMatrix matrixOfRows:A->columns Columns:B->rows];
-    cblas_dgemm(CblasRowMajor, CblasTrans, CblasTrans, A->columns, B->rows, A->rows, 1, A->matrix, A->columns, B->matrix, B->columns, 1, C->matrix, C->columns);
-    return C;
+    YCMatrix *M1 = trans ? mt : self;
+    YCMatrix *M2 = trans ? self : mt;
+    return [M1 matrixByTransposing:trans
+                  TransposingRight:trans
+                 MultiplyWithRight:M2
+                            Factor:1
+                            Adding:nil];
 }
 
 - (YCMatrix *)matrixByMultiplyingWithRight:(YCMatrix *)mt AndAdding:(YCMatrix *)ma
 {
-    [self checkMultiplicationRows:mt->rows Columns:columns];
-    YCMatrix *result = [YCMatrix matrixFromMatrix:ma];
-    cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, rows, mt->columns, columns, 1, matrix, columns, mt->matrix, mt->columns, 1, result->matrix, result->columns);
-    return result;
+    return [self matrixByTransposing:NO
+                    TransposingRight:NO
+                   MultiplyWithRight:mt
+                              Factor:1
+                              Adding:ma];
 }
 
 - (YCMatrix *)matrixByMultiplyingWithRight:(YCMatrix *)mt AndFactor:(double)sf
 {
-    [self checkMultiplicationRows:mt->rows Columns:columns];
-    YCMatrix *result = [YCMatrix matrixOfRows:rows Columns:mt->columns];
-    cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, rows, mt->columns, columns, sf, matrix, columns, mt->matrix, mt->columns, 1, result->matrix, result->columns);
+    return [self matrixByTransposing:NO
+                    TransposingRight:NO
+                   MultiplyWithRight:mt
+                              Factor:sf
+                              Adding:nil];
+}
+
+- (YCMatrix *)matrixByTransposingAndMultiplyingWithRight:(YCMatrix *)mt
+{
+    return [self matrixByTransposing:YES
+                    TransposingRight:NO
+                   MultiplyWithRight:mt
+                              Factor:1
+                              Adding:nil];
+}
+
+- (YCMatrix *)matrixByTransposingAndMultiplyingWithLeft:(YCMatrix *)mt
+{
+    return [mt matrixByTransposing:NO
+                  TransposingRight:YES
+                 MultiplyWithRight:self
+                            Factor:1
+                            Adding:nil];
+}
+
+//
+// Actual calls to BLAS
+
+- (YCMatrix *)matrixByTransposing:(BOOL)transposeLeft
+                 TransposingRight:(BOOL)transposeRight
+                MultiplyWithRight:(YCMatrix *)mt
+                           Factor:(double)factor
+                           Adding:(YCMatrix *)addend
+{
+    int M = transposeLeft ? columns : rows;
+    int N = transposeRight ? mt->rows : mt->columns;
+    int K = transposeLeft ? rows : columns;
+    int lda = columns;
+    int ldb = mt->columns;
+    int ldc = N;
+    
+    if ((transposeLeft ? rows : columns) != (transposeRight ? mt->columns : mt->rows))
+    {
+        @throw [NSException exceptionWithName:@"MatrixSizeException"
+                                       reason:@"Matrix size unsuitable for multiplication."
+                                     userInfo:nil];
+    }
+    if (addend && (addend->rows != M && addend->columns != N)) // FIX!!!
+    {
+        @throw [NSException exceptionWithName:@"MatrixSizeException"
+                                       reason:@"Matrix size unsuitable for addition."
+                                     userInfo:nil];
+    }
+    enum CBLAS_TRANSPOSE lT = transposeLeft ? CblasTrans : CblasNoTrans;
+    enum CBLAS_TRANSPOSE rT = transposeRight ? CblasTrans : CblasNoTrans;
+    
+    YCMatrix *result = addend ? [YCMatrix matrixFromMatrix:addend] : [YCMatrix matrixOfRows:M
+                                                                                    Columns:N];
+    cblas_dgemm(CblasRowMajor, lT,          rT,         M,
+                N,              K,          factor,     matrix,
+                lda,            mt->matrix, ldb,        1,
+                result->matrix, ldc);
     return result;
 }
 
@@ -184,6 +236,9 @@
     return sum;
 }
 
+// End of actual calls to BLAS
+//
+
 - (YCMatrix *)matrixByNegating
 {
     return [self matrixByMultiplyingWithScalar:-1];
@@ -195,7 +250,6 @@
     vDSP_mtransD(self->matrix, 1, trans->matrix, 1, trans->rows, trans->columns);
     return trans;
 }
-
 
 - (void)add:(YCMatrix *)addend
 {
@@ -239,8 +293,8 @@
     return trace;
 }
 
-- (double)determinant
-{
+//- (double)determinant
+//{
 //    /* Lapack routines with a convenient Matrix wrapper.
 //     */
 //    
@@ -284,7 +338,7 @@
 //         multiply by appropriate sign */
 //        return neg?-det:det;
 //    }
-}
+//}
 
 - (double)dotWith:(YCMatrix *)other
 {
