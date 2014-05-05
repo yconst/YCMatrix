@@ -184,6 +184,14 @@
             work, &lwork, iwork, &i );
     
     if (i != 0) {
+        free(Atemp);
+        free(S);
+        free(Splus);
+        free(Splus_times_Ut);
+        free(U);
+        free(Vt);
+        free(iwork);
+        free(work);
         return;
     } else {
         lwork = (int) work[0];
@@ -279,7 +287,12 @@
     
     // Perform QR using dgeqrf
     dgeqrf_(&m, &n, a, &lda, tau, work, &lwork, &info);
-    if (info != 0) return;
+    if (info != 0)
+    {
+        free(tau);
+        free(work);
+        return;
+    }
     
     // Here derive R(kxn) from tau; R should be malloc'd already.
     
@@ -300,7 +313,12 @@
     
     // Then, use dorgqr to derive Q; Q should be malloc'd already.
     dorgqr_(&m, &k, &k, a, &lda, tau, work, &lwork, &info);
-    if (info != 0) return;
+    if (info != 0)
+    {
+        free(tau);
+        free(work);
+        return;
+    }
     
     // Copy result to output Q
     memcpy(Q, a, m*k * sizeof(double));
@@ -308,5 +326,98 @@
     free(work);
     free(tau);
 }
+
+/* Modifies B to have the solution x to A * x = B.
+ * Returns 0 if an error occurred.
+ */
+//int MatrixSolve(Matrix A, Real *B)
+//{
+//    int *ipvt;
+//    int info;
+//    Matrix tmp;
+//    char job;
+//    int nrhs;
+//
+//    tmp = MatrixCopy(A);
+//    ipvt = Allocate(tmp->height, int);
+//    /* Note width and height are reversed */
+//    F77_FCN(dgetrf)(&tmp->width, &tmp->height, tmp->data[0],
+//                    &tmp->height, ipvt, &info);
+//    if(info > 0) {
+//        fprintf(stderr, "MatrixSolve: dgetrf reports singular matrix\n");
+//        return 0;
+//    }
+//    else {
+//        job = 'T';
+//        nrhs = 1;
+//        F77_FCN(dgetrs)(&job, &tmp->width, &nrhs, tmp->data[0], &tmp->height,
+//                        ipvt, B, &tmp->height, &info);
+//    }
+//    free(ipvt);
+//    MatrixFree(tmp);
+//    return 1;
+//}
+/* Fills vr and vi with the real and imaginary parts of the eigenvalues of A.
+ * If vr or vi is NULL, that part of the result will not be returned.
+ * Returns 0 if an error occurred.
+ */
+//int MatrixEigenvalues(Matrix A, Real *vr, Real *vi)
+//{
+//    char jobvl = 'N', jobvr = 'N';
+//    int rank = A->height;
+//    double *dup;
+//    int one = 1;
+//    int lwork;
+//    double *work;
+//    int info;
+//    double *wr, *wi;
+//
+//    if(vr == NULL) wr = Allocate(rank, double);
+//    else wr = vr;
+//    if(vi == NULL) wi = Allocate(rank, double);
+//    else wi = vi;
+//
+//    /* make a copy since dgeev clobbers A */
+//    dup = Allocate(A->height * A->width, double);
+//    memcpy(dup, A->data[0], A->height * A->width * sizeof(double));
+//
+//    lwork = 3 * A->height;
+//    work = Allocate(lwork, double);
+//
+//    F77_FCN (dgeev) (&jobvl, &jobvr, &rank, dup, &A->height,
+//                     wr, wi, NULL, &one, NULL, &one, work, &lwork, &info);
+//    free(dup);
+//    free(work);
+//    if(vr == NULL) free(wr);
+//    if(vi == NULL) free(wi);
+//    if(info > 0) {
+//        fprintf(stderr, "MatrixEigenvalues failed\n");
+//        return 0;
+//    }
+//    return 1;
+//}
+
+/* Makes lower triangular R such that R * R' = A.
+ * Modifies A.
+ * Returns 0 if an error occurred.
+ */
+//int MatrixCholesky(Matrix A)
+//{
+//    char uplo = 'U';
+//    int rank = A->height;
+//    int info;
+//    int i,j;
+//
+//    F77_FCN (dpotrf) (&uplo, &rank, A->data[0], &A->height, &info);
+//    if(info > 0) {
+//        fprintf(stderr, "MatrixCholesky: matrix is not positive definite\n");
+//        return 0;
+//    }
+//    /* clear out the upper triangular */
+//    for(i=0;i<A->height;i++)
+//        for(j=i+1;j<A->width;j++)
+//            A->data[i][j] = 0.0;
+//    return 1;
+//}
 
 @end

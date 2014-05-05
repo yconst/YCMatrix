@@ -12,12 +12,19 @@
 
 @interface YCMatrix (Advanced)
 
+// Returns the inverse or nil if inversion failed
 - (YCMatrix *)inverse;
+
+// Returns the pseudo-inverse using Singular Value Decomposition
 - (YCMatrix *)pseudoInverse;
+
+// Returns the QR factorization of a matrix
 - (NSDictionary *)QR;
+
+// Returns a vector of the means of the rows
 - (YCMatrix *)RowMean;
+
+// Returns a vector of the means of the columns
 - (YCMatrix *)ColumnMean;
-+ (void)getPinvOf:(double *)A Rows:(int)rows Columns:(int)columns Out:(double *)Aplus;
-+ (void)getQROf:(double *)A Rows:(int)rows Columns:(int)columns OutQ:(double *)Q OutR:(double *)R;
 
 @end
