@@ -5,48 +5,89 @@
 //  Created by Yan Const on 11/7/13.
 //  Copyright (c) 2013 Ioannis Chatzikonstantinou. All rights reserved.
 //
+// References for this document:
+// http://jira.madlib.net/secure/attachment/10019/matrixpinv.cpp
+// http://vismod.media.mit.edu/pub/tpminka/MRSAR/lapack.c
+//
 
 #import "YCMatrix+Advanced.h"
 
 @implementation YCMatrix (Advanced)
-- (YCMatrix *)inverse {
-    @throw [NSException exceptionWithName:@"NotImplementedException" 
-                                    reason:@"Not Implemented" 
-                                    userInfo:nil];
-    return nil;
-}
-/*
- * Pseudo-inverse
- */
-- (YCMatrix *)pseudoInverse {
+
+- (YCMatrix *)pseudoInverse
+{
     YCMatrix *ret = [YCMatrix matrixOfRows:self->columns Columns:self->rows];
     [YCMatrix getPinvOf:self->matrix Rows:self->rows Columns:self->columns Out:ret->matrix];
     return ret;
 }
-/*
- * QR Decomposition
- */
+
 - (NSDictionary *)QR
 {
-    YCMatrix *A = [self matrixByTransposing];
-    
-    // Here initialize Q and R placeholders with TRANSPOSED rows/columns values, 
-    // so that we can transpose back to normal row-major later.
-    // with k = min(m, n)
-    // Q is m x k => here it should be k x m
-    // R is k x n => here it should be n x k
-    int k = MIN(rows, columns);
-    YCMatrix *Q = [YCMatrix matrixOfRows:k Columns:rows];
-    YCMatrix *R = [YCMatrix matrixOfRows:columns Columns:k]; 
-    
-    // Perform QR calling LAPACK
-    [YCMatrix getQROf:A->matrix Rows:rows Columns:columns OutQ:Q->matrix OutR:R->matrix];
-    
-    // Now transpose Q and R to get row-major matrices
-    Q = [Q matrixByTransposing]; // -> m x k
-    R = [R matrixByTransposing]; // -> k x n
-    return [NSDictionary dictionaryWithObjectsAndKeys:Q, @"Q", R, @"R", nil];
 }
+
+- (NSDictionary *)SVD
+{
+    double *ua = NULL;
+    double *sa = NULL;
+    double *vta = NULL;
+    
+    [[self class] getSVDOf:self->matrix Rows:rows Columns:columns S:&sa U:&ua Vt:&vta];
+    
+    YCMatrix *U = [YCMatrix matrixFromArray:ua Rows:self->rows Columns:self->rows Copy:NO]; // mxm
+    YCMatrix *S = [YCMatrix matrixFromArray:sa Rows:self->rows Columns:self->columns Copy:NO]; // mxn
+    YCMatrix *Vt = [YCMatrix matrixFromArray:vta Rows:self->columns Columns:self->columns Copy:NO]; // nxn
+
+    return @{@"U" : U, @"S" : S, @"Vt" : Vt};
+}
+
+/* Makes lower triangular R such that R * R' = self.
+ * Modifies self.
+ * Returns 0 if an error occurred.
+ */
+- (void)cholesky
+{
+    char uplo = 'U';
+    int rank = self->rows;
+    int info;
+    int i,j;
+
+    dpotrf_(&uplo, &rank, self->matrix, &self->rows, &info);
+    if(info > 0)
+    {
+        @throw [NSException exceptionWithName:@"YCMatrixException"
+                                       reason:@"Matrix is not positive definite."
+                                     userInfo:nil];
+    }
+    /* clear out the upper triangular */
+    for(i=0; i<self->rows; i++)
+    {
+        for(j=i+1; j<self->columns; j++)
+        {
+            self->matrix[i*self->columns + j] = 0.0;
+        }
+    }
+}
+
+- (YCMatrix *)matrixByCholesky
+{
+    YCMatrix *newMatrix = [self copy];
+    [newMatrix cholesky];
+    return newMatrix;
+}
+
+- (YCMatrix *)eigenvalues
+{
+    if (self->rows != self->columns)
+    {
+        @throw [NSException exceptionWithName:@"YCMatrixException"
+                                       reason:@"Matrix is not square."
+                                     userInfo:nil];
+    }
+    double *evArray = malloc(self->rows * sizeof(double));
+    [self getMatrixEigenvaluesOf:self->matrix Rows:self->rows Columns:self->columns Vr:evArray Vi:nil];
+    return [YCMatrix matrixFromArray:evArray Rows:1 Columns:self->columns];
+}
+
 - (YCMatrix *)RowMean
 {
     YCMatrix *means = [YCMatrix matrixOfRows:self->rows Columns:1];
@@ -61,8 +102,8 @@
         means->matrix[i] = rowMean;
     }
     return means;
-    
 }
+
 - (YCMatrix *)ColumnMean
 {
     YCMatrix *means = [YCMatrix matrixOfRows:self->columns Columns:1];
@@ -79,10 +120,104 @@
     return means;
 
 }
+
++ (void)getSVDOf:(double *)A Rows:(int)rows Columns:(int)columns S:(double **)s U:(double **)u Vt:(double **)vt
+{
+    /*
+     
+     Compute the Singular Value Decomposition of matrix A
+     
+     Author:  Luke Lonergan
+     Date:    5/31/08
+     License: Use pfreely
+     
+    */
+    
+    int    i, j;
+    int    lwork, *iwork;
+    double     *work, *Atemp;
+    double     *S, *U, *Vt;
+    char        achar='A';   /* ? */
+    
+    /*
+     * The factors of A: S, U and Vt
+     * U, Sdiag and Vt are the factors of the pseudo inverse of A, the
+     * components of the singular value decomposition of A
+     */
+    S = (double *) malloc(sizeof(double)*MIN(rows,columns));
+    U = (double *) malloc(sizeof(double)*rows*rows);
+    Vt = (double *) malloc(sizeof(double)*columns*columns);
+    
+    /*
+     * Here we transpose A for entry into the FORTRAN dgesdd_ routine in row
+     * order. Note that dgesdd_ is destructive to the entry array, so we'd
+     * need to make this copy anyway.
+     */
+    Atemp = (double *) malloc(sizeof(double)*columns*rows);
+    for ( j = 0; j < rows; j++ ) {
+        for ( i = 0; i < columns; i++ ) {
+            Atemp[j+i*rows] = A[i+j*columns];
+        }
+    }
+    
+    /*
+     * First call of dgesdd is with lwork=-1 to calculate an optimal value of
+     * lwork
+     */
+    iwork = (int *) malloc(sizeof(long int)*8*MIN(rows,columns));
+    lwork=-1;
+    
+    /* Need a single location in work to store the recommended value of lwork */
+    work = (double *) malloc(sizeof(double)*1);
+    
+    dgesdd_( &achar, &rows, &columns, Atemp, &rows, S, U, &rows, Vt, &columns,
+            work, &lwork, iwork, &i );
+    
+    if (i != 0) {
+        free(Atemp);
+        free(S);
+        free(U);
+        free(Vt);
+        free(iwork);
+        free(work);
+        @throw [NSException exceptionWithName:@"YCMatrixException"
+                                       reason:@"Error while performing SVD."
+                                     userInfo:nil];
+    } else {
+        lwork = (int) work[0];
+        free(work);
+    }
+    
+    /*
+     * Allocate the space needed for the work array using the value of lwork
+     * obtained in the first call of dgesdd_
+     */
+    work = (double *) malloc(sizeof(double)*lwork);
+    dgesdd_( &achar, &rows, &columns, Atemp, &rows, S, U, &rows, Vt, &columns,
+            work, &lwork, iwork, &i );
+    
+    free(work);
+    free(iwork);
+    free(Atemp);
+    if (i == 0)
+    {
+        *s = S;
+        *u = U;
+        *vt = Vt;
+    }
+    else
+    {
+        free(S);
+        free(U);
+        free(Vt);
+        @throw [NSException exceptionWithName:@"YCMatrixException"
+                                       reason:@"Error while performing SVD."
+                                     userInfo:nil];
+    }
+}
+
 + (void)getPinvOf:(double *)A Rows:(int)rows Columns:(int)columns Out:(double *)Aplus
     /*
-      
-          float8[] *pseudoinverse(float8[])
       
           Compute the pseudo inverse of matrix A
       
@@ -126,12 +261,9 @@
 {
     long int    minmn;
     int    i, j, k, ii;
-    int    lwork, *iwork;
-    double     *work, *Atemp;
     double      epsilon, tolerance, maxeigen;
-    double     *S, *U, *Vt;
+    double     *S = NULL, *U = NULL, *Vt = NULL;
     double     *Splus, *Splus_times_Ut;
-    char        achar='A';   /* ? */
     
     /* 
      * Calculate the tolerance for "zero" values in the SVD 
@@ -143,73 +275,7 @@
     tolerance = epsilon * MAX(rows,columns); 
     maxeigen=-1.;
     
-    /*
-     * The factors of A: S, U and Vt
-     * U, Sdiag and Vt are the factors of the pseudo inverse of A, the 
-     * components of the singular value decomposition of A
-     */
-    S = (double *) malloc(sizeof(double)*MIN(rows,columns));
-    U = (double *) malloc(sizeof(double)*rows*rows);
-    Vt = (double *) malloc(sizeof(double)*columns*columns);
-    
-    /* Working matrices for the pseudo inverse calculation: */
-    /*  1) The pseudo inverse of S: S+ */
-    Splus = (double *) malloc(sizeof(double)*columns*rows);
-    /*  2) An intermediate result: S+ Ut */
-    Splus_times_Ut = (double *) malloc(sizeof(double)*columns*rows);
-    
-    /*
-     * Here we transpose A for entry into the FORTRAN dgesdd_ routine in row 
-     * order. Note that dgesdd_ is destructive to the entry array, so we'd 
-     * need to make this copy anyway.
-     */
-    Atemp = (double *) malloc(sizeof(double)*columns*rows);
-    for ( j = 0; j < rows; j++ ) {
-        for ( i = 0; i < columns; i++ ) {
-            Atemp[j+i*rows] = A[i+j*columns];
-        } 
-    }
-    
-    /* 
-     * First call of dgesdd is with lwork=-1 to calculate an optimal value of 
-     * lwork 
-     */
-    iwork = (int *) malloc(sizeof(long int)*8*MIN(rows,columns));
-    lwork=-1;
-    
-    /* Need a single location in work to store the recommended value of lwork */
-    work = (double *) malloc(sizeof(double)*1);
-
-    dgesdd_( &achar, &rows, &columns, Atemp, &rows, S, U, &rows, Vt, &columns, 
-            work, &lwork, iwork, &i );
-    
-    if (i != 0) {
-        free(Atemp);
-        free(S);
-        free(Splus);
-        free(Splus_times_Ut);
-        free(U);
-        free(Vt);
-        free(iwork);
-        free(work);
-        return;
-    } else {
-        lwork = (int) work[0];
-        free(work);
-    }
-    
-    
-    /*
-     * Allocate the space needed for the work array using the value of lwork 
-     * obtained in the first call of dgesdd_ 
-     */
-    work = (double *) malloc(sizeof(double)*lwork);
-    dgesdd_( &achar, &rows, &columns, Atemp, &rows, S, U, &rows, Vt, &columns, 
-            work, &lwork, iwork, &i );
-    
-    free(work);
-    free(iwork);
-    free(Atemp);
+    [self getSVDOf:A Rows:rows Columns:columns S:&S U:&U Vt:&Vt];
     
     /* Use the max of the eigenvalues to normalize the zero tolerance */
     minmn = MIN(rows,columns); // The dimensions of S are min(rows,columns)
@@ -217,6 +283,13 @@
         maxeigen = MAX(maxeigen,S[i]);
     }
     tolerance *= maxeigen;
+    
+    /* Working matrices for the pseudo inverse calculation: */
+    /*  1) The pseudo inverse of S: S+ */
+    Splus = (double *) malloc(sizeof(double)*columns*rows);
+    /*  2) An intermediate result: S+ Ut */
+    Splus_times_Ut = (double *) malloc(sizeof(double)*columns*rows);
+
     
     /*
      * Calculate the pseudo inverse of the eigenvalue matrix, Splus
@@ -267,65 +340,6 @@
     
     return;
 }
-/*
- * Calculate QR decomposition of Matrix A.
- *
- * This function works with column-major matrix arrays.
- */
-+ (void)getQROf:(double *)A Rows:(int)rows Columns:(int)columns OutQ:(double *)Q OutR:(double *)R
-{
-    // Prepare variables
-    int m = rows;
-    int n = columns;
-    double *a = A;
-    int lda = MAX(1, m);
-    int k = MIN(m, n);
-    double* tau = malloc(MIN(m, n) * sizeof(double));
-    int lwork = MAX(1, n);
-    double* work = malloc(MAX(1, lwork) * sizeof (double));
-    int info;
-    
-    // Perform QR using dgeqrf
-    dgeqrf_(&m, &n, a, &lda, tau, work, &lwork, &info);
-    if (info != 0)
-    {
-        free(tau);
-        free(work);
-        return;
-    }
-    
-    // Here derive R(kxn) from tau; R should be malloc'd already.
-    
-    for (int i = 0; i < k; i++) // rows
-    {
-        for (int j = 0; j < n; j++) // columns
-        {
-            if (j >= i)
-            {
-                R[j*k + i] = a[j*lda + i];
-            }
-            else
-            {
-                R[j*k + i] = 0;
-            }
-        }
-    }
-    
-    // Then, use dorgqr to derive Q; Q should be malloc'd already.
-    dorgqr_(&m, &k, &k, a, &lda, tau, work, &lwork, &info);
-    if (info != 0)
-    {
-        free(tau);
-        free(work);
-        return;
-    }
-    
-    // Copy result to output Q
-    memcpy(Q, a, m*k * sizeof(double));
-    
-    free(work);
-    free(tau);
-}
 
 /* Modifies B to have the solution x to A * x = B.
  * Returns 0 if an error occurred.
@@ -357,67 +371,58 @@
 //    MatrixFree(tmp);
 //    return 1;
 //}
+
 /* Fills vr and vi with the real and imaginary parts of the eigenvalues of A.
  * If vr or vi is NULL, that part of the result will not be returned.
  * Returns 0 if an error occurred.
  */
-//int MatrixEigenvalues(Matrix A, Real *vr, Real *vi)
-//{
-//    char jobvl = 'N', jobvr = 'N';
-//    int rank = A->height;
-//    double *dup;
-//    int one = 1;
-//    int lwork;
-//    double *work;
-//    int info;
-//    double *wr, *wi;
-//
-//    if(vr == NULL) wr = Allocate(rank, double);
-//    else wr = vr;
-//    if(vi == NULL) wi = Allocate(rank, double);
-//    else wi = vi;
-//
-//    /* make a copy since dgeev clobbers A */
-//    dup = Allocate(A->height * A->width, double);
-//    memcpy(dup, A->data[0], A->height * A->width * sizeof(double));
-//
-//    lwork = 3 * A->height;
-//    work = Allocate(lwork, double);
-//
-//    F77_FCN (dgeev) (&jobvl, &jobvr, &rank, dup, &A->height,
-//                     wr, wi, NULL, &one, NULL, &one, work, &lwork, &info);
-//    free(dup);
-//    free(work);
-//    if(vr == NULL) free(wr);
-//    if(vi == NULL) free(wi);
-//    if(info > 0) {
-//        fprintf(stderr, "MatrixEigenvalues failed\n");
-//        return 0;
-//    }
-//    return 1;
-//}
+- (void)getMatrixEigenvaluesOf:(double *)A Rows:(int)m Columns:(int)n Vr:(double *)vr Vi:(double *)vi
+{
+    char jobvl = 'N', jobvr = 'N';
+    int rank = m;
+    double *dup;
+    int one = 1;
+    int lwork;
+    double *work;
+    int info;
+    double *wr, *wi;
 
-/* Makes lower triangular R such that R * R' = A.
- * Modifies A.
- * Returns 0 if an error occurred.
- */
-//int MatrixCholesky(Matrix A)
-//{
-//    char uplo = 'U';
-//    int rank = A->height;
-//    int info;
-//    int i,j;
-//
-//    F77_FCN (dpotrf) (&uplo, &rank, A->data[0], &A->height, &info);
-//    if(info > 0) {
-//        fprintf(stderr, "MatrixCholesky: matrix is not positive definite\n");
-//        return 0;
-//    }
-//    /* clear out the upper triangular */
-//    for(i=0;i<A->height;i++)
-//        for(j=i+1;j<A->width;j++)
-//            A->data[i][j] = 0.0;
-//    return 1;
-//}
+    if (vr == nil)
+    {
+        wr = malloc(rank * sizeof(double));
+    }
+    else
+    {
+        wr = vr;
+    }
+    if (vi == nil)
+    {
+        wi = malloc(rank * sizeof(double));
+    }
+    else
+    {
+        wi = vi;
+    }
+
+    /* make a copy since dgeev clobbers A */
+    dup = malloc(rows * columns * sizeof(double));
+    memcpy(dup, A, rows * columns * sizeof(double));
+
+    lwork = 3 * rank;
+    work = malloc(lwork *sizeof(double));
+
+    dgeev_(&jobvl, &jobvr, &rank, dup, &rank,
+                   wr, wi, NULL, &one, NULL, &one, work, &lwork, &info);
+    free(dup);
+    free(work);
+    if(vr == NULL) free(wr);
+    if(vi == NULL) free(wi);
+    if(info > 0)
+    {
+        @throw [NSException exceptionWithName:@"YCMatrixException"
+                                       reason:@"Error while calculating Eigenvalues."
+                                     userInfo:nil];
+    }
+}
 
 @end
