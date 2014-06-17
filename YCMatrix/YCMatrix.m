@@ -54,6 +54,24 @@
     return mt;
 }
 
++ (instancetype)matrixFromArray:(double *)arr Rows:(int)m Columns:(int)n Copy:(BOOL)copy
+{
+    YCMatrix *mt = [[YCMatrix alloc] init];
+    if (copy)
+    {
+        double *new_m = malloc(m*n*sizeof(double));
+        memcpy(new_m, arr, m*n*sizeof(double));
+        mt->matrix = new_m;
+    }
+    else
+    {
+        mt->matrix = arr;
+    }
+    mt->rows = m;
+    mt->columns = n;
+    return mt;
+}
+
 + (instancetype)matrixFromNSArray:(NSArray *)arr Rows:(int)m Columns:(int)n
 {
     if([arr count] != m*n)
@@ -451,6 +469,14 @@
         }
     }
     return self;
+}
+
+- (instancetype)copyWithZone:(NSZone *)zone
+{
+    YCMatrix *newMatrix = [YCMatrix matrixFromArray:self->matrix
+                                               Rows:self->rows
+                                            Columns:self->columns];
+    return newMatrix;
 }
 
 @end

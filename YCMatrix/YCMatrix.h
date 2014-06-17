@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <Accelerate/Accelerate.h>
 
-@interface YCMatrix : NSObject <NSCoding>
+@interface YCMatrix : NSObject <NSCoding, NSCopying>
 {
     
 @public double *matrix;
@@ -27,6 +27,10 @@
 // Returns a new YCMatrix of |m| rows and |n| columns, using the values from array |arr|
 + (instancetype)matrixFromArray:(double *)arr Rows:(int)m Columns:(int)n;
 
+// Returns a new YCMatrix of |m| rows and |n| columns, using the values from
+// either array |arr| or a copy of it
++ (instancetype)matrixFromArray:(double *)arr Rows:(int)m Columns:(int)n Copy:(BOOL)copy;
+
 // Returns a new YCMatrix of |m| rows and |n| columns, using the values from NSArray |arr|
 + (instancetype)matrixFromNSArray:(NSArray *)arr Rows:(int)m Columns:(int)n;
 
@@ -35,7 +39,6 @@
 
 // Returns a new Identity Matrix of |m| rows and |n| columns
 + (instancetype)identityOfRows:(int)m Columns:(int)n;
-
 
 // Returns value at |row| and |column|
 - (double)getValueAtRow:(long)row Column:(long)column;
