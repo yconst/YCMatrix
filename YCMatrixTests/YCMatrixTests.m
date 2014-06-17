@@ -5,6 +5,8 @@
 //  Created by Yan Const on 11/7/13.
 //  Copyright (c) 2013 Ioannis Chatzikonstantinou. All rights reserved.
 //
+//References for this Document:
+// http://en.wikipedia.org/wiki/Cholesky_decomposition
 
 #import "YCMatrixTests.h"
 
@@ -15,13 +17,13 @@
     [super setUp];
     
     // Set-up code here.
-    TitleNSLog(@"Basic Matrix Unit Tests");
+    TitleNSLog(@"YCMatrix Unit Tests");
 }
 
 - (void)tearDown
 {
     // Tear-down code here.
-    TitleNSLog(@"Basic End Of Matrix Unit Tests");
+    TitleNSLog(@"End Of YCMatrix Unit Tests");
     [super tearDown];
 }
 
@@ -117,10 +119,10 @@
     YCMatrix *Vector = [YCMatrix matrixFromArray:vectorarray Rows:3 Columns:1];
     double dotp = [Vector dotWith:Vector];
     CleanNSLog(@"Dot Product: %f",dotp);
-    
-    //
-    // Pseudo-Inverse
-    //
+}
+
+- (void)testPseudoInverse
+{
     TitleNSLog(@"Pseudo Inverse");
     double pinv_orig_array[4] = { 1.0, 2.0,
         3.0, 4.0};
@@ -139,7 +141,6 @@
     CleanNSLog(@"%@",po2);
     CleanNSLog(@"PseudoInverse: %ix%i",poi2->rows, poi2->columns);
     CleanNSLog(@"%@",poi2);
-    
 }
 
 - (void)testTransposedMultiply
@@ -155,4 +156,53 @@
     YCMatrix *C = [A matrixByMultiplyingWithRight:B AndTransposing:YES];
     CleanNSLog(@"%@",C);
 }
+
+- (void)testCholesky
+{
+    TitleNSLog(@"Cholesky Decomposition Test (A:3x3)");
+    double simple_array[9] = {  4, 12, -16,
+                                12, 37, -43,
+                                -16, -43, 98}; // Test from Wikipedia
+    YCMatrix *A = [YCMatrix matrixFromArray:simple_array Rows:3 Columns:3];
+    CleanNSLog(@"Original Matrix A: %@",A);
+    YCMatrix *ch = [A matrixByCholesky];
+    CleanNSLog(@"Cholesky Decomposition of A: %@",ch);
+    XCTAssert([[ch matrixByTransposingAndMultiplyingWithLeft:ch] isEqualTo:A],
+              @"Error with Cholesky decomposition");
+}
+
+- (void)testMeans
+{
+    TitleNSLog(@"Mean Test");
+    double mean_array[12] = { 1.0, 1.0, 1.0,
+        4.0, -4.0, 2.0,
+        -153.0, 614.0, 33.0,
+        -100.0, 100.0, 0.0};
+    double columnMeanTargetArray[3] = { -62.0, 177.75, 9.0 };
+    double rowMeantargetArray[4] = { 1.0, 3/2, 164 + 3/2, 0.0 };
+    YCMatrix *columnMeanTargetMatrix = [YCMatrix matrixFromArray:columnMeanTargetArray Rows:3 Columns:1];
+    YCMatrix *rowMeanTargetMatrix = [YCMatrix matrixFromArray:rowMeantargetArray Rows:4 Columns:1];
+    YCMatrix *meanMatrix = [YCMatrix matrixFromArray:mean_array Rows:4 Columns:3];
+    YCMatrix *rowMeans = [meanMatrix RowMean];
+    YCMatrix *columnMeans = [meanMatrix ColumnMean];
+    XCTAssertTrue([rowMeans isEqualTo: rowMeanTargetMatrix] , @"Error in calculating Row Means.");
+    XCTAssertTrue([columnMeans isEqualTo: columnMeanTargetMatrix] , @"Error in calculating Column Means.");
+    CleanNSLog(@"%@", rowMeans);
+    CleanNSLog(@"%@", columnMeans);
+}
+
+- (void)testEigenvalues
+{
+    TitleNSLog(@"Eigenvalues Test");
+    double simple_array[9] = { 1.000,  2.000,  3.000,
+        5.000, 10.000, 15.000,
+        0.100,  0.200,  0.300,};
+    double ref_array[3] = {11.3, 0.0, 0.0};
+    YCMatrix *original = [YCMatrix matrixFromArray:simple_array Rows:3 Columns:3];
+    YCMatrix *ev = [original eigenvalues];
+    YCMatrix *evRef = [YCMatrix matrixFromArray:ref_array  Rows:1 Columns:3];
+    CleanNSLog(@"%@", ev);
+    XCTAssertEqualObjects(ev, evRef, @"Error with Eigenvalue calculation");
+}
+
 @end
