@@ -3,7 +3,7 @@
 //  YCMatrixTests
 //
 //  Created by Yan Const on 11/7/13.
-//  Copyright (c) 2013 Ioannis Chatzikonstantinou. All rights reserved.
+//  Copyright (c) 2013, 2014 Ioannis Chatzikonstantinou. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>

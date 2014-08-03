@@ -3,7 +3,7 @@
 //  Matrix
 //
 //  Created by Yan Const on 11/7/13.
-//  Copyright (c) 2013 Ioannis Chatzikonstantinou. All rights reserved.
+//  Copyright (c) 2013, 2014 Ioannis Chatzikonstantinou. All rights reserved.
 //
 // References for this document:
 // http://jira.madlib.net/secure/attachment/10019/matrixpinv.cpp

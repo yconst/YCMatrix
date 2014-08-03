@@ -11,10 +11,10 @@
 @interface YCMatrix (Normalize)
 
 // Transform matrix |mtx| using transformation bi-vector |transform|
-- (YCMatrix *)matrixByScalingUsing:(YCMatrix *)transform;
+- (YCMatrix *)matrixByRowWiseScalingUsing:(YCMatrix *)transform;
 
-- (YCMatrix *)DetermineScalingMatrix;
+- (YCMatrix *)DetermineRowWiseScalingMatrix;
 
-- (YCMatrix *)DetermineInverseScalingMatrix;
+- (YCMatrix *)DetermineRowWiseInverseScalingMatrix;
 
 @end

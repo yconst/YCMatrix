@@ -11,7 +11,7 @@
 
 @implementation YCMatrix (Normalize)
 
-- (YCMatrix *)matrixByScalingUsing:(YCMatrix *)transform
+- (YCMatrix *)matrixByRowWiseScalingUsing:(YCMatrix *)transform
 {
     double *mtxArray = self->matrix;
     double *transformArray = transform->matrix;
@@ -29,7 +29,7 @@
     return transformed;
 }
 
-- (YCMatrix *)DetermineScalingMatrix
+- (YCMatrix *)DetermineRowWiseScalingMatrix
 {
     int numRows = self->rows;
     int numColumns = self->columns;
@@ -60,7 +60,7 @@
     return transform;
 }
 
-- (YCMatrix *)DetermineInverseScalingMatrix
+- (YCMatrix *)DetermineRowWiseInverseScalingMatrix
 {
     int numRows = self->rows;
     int numColumns = self->columns;
