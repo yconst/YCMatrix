@@ -21,10 +21,6 @@
     return ret;
 }
 
-- (NSDictionary *)QR
-{
-}
-
 - (NSDictionary *)SVD
 {
     double *ua = NULL;
@@ -80,13 +76,81 @@
     if (self->rows != self->columns)
     {
         @throw [NSException exceptionWithName:@"YCMatrixException"
-                                       reason:@"Matrix is not square."
+                                       reason:@"Error while computing Eigenvalues. Input matrix is not square."
                                      userInfo:nil];
     }
     double *evArray = malloc(self->rows * sizeof(double));
-    [self getMatrixEigenvaluesOf:self->matrix Rows:self->rows Columns:self->columns Vr:evArray Vi:nil];
+    [self getMatrixEigenvaluesAndVectorsOf:self->matrix Rows:self->rows Columns:self->columns
+                                        Vr:evArray Vi:nil VecL:nil VecR:nil];
     return [YCMatrix matrixFromArray:evArray Rows:1 Columns:self->columns];
 }
+
+- (NSDictionary *)eigenvaluesAndEigenvectors
+{
+    if (self->rows != self->columns)
+    {
+        @throw [NSException exceptionWithName:@"YCMatrixException"
+                                       reason:@"Error while computing Eigenvalues. Input matrix is not square."
+                                     userInfo:nil];
+    }
+    int m = self->rows;
+    int n = self->columns;
+    double *evArray = malloc(m * sizeof(double));
+    double *leVecArray = malloc(m * n * sizeof(double));
+    double *reVecArray = malloc(m * n * sizeof(double));
+    [self getMatrixEigenvaluesAndVectorsOf:self->matrix Rows:m Columns:n
+                                        Vr:evArray Vi:nil VecL:leVecArray VecR:reVecArray];
+    YCMatrix *evMatrix = [YCMatrix matrixFromArray:evArray Rows:1 Columns:n];
+    YCMatrix *leVecMatrix = [YCMatrix matrixFromArray:leVecArray Rows:m Columns:n];
+    YCMatrix *reVecMatrix = [YCMatrix matrixFromArray:reVecArray Rows:m Columns:n];
+    return @{@"Eigenvalues":evMatrix,
+             @"Left Eigenvectors":leVecMatrix,
+             @"Right Eigenvectors":reVecMatrix};
+}
+
+- (double)determinant
+{
+    int info;
+    double det = 1.0;
+    int neg = 0;
+    
+    if (self->rows != self->columns)
+    {
+        @throw [NSException exceptionWithName:@"YCMatrixException"
+                                       reason:@"Error while computing Determinant. Input matrix is not square."
+                                     userInfo:nil];
+    }
+    
+    int m = self->rows;
+    int length = m*m;
+    
+    double *A = malloc(length * sizeof(double));
+    memcpy(A, self->matrix, length * sizeof(double));
+    
+    int *ipvt = malloc(m * sizeof(int));
+    
+    dgetrf_(&m, &m, A, &m, ipvt, &info);
+    
+    if(info > 0) {
+        /* singular matrix */
+        return 0.0;
+    }
+    
+    /* Take the product of the diagonal elements */
+    for (int c1 = 0; c1 < m; c1++) {
+        double c = A[c1 + m*c1];
+        det *= c;
+        if (ipvt[c1] != (c1+1)) neg = !neg;
+    }
+    
+    free(ipvt);
+    free(A);
+    
+    /* Since tmp is an LU decomposition of a rowwise permutation of A,
+     multiply by appropriate sign */
+    return neg?-det:det;
+}
+
 
 - (YCMatrix *)RowMean
 {
@@ -341,78 +405,39 @@
     return;
 }
 
-/* Modifies B to have the solution x to A * x = B.
- * Returns 0 if an error occurred.
- */
-//int MatrixSolve(Matrix A, Real *B)
-//{
-//    int *ipvt;
-//    int info;
-//    Matrix tmp;
-//    char job;
-//    int nrhs;
-//
-//    tmp = MatrixCopy(A);
-//    ipvt = Allocate(tmp->height, int);
-//    /* Note width and height are reversed */
-//    F77_FCN(dgetrf)(&tmp->width, &tmp->height, tmp->data[0],
-//                    &tmp->height, ipvt, &info);
-//    if(info > 0) {
-//        fprintf(stderr, "MatrixSolve: dgetrf reports singular matrix\n");
-//        return 0;
-//    }
-//    else {
-//        job = 'T';
-//        nrhs = 1;
-//        F77_FCN(dgetrs)(&job, &tmp->width, &nrhs, tmp->data[0], &tmp->height,
-//                        ipvt, B, &tmp->height, &info);
-//    }
-//    free(ipvt);
-//    MatrixFree(tmp);
-//    return 1;
-//}
-
 /* Fills vr and vi with the real and imaginary parts of the eigenvalues of A.
  * If vr or vi is NULL, that part of the result will not be returned.
  * Returns 0 if an error occurred.
  */
-- (void)getMatrixEigenvaluesOf:(double *)A Rows:(int)m Columns:(int)n Vr:(double *)vr Vi:(double *)vi
+- (void)getMatrixEigenvaluesAndVectorsOf:(double *)A
+                                    Rows:(int)m
+                                 Columns:(int)n
+                                      Vr:(double *)vr
+                                      Vi:(double *)vi
+                                    VecL:(double *)vecL
+                                    VecR:(double *)vecR
+
 {
-    char jobvl = 'N', jobvr = 'N';
+    char jobvl = vecL?'V':'N', jobvr = vecR?'V':'N';
+    int vecLSize = vecL?n:1, vecRSize = vecR?n:1;
     int rank = m;
     double *dup;
-    int one = 1;
     int lwork;
     double *work;
     int info;
-    double *wr, *wi;
-
-    if (vr == nil)
-    {
-        wr = malloc(rank * sizeof(double));
-    }
-    else
-    {
-        wr = vr;
-    }
-    if (vi == nil)
-    {
-        wi = malloc(rank * sizeof(double));
-    }
-    else
-    {
-        wi = vi;
-    }
-
+    
+    double *wr = vr ? vr : malloc(rank * sizeof(double));
+    double *wi = vi ? vi : malloc(rank * sizeof(double));
+    
     /* make a copy since dgeev clobbers A */
     dup = malloc(rows * columns * sizeof(double));
     memcpy(dup, A, rows * columns * sizeof(double));
-
+    
     lwork = 3 * rank;
     work = malloc(lwork *sizeof(double));
-
+    
     dgeev_(&jobvl, &jobvr, &rank, dup, &rank,
-                   wr, wi, NULL, &one, NULL, &one, work, &lwork, &info);
+           wr, wi, vecL, &vecLSize, vecR, &vecRSize, work, &lwork, &info);
     free(dup);
     free(work);
     if(vr == NULL) free(wr);

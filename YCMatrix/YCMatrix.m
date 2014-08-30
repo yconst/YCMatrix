@@ -311,53 +311,6 @@
     return trace;
 }
 
-//- (double)determinant
-//{
-//    /* Lapack routines with a convenient Matrix wrapper.
-//     */
-//    
-//#include <malloc.h>
-//#include <math.h>
-//#include "matrix.h"
-//#include <tpm/memcheck.h>
-//    
-//    /* The Fortran routines expect column-major matrices, but our Matrices are
-//     * row-major. These functions try to hide this difference as much as possible.
-//     */
-//    
-//    /* Returns the determinant of A. */
-//    Real MatrixDeterminant(Matrix A)
-//    {
-//        int   *ipvt;
-//        int    info;
-//        Real   det = 1.0;
-//        int    c1, neg = 0;
-//        Matrix tmp;
-//        
-//        tmp = MatrixCopy(A);
-//        ipvt = Allocate(tmp->height, int);
-//        /* Note width and height are reversed */
-//        F77_FCN(dgetrf)(&tmp->width, &tmp->height, tmp->data[0],
-//                        &tmp->height, ipvt, &info);
-//        if(info > 0) {
-//            /* singular matrix */
-//            return 0.0;
-//        }
-//        
-//        /* Take the product of the diagonal elements */
-//        for (c1 = 0; c1 < tmp->height; c1++) {
-//            det *= tmp->data[c1][c1];
-//            if (ipvt[c1] != (c1+1)) neg = !neg;
-//        }
-//        free(ipvt);
-//        MatrixFree(tmp);
-//        
-//        /* Since tmp is an LU decomposition of a rowwise permutation of A,
-//         multiply by appropriate sign */
-//        return neg?-det:det;
-//    }
-//}
-
 - (double)dotWith:(YCMatrix *)other
 {
     // A few more checks need to be made here.

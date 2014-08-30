@@ -100,9 +100,6 @@
 // Returns the trace
 - (double)trace;
 
-// Returns the determinant of the matrix. NOTE: Untested!
-//- (double)determinant;
-
 // Returns a scalar value resulting from the summation of element-to-element multiplication with |other|
 - (double)dotWith:(YCMatrix *)other;
 

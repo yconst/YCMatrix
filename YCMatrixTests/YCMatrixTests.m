@@ -205,4 +205,18 @@
     XCTAssertEqualObjects(ev, evRef, @"Error with Eigenvalue calculation");
 }
 
+- (void)testDeterminant
+{
+    TitleNSLog(@"Determinant Test");
+    double simple_array[16] = { 1.0, 2.0, 3.0, 4.0,
+        5.0, 6.0, 7.0, 8.0,
+        2.0, 6.0, 4.0, 8.0,
+        3.0, 1.0, 1.0, 2.0 };
+    YCMatrix *original = [YCMatrix matrixFromArray:simple_array Rows:4 Columns:4];
+    double det = [original determinant];
+    double detRef = 72;
+    CleanNSLog(@"%f", det);
+    XCTAssertEqual(det, detRef, @"Error with Determinant calculation");
+}
+
 @end
