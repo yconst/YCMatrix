@@ -6,6 +6,8 @@
 //  Copyright (c) 2013, 2014 Ioannis Chatzikonstantinou. All rights reserved.
 //
 
+#define YCVector YCMatrix
+
 #import <Foundation/Foundation.h>
 #import <Accelerate/Accelerate.h>
 
@@ -41,10 +43,10 @@
 + (instancetype)identityOfRows:(int)m Columns:(int)n;
 
 // Returns value at |row| and |column|
-- (double)getValueAtRow:(long)row Column:(long)column;
+- (double)getValueAtRow:(int)row Column:(int)column;
 
 // Sets value |vl| at |row| and |column|
-- (void)setValue:(double)vl Row:(long)row Column:(long)column;
+- (void)setValue:(double)vl Row:(int)row Column:(int)column;
 
 // Returns a new YCMatrix by adding this matrix to |addend|
 - (YCMatrix *)matrixByAdding:(YCMatrix *)addend;
@@ -106,13 +108,21 @@
 // Returns a unitized copy (only applicable to vectors)
 - (YCMatrix *)matrixByUnitizing;
 
-// Returns a reference to the matrix's elements array
-- (double *)getArray;
-
-// Returns a copy of the matrix's elements array
-- (double *)getArrayCopy;
-
 // Returns whether the matrix is square or not
 - (BOOL)isSquare;
+
+@property (readonly) double *array;
+
+@property (readonly) double *arrayCopy;
+
+@property (readonly) NSArray *numberArray;
+
+@property (readonly) int rows;
+
+@property (readonly) int columns;
+
+@property (readonly) NSUInteger count;
+
+@property (readonly) double sum;
 
 @end

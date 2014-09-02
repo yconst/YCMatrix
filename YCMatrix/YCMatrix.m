@@ -80,7 +80,8 @@
                                      userInfo:nil];
     YCMatrix *newMatrix = [YCMatrix matrixOfRows:m Columns:n];
     double *cArray = newMatrix->matrix;
-    for (long i=0, j=[arr count]; i<j; i++)
+    NSUInteger j=[arr count];
+    for (int i=0; i<j; i++)
     {
         cArray[i] = [[arr objectAtIndex:i] doubleValue];
     }
@@ -106,19 +107,19 @@
 
 #pragma mark Instance Methods
 
-- (double)getValueAtRow:(long)row Column:(long)column
+- (double)getValueAtRow:(int)row Column:(int)column
 {
     [self checkBoundsForRow:row Column:column];
     return matrix[row*columns + column];
 }
 
-- (void)setValue:(double)vl Row:(long)row Column:(long)column
+- (void)setValue:(double)vl Row:(int)row Column:(int)column
 {
     [self checkBoundsForRow:row Column:column];
     matrix[row*columns + column] = vl;
 }
 
-- (void)checkBoundsForRow:(long)row Column:(long)column
+- (void)checkBoundsForRow:(int)row Column:(int)column
 {
     if(column >= columns)
         @throw [NSException exceptionWithName:@"IndexOutOfBoundsException"
@@ -284,7 +285,7 @@
         @throw [NSException exceptionWithName:@"MatrixSizeException"
                                        reason:@"Matrix size mismatch."
                                      userInfo:nil];
-    cblas_daxpy(rows*columns, 1, subtrahend->matrix, -1, self->matrix, 1);
+    cblas_daxpy(rows*columns, -1, subtrahend->matrix, 1, self->matrix, 1);
 }
 
 - (void)multiplyWithScalar:(double)ms
@@ -348,16 +349,52 @@
     return norm;
 }
 
-- (double *)getArray
+- (double *)array
 {
     return matrix;
 }
 
-- (double *)getArrayCopy
+- (double *)arrayCopy
 {
     double *resArr = calloc(self->rows*self->columns, sizeof(double));
     memcpy(resArr, matrix, self->rows*self->columns*sizeof(double));
     return resArr;
+}
+
+- (NSArray *)numberArray
+{
+    int length = self->rows * self->columns;
+    NSMutableArray *result = [NSMutableArray arrayWithCapacity:length];
+    for (int i=0; i<length; i++)
+    {
+        [result addObject:@(self->matrix[i])];
+    }
+    return result;
+}
+
+- (int)rows
+{
+    return self->rows;
+}
+
+- (int)columns
+{
+    return self->columns;
+}
+
+- (int)count
+{
+    return self->rows * self->columns;
+}
+
+- (double)sum
+{
+    double sum = 0;
+    for (int i=0, j= [self count];i<j;i++)
+    {
+        sum += self->matrix[i];
+    }
+    return sum;
 }
 
 - (BOOL)isSquare
@@ -396,7 +433,7 @@
 
 - (void)encodeWithCoder:(NSCoder *)encoder
 {
-    long len = self->rows * self->columns;
+    int len = self->rows * self->columns;
     NSMutableArray *matrixContent = [NSMutableArray arrayWithCapacity:len];
     for (int i=0; i<len; i++)
     {
@@ -414,7 +451,7 @@
         self->rows = [[decoder decodeObjectForKey:@"rows"] intValue];
         self->columns = [[decoder decodeObjectForKey:@"columns"] intValue];
         NSArray *matrixContent = [decoder decodeObjectForKey:@"matrixContent"];
-        long len = self->rows*self->columns;
+        int len = self->rows*self->columns;
         self->matrix = malloc(len*sizeof(double));
         for (int i=0; i<len; i++)
         {

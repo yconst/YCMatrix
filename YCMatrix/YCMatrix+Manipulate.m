@@ -12,10 +12,10 @@
 
 + (YCMatrix *)matrixFromRows:(NSArray *)rows
 {
-    long rowCount = [rows count];
+    NSUInteger rowCount = [rows count];
     if (rowCount == 0) return [YCMatrix matrixOfRows:0 Columns:0];
     YCMatrix *firstRow = rows[0];
-    long columnCount = firstRow->columns;
+    int columnCount = firstRow->columns;
     YCMatrix *ret = [YCMatrix matrixOfRows:(int)rowCount Columns:(int)columnCount];
     for (int i=0; i<rowCount; i++)
     {
@@ -30,10 +30,10 @@
 
 + (YCMatrix *)matrixFromColumns:(NSArray *)columns
 {
-    long columnCount = [columns count];
+    NSUInteger columnCount = [columns count];
     if (columnCount == 0) return [YCMatrix matrixOfRows:0 Columns:0];
     YCMatrix *firstCol = columns[0];
-    long rowCount = firstCol->rows;
+    int rowCount = firstCol->rows;
     YCMatrix *ret = [YCMatrix matrixOfRows:(int)rowCount Columns:(int)columnCount];
     for (int i=0; i<columnCount; i++)
     {
@@ -61,6 +61,7 @@
     memcpy(row, self->matrix + rowIndex, self->columns * sizeof(double));
     return rowmatrix;
 }
+
 - (void)setRow:(int)rowNumber Value:(YCMatrix *)rowValue
 {
     if (rowNumber > self->rows - 1)
@@ -77,6 +78,7 @@
     }
     memcpy(self->matrix + columns * rowNumber, rowValue->matrix, columns * sizeof(double));
 }
+
 - (NSArray *)RowsAsNSArray
 {
     NSMutableArray *rowsArray = [NSMutableArray arrayWithCapacity:rows];
@@ -86,6 +88,7 @@
     }
     return rowsArray;
 }
+
 - (YCMatrix *)getColumn:(int) colNumber
 {
     if (colNumber > self->columns - 1)
@@ -102,6 +105,7 @@
     }
     return columnmatrix;
 }
+
 - (void)setColumn:(int)colNumber Value:(YCMatrix *)columnValue
 {
     if (colNumber > self->columns - 1)
@@ -121,6 +125,7 @@
         self->matrix[columns*i + colNumber] = columnValue->matrix[i];
     }
 }
+
 - (NSArray *)ColumnsAsNSArray // needs some speed improvement
 {
     NSMutableArray *columnsArray = [NSMutableArray arrayWithCapacity:columns];
@@ -130,6 +135,7 @@
     }
     return columnsArray;
 }
+
 - (YCMatrix *)addRowToAllRows:(YCMatrix *)addend
 {
     if (addend->rows != 1 || addend->columns != self->columns)
@@ -152,10 +158,12 @@
     }
     return sum;
 }
+
 - (YCMatrix *)subtractRowFromAllRows:(YCMatrix *)subtrahend
 {
     return [self addRowToAllRows:[subtrahend matrixByNegating]];
 }
+
 - (YCMatrix *)multiplyAllRowsWithRow:(YCMatrix *)factor{
     if (factor->rows != 1 || factor->columns != self->columns)
     {
@@ -177,6 +185,7 @@
     }
     return product;
 }
+
 - (YCMatrix *)addColumnToAllColumns:(YCMatrix *)addend
 {
     if (addend->columns != 1 || addend->rows != self->rows)
@@ -199,10 +208,12 @@
     }
     return sum;
 }
+
 - (YCMatrix *)subtractColumnFromAllColumns:(YCMatrix *)subtrahend
 {
     return [self addColumnToAllColumns:[subtrahend matrixByNegating]];
 }
+
 - (YCMatrix *)multiplyAllColumnsWithColumn:(YCMatrix *)factor
 {
     if (factor->columns != 1 || factor->rows != self->rows)
@@ -225,6 +236,46 @@
     }
     return product;
 }
+
+- (YCMatrix *)matrixWithRowsInRange:(NSRange)range
+{
+    if (range.location + range.length > self->rows)
+    {
+        @throw [NSException exceptionWithName:@"MatrixSizeException"
+                                       reason:@"Range outside matrix."
+                                     userInfo:nil];
+    }
+    int valueOffset = (int)range.location * self->columns;
+    int valueCount = (int)range.length * self->columns;
+    
+    YCMatrix *newMatrix = [YCMatrix matrixOfRows:(int)range.length Columns:self->columns];
+    memcpy(newMatrix->matrix, self->matrix+valueOffset, valueCount * sizeof(double));
+    
+    return newMatrix;
+}
+
+- (YCMatrix *)matrixWithColumnsInRange:(NSRange)range
+{
+    if (range.location + range.length > self->columns)
+    {
+        @throw [NSException exceptionWithName:@"MatrixSizeException"
+                                       reason:@"Range outside matrix."
+                                     userInfo:nil];
+    }
+    int rowOffset = (int)range.location;
+    int rowLength = (int)range.length;
+    
+    YCMatrix *newMatrix = [YCMatrix matrixOfRows:self->rows Columns:rowLength];
+    
+    for (int i=0; i<self->rows; i++)
+    {
+        memcpy(newMatrix->matrix + i*rowLength,
+               self->matrix + rowOffset + i*self->columns,
+               rowLength * sizeof(double));
+    }
+    return newMatrix;
+}
+
 - (YCMatrix *)appendRow:(YCMatrix *)newRow
 {
     if (newRow->rows != 1 || newRow->columns != columns)
@@ -238,6 +289,7 @@
     memcpy(newMatrix + columns*rows, newRow->matrix, columns * sizeof(double));
     return [YCMatrix matrixFromArray:newMatrix Rows:rows + 1 Columns:columns];
 }
+
 - (YCMatrix *)appendColumn:(YCMatrix *)newColumn
 {
     if (newColumn->columns != 1 || newColumn->rows != rows)
@@ -255,6 +307,7 @@
     }
     return [YCMatrix matrixFromArray:newMatrix Rows:rows Columns:columns + 1];
 }
+
 - (YCMatrix *)removeRow:(int)rowNumber
 {
     double newRows = rows - 1;
@@ -272,6 +325,7 @@
     }
     return [YCMatrix matrixFromArray:newMatrix Rows:newRows Columns:columns];
 }
+
 - (YCMatrix *)removeColumn:(int)columnNumber
 {
     if (columnNumber > self->columns - 1)
@@ -289,6 +343,7 @@
     }
     return [YCMatrix matrixFromArray:newMatrix Rows:rows Columns:newCols];
 }
+
 - (YCMatrix *)appendValueAsRow:(double)value
 {
     if(columns != 1)
@@ -306,13 +361,13 @@
 - (YCMatrix *)newFromShufflingRows
 {
     YCMatrix *ret = [YCMatrix matrixFromMatrix:self];
-    long rowCount = self->rows;
-    long colCount = self->columns;
-    for (long i=0; i<rowCount; i++)
+    int rowCount = self->rows;
+    int colCount = self->columns;
+    for (int i=0; i<rowCount; i++)
     {
-        long o = arc4random_uniform((int)i);
+        int o = arc4random_uniform((int)i);
         if (o == i) continue;
-        for (long j=0; j<colCount; j++)
+        for (int j=0; j<colCount; j++)
         {
             ret->matrix[i*rowCount + j] = ret->matrix[o*rowCount + j];
             ret->matrix[o*rowCount + j] = self->matrix[o*rowCount + j];
@@ -324,13 +379,13 @@
 // Fisher-Yates Shuffle (UNTESTED!)
 - (void)shuffleRows
 {
-    long rowCount = self->rows;
-    long colCount = self->columns;
+    int rowCount = self->rows;
+    int colCount = self->columns;
     double tmp;
-    for (long i = rowCount - 1; i>=0; --i)
+    for (int i = rowCount - 1; i>=0; --i)
     {
-        long o = arc4random_uniform((int)i);
-        for (long j=0; j<colCount; j++)
+        int o = arc4random_uniform((int)i);
+        for (int j=0; j<colCount; j++)
         {
             tmp = self->matrix[i*rowCount + j];
             self->matrix[i*rowCount + j] = self->matrix[o*rowCount + j];
@@ -343,12 +398,12 @@
 - (YCMatrix *)newFromShufflingColumns
 {
     YCMatrix *ret = [YCMatrix matrixFromMatrix:self];
-    long rowCount = self->rows;
-    long colCount = self->columns;
-    for (long i=0; i<colCount; i++)
+    int rowCount = self->rows;
+    int colCount = self->columns;
+    for (int i=0; i<colCount; i++)
     {
-        long o = arc4random_uniform((int)i);
-        for (long j=0; j<colCount; j++)
+        int o = arc4random_uniform((int)i);
+        for (int j=0; j<colCount; j++)
         {
             ret->matrix[j*rowCount + i] = ret->matrix[j*rowCount + o];
             ret->matrix[j*rowCount + o] = self->matrix[j*rowCount + o];
@@ -360,13 +415,13 @@
 // Fisher-Yates Shuffle (UNTESTED!)
 - (void)shuffleColumns
 {
-    long rowCount = self->rows;
-    long colCount = self->columns;
+    int rowCount = self->rows;
+    int colCount = self->columns;
     double tmp;
-    for (long i = colCount - 1; i>=0; --i)
+    for (int i = colCount - 1; i>=0; --i)
     {
-        long o = arc4random_uniform((int)i);
-        for (long j=0; j<rowCount; j++)
+        int o = arc4random_uniform((int)i);
+        for (int j=0; j<rowCount; j++)
         {
             tmp = self->matrix[j*rowCount + i];
             self->matrix[j*rowCount + i] = self->matrix[j*rowCount + o];
@@ -377,26 +432,26 @@
 
 // Returns a new YCMatrix by sampling |sampleCount| rows. If |replacement| is YES, it does
 // so using replacement
-- (YCMatrix *)matrixBySamplingRows:(long)sampleCount Replacement:(BOOL)replacement
+- (YCMatrix *)matrixBySamplingRows:(NSUInteger)sampleCount Replacement:(BOOL)replacement
 {
-    long rowSize = self->rows;
-    long colSize = self->columns;
-    long colMemory = colSize * sizeof(double);
+    int rowSize = self->rows;
+    int colSize = self->columns;
+    int colMemory = colSize * sizeof(double);
     YCMatrix *new = [YCMatrix matrixOfRows:(int)sampleCount Columns:(int)colSize];
     if (replacement)
     {
         for (int i=0; i<sampleCount; i++)
         {
-            long rnd = arc4random_uniform((int)self->rows);
+            int rnd = arc4random_uniform((int)self->rows);
             memcpy(new->matrix + i * colMemory, new->matrix + rnd * colMemory, colSize);
         }
     }
     else
     {
-        long toGo = sampleCount;
+        NSUInteger toGo = sampleCount;
         for (int i=0; i<rowSize; i++)
         {
-            long rnd = arc4random_uniform((int)rowSize);
+            int rnd = arc4random_uniform((int)rowSize);
             if (rnd < toGo)
             {
                 toGo--;
@@ -409,11 +464,11 @@
 
 // Returns a new YCMatrix by sampling |sampleCount| columns. If |replacement| is YES, it does
 // so using replacement
-- (YCMatrix *)matrixBySamplingColumns:(long)sampleCount Replacement:(BOOL)replacement
+- (YCMatrix *)matrixBySamplingColumns:(NSUInteger)sampleCount Replacement:(BOOL)replacement
 {
-    long rowSize = self->rows;
-    long colSize = self->columns;
-    long colMemory = colSize * sizeof(double);
+    int rowSize = self->rows;
+    int colSize = self->columns;
+    int colMemory = colSize * sizeof(double);
     YCMatrix *new = [YCMatrix matrixOfRows:(int)rowSize Columns:(int)sampleCount];
     if (replacement)
     {
@@ -425,10 +480,10 @@
     }
     else
     {
-        long toGo = sampleCount;
+        NSUInteger toGo = sampleCount;
         for (int i=0; i<colSize; i++)
         {
-            long rnd = arc4random_uniform((int)colSize);
+            int rnd = arc4random_uniform((int)colSize);
             if (rnd < toGo)
             {
                 toGo--;

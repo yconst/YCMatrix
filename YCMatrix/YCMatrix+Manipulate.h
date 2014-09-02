@@ -52,6 +52,12 @@
 // Multiplies element-wise all columns with the values in |factor|
 - (YCMatrix *)multiplyAllColumnsWithColumn:(YCMatrix *)factor;
 
+// Returns a new YCMatrix with the columns specified in |range|
+- (YCMatrix *)matrixWithColumnsInRange:(NSRange)range;
+
+// Returns a new YCMatrix with the rows specified in |range|
+- (YCMatrix *)matrixWithRowsInRange:(NSRange)range;
+
 // Appends |row|
 - (YCMatrix *)appendRow:(YCMatrix *)row;
 
@@ -81,10 +87,10 @@
 
 // Returns a new YCMatrix by sampling |sampleCount| rows. If |replacement| is YES, it does
 // so using replacement
-- (YCMatrix *)matrixBySamplingRows:(long)sampleCount Replacement:(BOOL)replacement;
+- (YCMatrix *)matrixBySamplingRows:(NSUInteger)sampleCount Replacement:(BOOL)replacement;
 
 // Returns a new YCMatrix by sampling |sampleCount| columns. If |replacement| is YES, it does
 // so using replacement
-- (YCMatrix *)matrixBySamplingColumns:(long)sampleCount Replacement:(BOOL)replacement;
+- (YCMatrix *)matrixBySamplingColumns:(NSUInteger)sampleCount Replacement:(BOOL)replacement;
 
 @end
