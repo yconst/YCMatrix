@@ -1,10 +1,27 @@
 //
 //  Matrix.h
-//  Matrix
 //
-//  Created by Yan Const on 11/7/13.
-//  Copyright (c) 2013, 2014 Ioannis Chatzikonstantinou. All rights reserved.
+// Copyright (c) 2013, 2014 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
+// http://yconst.com
 //
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
 // References for this document:
 // http://jira.madlib.net/secure/attachment/10019/matrixpinv.cpp
 // http://vismod.media.mit.edu/pub/tpminka/MRSAR/lapack.c
@@ -12,12 +29,17 @@
 
 #import "YCMatrix+Advanced.h"
 
+static void SVDColumnMajor(double *A, int rows, int columns, double **s, double **u, double **vt);
+static void pInv(double *A, int rows, int columns, double *Aplus);
+static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, double *vecR);
+
 @implementation YCMatrix (Advanced)
 
 - (YCMatrix *)pseudoInverse
 {
     YCMatrix *ret = [YCMatrix matrixOfRows:self->columns Columns:self->rows];
-    [YCMatrix getPinvOf:self->matrix Rows:self->rows Columns:self->columns Out:ret->matrix];
+    
+    pInv(self->matrix, self->rows, self->columns, ret->matrix);
     return ret;
 }
 
@@ -25,21 +47,58 @@
 {
     double *ua = NULL;
     double *sa = NULL;
-    double *vta = NULL;
+    double *va = NULL;
     
-    [[self class] getSVDOf:self->matrix Rows:rows Columns:columns S:&sa U:&ua Vt:&vta];
+    SVDColumnMajor([self matrixByTransposing]->matrix, rows, columns, &sa, &ua, &va);
     
-    YCMatrix *U = [YCMatrix matrixFromArray:ua Rows:self->rows Columns:self->rows Copy:NO]; // mxm
-    YCMatrix *S = [YCMatrix matrixFromArray:sa Rows:self->rows Columns:self->columns Copy:NO]; // mxn
-    YCMatrix *Vt = [YCMatrix matrixFromArray:vta Rows:self->columns Columns:self->columns Copy:NO]; // nxn
+    YCMatrix *U = [[YCMatrix matrixFromArray:ua Rows:self->columns Columns:self->rows Copy:NO] matrixByTransposing]; // mxm
+    YCMatrix *S = [YCMatrix matrixOfRows:self->columns Columns:self->columns ValuesInDiagonal:sa Value:0]; // mxn
+    YCMatrix *V = [YCMatrix matrixFromArray:va Rows:self->columns Columns:self->columns Copy:NO]; // nxn
 
-    return @{@"U" : U, @"S" : S, @"Vt" : Vt};
+    return @{@"U" : U, @"S" : S, @"V" : V};
 }
 
-/* Makes lower triangular R such that R * R' = self.
- * Modifies self.
- * Returns 0 if an error occurred.
- */
+- (YCMatrix *)solve:(YCMatrix *)B
+{
+    [self checkSquare];
+    YCMatrix *bTranspose = B;
+    if (B->columns > 1)
+    {
+        bTranspose = [B matrixByTransposing];
+    }
+    YCMatrix *aTranspose = [self matrixByTransposing];
+    
+    int n = self->rows;
+    int nrhs = B->columns;
+    int lda = self->rows;
+    int ldb = self->rows;
+    
+    int ipiv[n];
+    
+    int info = 0;
+    
+    dgesv_(&n, &nrhs, aTranspose->matrix, &lda, ipiv, bTranspose->matrix, &ldb, &info);
+    
+    if(info < 0)
+    {
+        @throw [NSException exceptionWithName:@"YCMatrixException"
+                                       reason:@"Error while solving linear system A*X=B."
+                                     userInfo:nil];
+    }
+    if(info > 0)
+    {
+        @throw [NSException exceptionWithName:@"YCMatrixException"
+                                       reason:@"Matrix U is singular."
+                                     userInfo:nil];
+    }
+    
+    if (B->columns > 1)
+    {
+        return [bTranspose matrixByTransposing];
+    }
+    return bTranspose;
+}
+
 - (void)cholesky
 {
     char uplo = 'U';
@@ -48,12 +107,14 @@
     int i,j;
 
     dpotrf_(&uplo, &rank, self->matrix, &self->rows, &info);
+    
     if(info > 0)
     {
         @throw [NSException exceptionWithName:@"YCMatrixException"
                                        reason:@"Matrix is not positive definite."
                                      userInfo:nil];
     }
+    
     /* clear out the upper triangular */
     for(i=0; i<self->rows; i++)
     {
@@ -73,33 +134,25 @@
 
 - (YCMatrix *)eigenvalues
 {
-    if (self->rows != self->columns)
-    {
-        @throw [NSException exceptionWithName:@"YCMatrixException"
-                                       reason:@"Error while computing Eigenvalues. Input matrix is not square."
-                                     userInfo:nil];
-    }
+    [self checkSquare];
     double *evArray = malloc(self->rows * sizeof(double));
-    [self getMatrixEigenvaluesAndVectorsOf:self->matrix Rows:self->rows Columns:self->columns
-                                        Vr:evArray Vi:nil VecL:nil VecR:nil];
+    
+    MEVV(self->matrix, self->rows, self->columns, evArray, nil, nil, nil);
+    
     return [YCMatrix matrixFromArray:evArray Rows:1 Columns:self->columns];
 }
 
 - (NSDictionary *)eigenvaluesAndEigenvectors
 {
-    if (self->rows != self->columns)
-    {
-        @throw [NSException exceptionWithName:@"YCMatrixException"
-                                       reason:@"Error while computing Eigenvalues. Input matrix is not square."
-                                     userInfo:nil];
-    }
+    [self checkSquare];
     int m = self->rows;
     int n = self->columns;
     double *evArray = malloc(m * sizeof(double));
     double *leVecArray = malloc(m * n * sizeof(double));
     double *reVecArray = malloc(m * n * sizeof(double));
-    [self getMatrixEigenvaluesAndVectorsOf:self->matrix Rows:m Columns:n
-                                        Vr:evArray Vi:nil VecL:leVecArray VecR:reVecArray];
+    
+    MEVV(self->matrix, m, n, evArray, nil, leVecArray, reVecArray);
+    
     YCMatrix *evMatrix = [YCMatrix matrixFromArray:evArray Rows:1 Columns:n];
     YCMatrix *leVecMatrix = [YCMatrix matrixFromArray:leVecArray Rows:m Columns:n];
     YCMatrix *reVecMatrix = [YCMatrix matrixFromArray:reVecArray Rows:m Columns:n];
@@ -114,12 +167,7 @@
     double det = 1.0;
     int neg = 0;
     
-    if (self->rows != self->columns)
-    {
-        @throw [NSException exceptionWithName:@"YCMatrixException"
-                                       reason:@"Error while computing Determinant. Input matrix is not square."
-                                     userInfo:nil];
-    }
+    [self checkSquare];
     
     int m = self->rows;
     int length = m*m;
@@ -152,7 +200,7 @@
 }
 
 
-- (YCMatrix *)RowMean
+- (YCMatrix *)rowMean
 {
     YCMatrix *means = [YCMatrix matrixOfRows:self->rows Columns:1];
     for (int i=0; i<rows; i++)
@@ -168,7 +216,7 @@
     return means;
 }
 
-- (YCMatrix *)ColumnMean
+- (YCMatrix *)columnMean
 {
     YCMatrix *means = [YCMatrix matrixOfRows:self->columns Columns:1];
     for (int i=0; i<columns; i++)
@@ -182,241 +230,34 @@
         means->matrix[i] = columnMean;
     }
     return means;
-
 }
 
-+ (void)getSVDOf:(double *)A Rows:(int)rows Columns:(int)columns S:(double **)s U:(double **)u Vt:(double **)vt
+- (YCMatrix *)matrixByApplyingFunction:(double (^)(double value))function
 {
-    /*
-     
-     Compute the Singular Value Decomposition of matrix A
-     
-     Author:  Luke Lonergan
-     Date:    5/31/08
-     License: Use pfreely
-     
-    */
-    
-    int    i, j;
-    int    lwork, *iwork;
-    double     *work, *Atemp;
-    double     *S, *U, *Vt;
-    char        achar='A';   /* ? */
-    
-    /*
-     * The factors of A: S, U and Vt
-     * U, Sdiag and Vt are the factors of the pseudo inverse of A, the
-     * components of the singular value decomposition of A
-     */
-    S = (double *) malloc(sizeof(double)*MIN(rows,columns));
-    U = (double *) malloc(sizeof(double)*rows*rows);
-    Vt = (double *) malloc(sizeof(double)*columns*columns);
-    
-    /*
-     * Here we transpose A for entry into the FORTRAN dgesdd_ routine in row
-     * order. Note that dgesdd_ is destructive to the entry array, so we'd
-     * need to make this copy anyway.
-     */
-    Atemp = (double *) malloc(sizeof(double)*columns*rows);
-    for ( j = 0; j < rows; j++ ) {
-        for ( i = 0; i < columns; i++ ) {
-            Atemp[j+i*rows] = A[i+j*columns];
-        }
-    }
-    
-    /*
-     * First call of dgesdd is with lwork=-1 to calculate an optimal value of
-     * lwork
-     */
-    iwork = (int *) malloc(sizeof(long int)*8*MIN(rows,columns));
-    lwork=-1;
-    
-    /* Need a single location in work to store the recommended value of lwork */
-    work = (double *) malloc(sizeof(double)*1);
-    
-    dgesdd_( &achar, &rows, &columns, Atemp, &rows, S, U, &rows, Vt, &columns,
-            work, &lwork, iwork, &i );
-    
-    if (i != 0) {
-        free(Atemp);
-        free(S);
-        free(U);
-        free(Vt);
-        free(iwork);
-        free(work);
-        @throw [NSException exceptionWithName:@"YCMatrixException"
-                                       reason:@"Error while performing SVD."
-                                     userInfo:nil];
-    } else {
-        lwork = (int) work[0];
-        free(work);
-    }
-    
-    /*
-     * Allocate the space needed for the work array using the value of lwork
-     * obtained in the first call of dgesdd_
-     */
-    work = (double *) malloc(sizeof(double)*lwork);
-    dgesdd_( &achar, &rows, &columns, Atemp, &rows, S, U, &rows, Vt, &columns,
-            work, &lwork, iwork, &i );
-    
-    free(work);
-    free(iwork);
-    free(Atemp);
-    if (i == 0)
-    {
-        *s = S;
-        *u = U;
-        *vt = Vt;
-    }
-    else
-    {
-        free(S);
-        free(U);
-        free(Vt);
-        @throw [NSException exceptionWithName:@"YCMatrixException"
-                                       reason:@"Error while performing SVD."
-                                     userInfo:nil];
-    }
+    YCMatrix *newMatrix = [self copy];
+    [newMatrix applyFunction:function];
+    return newMatrix;
 }
 
-+ (void)getPinvOf:(double *)A Rows:(int)rows Columns:(int)columns Out:(double *)Aplus
-    /*
-      
-          Compute the pseudo inverse of matrix A
-      
-          Author:  Luke Lonergan
-          Date:    5/31/08
-          License: Use pfreely
-      
-          We use the approach from here:
-             http://en.wikipedia.org/wiki/Moore-Penrose_pseudoinverse#Finding_the_\
-      pseudoinverse_of_a_matrix
-      
-          Synopsis:
-             A computationally simpler and more accurate way to get the pseudoinverse 
-             is by using the singular value decomposition.[1][5][6] If A = U Σ V* is 
-             the singular value decomposition of A, then A+ = V Σ+ U* . For a diagonal
-             matrix such as Σ, we get the pseudoinverse by taking the reciprocal of 
-             each non-zero element on the diagonal, and leaving the zeros in place. 
-             In numerical computation, only elements larger than some small tolerance 
-             are taken to be nonzero, and the others are replaced by zeros. For 
-             example, in the Matlab function pinv, the tolerance is taken to be
-             t = ε•max(rows,columns)•max(Σ), where ε is the machine epsilon.
-      
-          Input:  the matrix A with "rows" rows and "columns" columns, in column 
-                  values consecutive order (row-major)
-          Output: the matrix A+ with "columns" rows and "rows" columns, the 
-                  Moore-Penrose pseudo inverse of A
-      
-          The approach is summarized:
-          - Compute the SVD (diagonalization) of A, yielding the U, S and V 
-            factors of A
-          - Compute the pseudo inverse A+ = U x S+ x Vt
-      
-          S+ is the pseudo inverse of the diagonal matrix S, which is gained by 
-          inverting the non zero diagonals 
-      
-          Vt is the transpose of V
-      
-          Note that there is some fancy index rework in this implementation to deal 
-          with the row values consecutive order used by the FORTRAN dgesdd_ routine.
-      */
+- (void)applyFunction:(double (^)(double value))function
 {
-    long int    minmn;
-    int    i, j, k, ii;
-    double      epsilon, tolerance, maxeigen;
-    double     *S = NULL, *U = NULL, *Vt = NULL;
-    double     *Splus, *Splus_times_Ut;
-    
-    /* 
-     * Calculate the tolerance for "zero" values in the SVD 
-     *    t = ε•max(rows,columns)•max(Σ) 
-     *  (Need to multiply tolerance by max of the eigenvalues when they're 
-     *   available)
-     */
-    epsilon = pow(2,1-56); 
-    tolerance = epsilon * MAX(rows,columns); 
-    maxeigen=-1.;
-    
-    [self getSVDOf:A Rows:rows Columns:columns S:&S U:&U Vt:&Vt];
-    
-    /* Use the max of the eigenvalues to normalize the zero tolerance */
-    minmn = MIN(rows,columns); // The dimensions of S are min(rows,columns)
-    for ( i = 0; i < minmn; i++ ) {
-        maxeigen = MAX(maxeigen,S[i]);
+    NSUInteger count = [self count];
+    for (int i=0; i<count; i++)
+    {
+        self->matrix[i] = function(self->matrix[i]);
     }
-    tolerance *= maxeigen;
-    
-    /* Working matrices for the pseudo inverse calculation: */
-    /*  1) The pseudo inverse of S: S+ */
-    Splus = (double *) malloc(sizeof(double)*columns*rows);
-    /*  2) An intermediate result: S+ Ut */
-    Splus_times_Ut = (double *) malloc(sizeof(double)*columns*rows);
-
-    
-    /*
-     * Calculate the pseudo inverse of the eigenvalue matrix, Splus
-     * Use a tolerance to evaluate elements that are close to zero
-     */
-    for ( j = 0; j < rows; j++ ) {
-        for ( i = 0; i < columns; i++ ) {
-            if (minmn == columns) {
-                ii = i;
-            } else {
-                ii = j;
-            }
-            if ( i == j && S[ii] > tolerance ) {
-                Splus[i+j*columns] = 1.0 / S[ii];
-            } else {
-                Splus[i+j*columns] = 0.0;
-            } 
-        } 
-    }
-    
-    for ( i = 0; i < columns; i++ ) {
-        for ( j = 0; j < rows; j++ ) {
-            Splus_times_Ut[i+j*columns] = 0.0;
-            for ( k = 0; k < rows; k++ ) {
-                Splus_times_Ut[i+j*columns] = 
-                Splus_times_Ut[i+j*columns] + 
-                Splus[i+k*columns] * U[j+k*rows];
-            } 
-        } 
-    }
-    
-    for ( i = 0; i < columns; i++ ) {
-        for ( j = 0; j < rows; j++ ) {
-            Aplus[j+i*rows] = 0.0;
-            for ( k = 0; k < columns; k++ ) {
-                Aplus[j+i*rows] =
-                Aplus[j+i*rows] + 
-                Vt[k+i*columns] * Splus_times_Ut[k+j*columns];
-            } 
-        } 
-    }
-    
-    free(Splus);
-    free(Splus_times_Ut);
-    free(U);
-    free(Vt);
-    free(S);
-    
-    return;
 }
 
-/* Fills vr and vi with the real and imaginary parts of the eigenvalues of A.
- * If vr or vi is NULL, that part of the result will not be returned.
- * Returns 0 if an error occurred.
+@end
+
+static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, double *vecR)
+/*
+ 
+ Fills vr and vi with the real and imaginary parts of the eigenvalues of A.
+ If vr or vi is NULL, that part of the result will not be returned.
+ Returns 0 if an error occurred.
+ 
  */
-- (void)getMatrixEigenvaluesAndVectorsOf:(double *)A
-                                    Rows:(int)m
-                                 Columns:(int)n
-                                      Vr:(double *)vr
-                                      Vi:(double *)vi
-                                    VecL:(double *)vecL
-                                    VecR:(double *)vecR
-
 {
     char jobvl = vecL?'V':'N', jobvr = vecR?'V':'N';
     int vecLSize = vecL?n:1, vecRSize = vecR?n:1;
@@ -430,8 +271,8 @@
     double *wi = vi ? vi : malloc(rank * sizeof(double));
     
     /* make a copy since dgeev clobbers A */
-    dup = malloc(rows * columns * sizeof(double));
-    memcpy(dup, A, rows * columns * sizeof(double));
+    dup = malloc(m * n * sizeof(double));
+    memcpy(dup, A, m * n * sizeof(double));
     
     lwork = 3 * rank;
     work = malloc(lwork *sizeof(double));
@@ -450,4 +291,223 @@
     }
 }
 
-@end
+static void SVDColumnMajor(double *A, int rows, int columns, double **s, double **u, double **vt)
+/*
+ 
+ Compute the Singular Value Decomposition of *column-major* matrix A
+ 
+ Author:  Luke Lonergan
+ Date:    5/31/08
+ License: Use pfreely
+ 
+ */
+{
+    int    i;
+    int    lwork, *iwork;
+    double     *work;
+    double     *S, *U, *Vt;
+    char        achar='A';   /* ? */
+    
+    /*
+     * The factors of A: S, U and Vt
+     * U, Sdiag and Vt are the factors of the pseudo inverse of A, the
+     * components of the singular value decomposition of A
+     */
+    S = (double *) malloc(sizeof(double)*MIN(rows,columns));
+    U = (double *) malloc(sizeof(double)*rows*rows);
+    Vt = (double *) malloc(sizeof(double)*columns*columns);
+    
+    /*
+     * First call of dgesdd is with lwork=-1 to calculate an optimal value of
+     * lwork
+     */
+    iwork = (int *) malloc(sizeof(long int)*8*MIN(rows,columns));
+    lwork=-1;
+    
+    /* Need a single location in work to store the recommended value of lwork */
+    work = (double *) malloc(sizeof(double)*1);
+    
+    int lda = rows;
+    int ldu = rows;
+    int ldvt = columns;
+    
+    dgesdd_( &achar, &rows, &columns, A, &lda, S, U, &ldu, Vt, &ldvt, work, &lwork, iwork, &i );
+    
+    if (i != 0) {
+        free(S);
+        free(U);
+        free(Vt);
+        free(iwork);
+        free(work);
+        @throw [NSException exceptionWithName:@"YCMatrixException"
+                                       reason:@"Error while performing SVD."
+                                     userInfo:nil];
+    } else {
+        lwork = (int) work[0];
+        free(work);
+    }
+    
+    /*
+     * Allocate the space needed for the work array using the value of lwork
+     * obtained in the first call of dgesdd_
+     */
+    work = (double *) malloc(sizeof(double)*lwork);
+    dgesdd_( &achar, &rows, &columns, A, &lda, S, U, &ldu, Vt, &ldvt, work, &lwork, iwork, &i );
+    
+    free(work);
+    free(iwork);
+    if (i == 0)
+    {
+        *s = S;
+        *u = U;
+        *vt = Vt;
+    }
+    else
+    {
+        free(S);
+        free(U);
+        free(Vt);
+        @throw [NSException exceptionWithName:@"YCMatrixException"
+                                       reason:@"Error while performing SVD."
+                                     userInfo:nil];
+    }
+}
+
+static void pInv(double *A, int rows, int columns, double *Aplus)
+/*
+
+Compute the pseudo inverse of matrix A
+
+Author:  Luke Lonergan
+Date:    5/31/08
+License: Use pfreely
+
+We use the approach from here:
+http://en.wikipedia.org/wiki/Moore-Penrose_pseudoinverse#Finding_the_\
+pseudoinverse_of_a_matrix
+
+Synopsis:
+A computationally simpler and more accurate way to get the pseudoinverse
+is by using the singular value decomposition.[1][5][6] If A = U Σ V* is
+the singular value decomposition of A, then A+ = V Σ+ U* . For a diagonal
+matrix such as Σ, we get the pseudoinverse by taking the reciprocal of
+each non-zero element on the diagonal, and leaving the zeros in place.
+In numerical computation, only elements larger than some small tolerance
+are taken to be nonzero, and the others are replaced by zeros. For
+example, in the Matlab function pinv, the tolerance is taken to be
+t = ε•max(rows,columns)•max(Σ), where ε is the machine epsilon.
+
+Input:  the matrix A with "rows" rows and "columns" columns, in column
+values consecutive order (row-major)
+Output: the matrix A+ with "columns" rows and "rows" columns, the
+Moore-Penrose pseudo inverse of A
+
+The approach is summarized:
+- Compute the SVD (diagonalization) of A, yielding the U, S and V
+factors of A
+- Compute the pseudo inverse A+ = U x S+ x Vt
+
+S+ is the pseudo inverse of the diagonal matrix S, which is gained by
+inverting the non zero diagonals
+
+Vt is the transpose of V
+
+Note that there is some fancy index rework in this implementation to deal
+with the row values consecutive order used by the FORTRAN dgesdd_ routine.
+ 
+*/
+{
+    long int    minmn;
+    int    i, j, k, ii;
+    double      epsilon, tolerance, maxeigen;
+    double     *S = NULL, *U = NULL, *Vt = NULL;
+    double     *Splus, *Splus_times_Ut;
+    double *Atrans;
+    
+    /*
+     * Calculate the tolerance for "zero" values in the SVD
+     *    t = ε•max(rows,columns)•max(Σ)
+     *  (Need to multiply tolerance by max of the eigenvalues when they're
+     *   available)
+     */
+    epsilon = pow(2,1-56);
+    tolerance = epsilon * MAX(rows,columns);
+    maxeigen=-1.;
+    
+    /*
+     * Here we transpose A for entry into the FORTRAN dgesdd_ routine in row
+     * order. Note that dgesdd_ is destructive to the entry array, so we'd
+     * need to make this copy anyway.
+     */
+    Atrans = (double *) malloc(sizeof(double)*columns*rows);
+    for ( j = 0; j < rows; j++ ) {
+        for ( i = 0; i < columns; i++ ) {
+            Atrans[j+i*rows] = A[i+j*columns];
+        }
+    }
+    
+    SVDColumnMajor(Atrans, rows, columns, &S, &U, &Vt);
+    
+    /* Use the max of the eigenvalues to normalize the zero tolerance */
+    minmn = MIN(rows,columns); // The dimensions of S are min(rows,columns)
+    for ( i = 0; i < minmn; i++ ) {
+        maxeigen = MAX(maxeigen,S[i]);
+    }
+    tolerance *= maxeigen;
+    
+    /* Working matrices for the pseudo inverse calculation: */
+    /*  1) The pseudo inverse of S: S+ */
+    Splus = (double *) malloc(sizeof(double)*columns*rows);
+    /*  2) An intermediate result: S+ Ut */
+    Splus_times_Ut = (double *) malloc(sizeof(double)*columns*rows);
+    
+    
+    /*
+     * Calculate the pseudo inverse of the eigenvalue matrix, Splus
+     * Use a tolerance to evaluate elements that are close to zero
+     */
+    for ( j = 0; j < rows; j++ ) {
+        for ( i = 0; i < columns; i++ ) {
+            if (minmn == columns) {
+                ii = i;
+            } else {
+                ii = j;
+            }
+            if ( i == j && S[ii] > tolerance ) {
+                Splus[i+j*columns] = 1.0 / S[ii];
+            } else {
+                Splus[i+j*columns] = 0.0;
+            }
+        }
+    }
+    
+    for ( i = 0; i < columns; i++ ) {
+        for ( j = 0; j < rows; j++ ) {
+            Splus_times_Ut[i+j*columns] = 0.0;
+            for ( k = 0; k < rows; k++ ) {
+                Splus_times_Ut[i+j*columns] =
+                Splus_times_Ut[i+j*columns] +
+                Splus[i+k*columns] * U[j+k*rows];
+            }
+        }
+    }
+    
+    for ( i = 0; i < columns; i++ ) {
+        for ( j = 0; j < rows; j++ ) {
+            Aplus[j+i*rows] = 0.0;
+            for ( k = 0; k < columns; k++ ) {
+                Aplus[j+i*rows] =
+                Aplus[j+i*rows] +
+                Vt[k+i*columns] * Splus_times_Ut[k+j*columns];
+            }
+        }
+    }
+    
+    free(Splus);
+    free(Splus_times_Ut);
+    free(U);
+    free(Vt);
+    free(S);
+    
+    return;
+}

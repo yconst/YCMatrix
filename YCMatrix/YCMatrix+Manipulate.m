@@ -1,10 +1,26 @@
 //
 //  Matrix.h
-//  Matrix
 //
-//  Created by Yan Const on 11/7/13.
-//  Copyright (c) 2013, 2014 Ioannis Chatzikonstantinou. All rights reserved.
+// Copyright (c) 2013, 2014 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
+// http://yconst.com
 //
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 #import "YCMatrix+Manipulate.h"
 
@@ -46,25 +62,25 @@
     return ret;
 }
 
-- (YCMatrix *)getRow:(int) rowNumber
+- (YCMatrix *)getRow:(int) rowIndex
 {
-    if (rowNumber > self->rows - 1)
+    if (rowIndex > self->rows - 1)
     {
         @throw [NSException exceptionWithName:@"IndexOutOfBoundsException"
                                        reason:@"Row index input is out of bounds."
                                      userInfo:nil];
     }
     // http://stackoverflow.com/questions/5850000/how-to-split-array-into-two-arrays-in-c
-    int rowIndex = rowNumber * self->columns;
+    int startIndex = rowIndex * self->columns;
     YCMatrix *rowmatrix = [YCMatrix matrixOfRows:1 Columns:self->columns];
     double *row = rowmatrix->matrix;
-    memcpy(row, self->matrix + rowIndex, self->columns * sizeof(double));
+    memcpy(row, self->matrix + startIndex, self->columns * sizeof(double));
     return rowmatrix;
 }
 
-- (void)setRow:(int)rowNumber Value:(YCMatrix *)rowValue
+- (void)setRow:(int)rowIndex Value:(YCMatrix *)rowValue
 {
-    if (rowNumber > self->rows - 1)
+    if (rowIndex > self->rows - 1)
     {
         @throw [NSException exceptionWithName:@"IndexOutOfBoundsException"
                                        reason:@"Row index input is out of bounds."
@@ -76,7 +92,7 @@
                                        reason:@"Matrix size mismatch."
                                      userInfo:nil];
     }
-    memcpy(self->matrix + columns * rowNumber, rowValue->matrix, columns * sizeof(double));
+    memcpy(self->matrix + columns * rowIndex, rowValue->matrix, columns * sizeof(double));
 }
 
 - (NSArray *)RowsAsNSArray
@@ -89,9 +105,9 @@
     return rowsArray;
 }
 
-- (YCMatrix *)getColumn:(int) colNumber
+- (YCMatrix *)getColumn:(int) colIndex
 {
-    if (colNumber > self->columns - 1)
+    if (colIndex > self->columns - 1)
     {
         @throw [NSException exceptionWithName:@"IndexOutOfBoundsException"
                                        reason:@"Column index input is out of bounds."
@@ -101,7 +117,7 @@
     double *column = columnmatrix->matrix;
     for (int i=0; i<self->rows; i++)
     {
-        column[i] = self->matrix[i*self->columns + colNumber];
+        column[i] = self->matrix[i*self->columns + colIndex];
     }
     return columnmatrix;
 }
