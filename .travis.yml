@@ -1,0 +1,3 @@
+language: objective-c
+xcode_project: YCMatrix.xcodeproj
+xcode_scheme: YCMatrixTests
