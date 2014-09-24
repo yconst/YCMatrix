@@ -2,36 +2,55 @@
 //  YCMatrixTests.m
 //  YCMatrixTests
 //
-//  Created by Yan Const on 11/7/13.
-//  Copyright (c) 2013, 2014 Ioannis Chatzikonstantinou. All rights reserved.
+// Copyright (c) 2013, 2014 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
+// http://yconst.com
 //
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
 //References for this Document:
 // http://en.wikipedia.org/wiki/Cholesky_decomposition
 
-#import "YCMatrixTests.h"
+#import <XCTest/XCTest.h>
+#import "YCMatrix.h"
+
+@interface YCMatrixTests : XCTestCase
+
+@end
 
 @implementation YCMatrixTests
 
-- (void)setUp
+- (void)testIdentity
 {
-    [super setUp];
-    
-    // Set-up code here.
-    TitleNSLog(@"YCMatrix Unit Tests");
+    TitleNSLog(@"Identity Matrix Test");
+    double idm_ref_array[15] = { 1.0, 0.0, 0.0,
+        0.0, 1.0, 0.0,
+        0.0, 0.0, 1.0,
+        0.0, 0.0, 0.0,
+        0.0, 0.0, 0.0 };
+    YCMatrix *idmRef = [YCMatrix matrixFromArray:idm_ref_array Rows:5 Columns:3];
+    YCMatrix *idm = [YCMatrix identityOfRows:5 Columns:3];
+    CleanNSLog(@"%@",idm);
+    XCTAssertEqualObjects(idm, idmRef, @"Error in creating Identity Matrix");
 }
 
-- (void)tearDown
+- (void)testRetrieval
 {
-    // Tear-down code here.
-    TitleNSLog(@"End Of YCMatrix Unit Tests");
-    [super tearDown];
-}
-
-- (void)testBasicFunctions
-{
-    //
-    // Array Test
-    //
     TitleNSLog(@"Simple Array Test");
     double simple_array[9] = { 1.0, 2.0, 3.0,
         4.0, 5.0, 6.0,
@@ -52,42 +71,10 @@
     XCTAssertTrue([simple_matrix getValueAtRow:0 Column:1] == 2.0, @"GetValue error!");
     XCTAssertTrue([simple_matrix getValueAtRow:0 Column:2] == 3.0, @"GetValue error!");
     XCTAssertTrue([simple_matrix getValueAtRow:2 Column:1] == 8.0, @"GetValue error!");
-    
-    //
-    // Identity Matrix
-    //
-    TitleNSLog(@"Identity Matrix Test");
-    YCMatrix *idm1 = [YCMatrix identityOfRows:3 Columns:5];
-    CleanNSLog(@"%@",idm1);
-    YCMatrix *idm2 = [YCMatrix identityOfRows:6 Columns:4];
-    CleanNSLog(@"%@",idm2);
-    
-    //
-    // Addition and Scalar Multiplication
-    //
-    TitleNSLog(@"Addition and Scalar Multiplication");
-    double matrix_array[9] = { 1.0, 2.0, 3.0,
-        4.0, 5.0, 6.0,
-        7.0, 8.0, 9.0 };
-    YCMatrix *testm1 = [YCMatrix matrixFromArray:matrix_array Rows:3 Columns:3];
-    YCMatrix *testm2 = [YCMatrix matrixFromMatrix:testm1];
-    YCMatrix *testm_add = [testm1 matrixByAdding:testm2];
-    YCMatrix *testm_ms = [testm1 matrixByMultiplyingWithScalar:2];
-    XCTAssertTrue([testm_ms isEqual: testm_add], @"M+M != 2*M");
-    
-    //
-    // Matrix Multiplication
-    //
-    TitleNSLog(@"Matrix Multiplication");
-    CleanNSLog(@"Test Matrix 1: %ix%i",testm1->rows, testm1->columns);
-    CleanNSLog(@"Test Matrix 2: %ix%i",testm2->rows, testm2->columns);
-    YCMatrix *multResult = [testm1 matrixByMultiplyingWithRight:testm2];
-    CleanNSLog(@"Resulting Matrix: %ix%i",multResult->rows, multResult->columns);
-    CleanNSLog(@"%@",multResult);
-    
-    //
-    // Transposition
-    //
+}
+
+- (void)testTransposition
+{
     TitleNSLog(@"Transposition");
     double matrix_orig_arr[6] = { 1.0, 2.0, 3.0,
         4.0, 5.0, 6.0 };
@@ -101,46 +88,49 @@
     CleanNSLog(@"%@",trans);
     CleanNSLog(@"%@",trans2);
     XCTAssertTrue([trans isEqual: trans2], @"M^T != Mt");
-    
-    //
-    // Trace
-    //
-    TitleNSLog(@"Trace");
-    YCMatrix *tracetestm = [YCMatrix matrixFromArray:matrix_array Rows:3 Columns:3];
-    double trace = [[tracetestm matrixByMultiplyingWithRight:tracetestm] trace];
-    CleanNSLog(@"%f",trace);
-    XCTAssertEqual(trace, 261.000, @"Trace is not correct!");
-    
-    //
-    // Dot
-    //
+    XCTAssertEqualObjects(orig, [[orig matrixByTransposing] matrixByTransposing], @"M^T^T != M");
+}
+
+- (void)testDot
+{
     TitleNSLog(@"Dot Product");
     double vectorarray[3] = { 1.0, 2.0, 3.0 };
     YCMatrix *Vector = [YCMatrix matrixFromArray:vectorarray Rows:3 Columns:1];
     double dotp = [Vector dotWith:Vector];
     CleanNSLog(@"Dot Product: %f",dotp);
+    XCTAssertEqual(dotp, 14.0, @"Error in calculating dot product");
 }
 
-- (void)testPseudoInverse
+- (void)testTrace
 {
-    TitleNSLog(@"Pseudo Inverse");
-    double pinv_orig_array[4] = { 1.0, 2.0,
-        3.0, 4.0};
-    YCMatrix *po = [YCMatrix matrixFromArray:pinv_orig_array Rows:2 Columns:2];
-    YCMatrix *poi = [po pseudoInverse];
-    CleanNSLog(@"Original: %ix%i",po->rows, po->columns);
-    CleanNSLog(@"%@",po);
-    CleanNSLog(@"PseudoInverse: %ix%i",poi->rows, poi->columns);
-    CleanNSLog(@"%@",poi);
+    TitleNSLog(@"Trace");
+    double matrix_array[9] = { 1.0, 2.0, 3.0,
+        4.0, 5.0, 6.0,
+        7.0, 8.0, 9.0 };
+    YCMatrix *tracetestm = [YCMatrix matrixFromArray:matrix_array Rows:3 Columns:3];
+    double trace = [[tracetestm matrixByMultiplyingWithRight:tracetestm] trace];
+    CleanNSLog(@"%f",trace);
+    XCTAssertEqual(trace, 261.000, @"Trace is not correct!");
+}
+
+- (void)testAdditionScalarMultiplication
+{
+    TitleNSLog(@"Addition and Scalar Multiplication");
+    double matrix_array[9] = { 1.0, 2.0, 3.0,
+        4.0, 5.0, 6.0,
+        7.0, 8.0, 9.0 };
+    YCMatrix *testm1 = [YCMatrix matrixFromArray:matrix_array Rows:3 Columns:3];
+    YCMatrix *testm2 = [YCMatrix matrixFromMatrix:testm1];
+    YCMatrix *testm_add = [testm1 matrixByAdding:testm2];
+    YCMatrix *testm_ms = [testm1 matrixByMultiplyingWithScalar:2];
+    XCTAssertTrue([testm_ms isEqual: testm_add], @"M+M != 2*M");
     
-    double pinv_orig_array2[6] = { 1.0, 2.0,
-        3.0, 4.0, 5.0, 6.0};
-    YCMatrix *po2 = [YCMatrix matrixFromArray:pinv_orig_array2 Rows:3 Columns:2];
-    YCMatrix *poi2 = [po2 pseudoInverse];
-    CleanNSLog(@"Original: %ix%i",po2->rows, po2->columns);
-    CleanNSLog(@"%@",po2);
-    CleanNSLog(@"PseudoInverse: %ix%i",poi2->rows, poi2->columns);
-    CleanNSLog(@"%@",poi2);
+    TitleNSLog(@"Matrix Multiplication");
+    CleanNSLog(@"Test Matrix 1: %ix%i",testm1->rows, testm1->columns);
+    CleanNSLog(@"Test Matrix 2: %ix%i",testm2->rows, testm2->columns);
+    YCMatrix *multResult = [testm1 matrixByMultiplyingWithRight:testm2];
+    CleanNSLog(@"Resulting Matrix: %ix%i",multResult->rows, multResult->columns);
+    CleanNSLog(@"%@",multResult);
 }
 
 - (void)testTransposedMultiply
@@ -155,68 +145,6 @@
     
     YCMatrix *C = [A matrixByMultiplyingWithRight:B AndTransposing:YES];
     CleanNSLog(@"%@",C);
-}
-
-- (void)testCholesky
-{
-    TitleNSLog(@"Cholesky Decomposition Test (A:3x3)");
-    double simple_array[9] = {  4, 12, -16,
-                                12, 37, -43,
-                                -16, -43, 98}; // Test from Wikipedia
-    YCMatrix *A = [YCMatrix matrixFromArray:simple_array Rows:3 Columns:3];
-    CleanNSLog(@"Original Matrix A: %@",A);
-    YCMatrix *ch = [A matrixByCholesky];
-    CleanNSLog(@"Cholesky Decomposition of A: %@",ch);
-    XCTAssert([[ch matrixByTransposingAndMultiplyingWithLeft:ch] isEqualTo:A],
-              @"Error with Cholesky decomposition");
-}
-
-- (void)testMeans
-{
-    TitleNSLog(@"Mean Test");
-    double mean_array[12] = { 1.0, 1.0, 1.0,
-        4.0, -4.0, 2.0,
-        -153.0, 614.0, 33.0,
-        -100.0, 100.0, 0.0};
-    double columnMeanTargetArray[3] = { -62.0, 177.75, 9.0 };
-    double rowMeantargetArray[4] = { 1.0, 3/2, 164 + 3/2, 0.0 };
-    YCMatrix *columnMeanTargetMatrix = [YCMatrix matrixFromArray:columnMeanTargetArray Rows:3 Columns:1];
-    YCMatrix *rowMeanTargetMatrix = [YCMatrix matrixFromArray:rowMeantargetArray Rows:4 Columns:1];
-    YCMatrix *meanMatrix = [YCMatrix matrixFromArray:mean_array Rows:4 Columns:3];
-    YCMatrix *rowMeans = [meanMatrix RowMean];
-    YCMatrix *columnMeans = [meanMatrix ColumnMean];
-    XCTAssertTrue([rowMeans isEqualTo: rowMeanTargetMatrix] , @"Error in calculating Row Means.");
-    XCTAssertTrue([columnMeans isEqualTo: columnMeanTargetMatrix] , @"Error in calculating Column Means.");
-    CleanNSLog(@"%@", rowMeans);
-    CleanNSLog(@"%@", columnMeans);
-}
-
-- (void)testEigenvalues
-{
-    TitleNSLog(@"Eigenvalues Test");
-    double simple_array[9] = { 1.000,  2.000,  3.000,
-        5.000, 10.000, 15.000,
-        0.100,  0.200,  0.300,};
-    double ref_array[3] = {11.3, 0.0, 0.0};
-    YCMatrix *original = [YCMatrix matrixFromArray:simple_array Rows:3 Columns:3];
-    YCMatrix *ev = [original eigenvalues];
-    YCMatrix *evRef = [YCMatrix matrixFromArray:ref_array  Rows:1 Columns:3];
-    CleanNSLog(@"%@", ev);
-    XCTAssertEqualObjects(ev, evRef, @"Error with Eigenvalue calculation");
-}
-
-- (void)testDeterminant
-{
-    TitleNSLog(@"Determinant Test");
-    double simple_array[16] = { 1.0, 2.0, 3.0, 4.0,
-        5.0, 6.0, 7.0, 8.0,
-        2.0, 6.0, 4.0, 8.0,
-        3.0, 1.0, 1.0, 2.0 };
-    YCMatrix *original = [YCMatrix matrixFromArray:simple_array Rows:4 Columns:4];
-    double det = [original determinant];
-    double detRef = 72;
-    CleanNSLog(@"%f", det);
-    XCTAssertEqual(det, detRef, @"Error with Determinant calculation");
 }
 
 @end
