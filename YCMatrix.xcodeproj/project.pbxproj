@@ -42,6 +42,7 @@
 		CB14DF7718B413120056F29F /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		CB394EFF179585A600F91FA8 /* CHCSVParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHCSVParser.h; sourceTree = "<group>"; };
 		CB394F00179585A600F91FA8 /* CHCSVParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHCSVParser.m; sourceTree = "<group>"; };
+		CB4BAA9919D2CE3D001E7A7A /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		CB58B99D19D1ED310097EEB1 /* README */ = {isa = PBXFileReference; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		CBBE02AC178F215000744F77 /* YCMatrix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = YCMatrix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBBE02AF178F215000744F77 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -99,6 +100,7 @@
 				CBBE02AE178F215000744F77 /* Frameworks */,
 				CBBE02AD178F215000744F77 /* Products */,
 				CB58B99D19D1ED310097EEB1 /* README */,
+				CB4BAA9919D2CE3D001E7A7A /* .gitignore */,
 			);
 			sourceTree = "<group>";
 		};
