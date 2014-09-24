@@ -20,11 +20,12 @@
 		CBBE02E1178F216800744F77 /* YCMatrix+Advanced.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBE02DD178F216800744F77 /* YCMatrix+Advanced.m */; };
 		CBBE02E2178F216800744F77 /* YCMatrix+Manipulate.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBE02DE178F216800744F77 /* YCMatrix+Manipulate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBBE02E3178F216800744F77 /* YCMatrix+Manipulate.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBE02DF178F216800744F77 /* YCMatrix+Manipulate.m */; };
-		CBBE02E9178F218600744F77 /* ManipulateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBE02E7178F218600744F77 /* ManipulateTests.m */; };
+		CBBE02E9178F218600744F77 /* YCMatrixManipulateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBE02E7178F218600744F77 /* YCMatrixManipulateTests.m */; };
 		CBBE02EB178F22BD00744F77 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBE02EA178F22BD00744F77 /* Accelerate.framework */; };
 		CBBE0301178F258B00744F77 /* YCMatrix.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBE02BC178F215000744F77 /* YCMatrix.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBD7D3D218A4DD10006A04C0 /* YCMatrix+Normalize.h in Headers */ = {isa = PBXBuildFile; fileRef = CBD7D3D018A4DD10006A04C0 /* YCMatrix+Normalize.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBD7D3D318A4DD10006A04C0 /* YCMatrix+Normalize.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD7D3D118A4DD10006A04C0 /* YCMatrix+Normalize.m */; };
+		CBE9E7AD19D0D79600460953 /* YCMatrixAdvancedTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE9E7AC19D0D79600460953 /* YCMatrixAdvancedTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +42,7 @@
 		CB14DF7718B413120056F29F /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		CB394EFF179585A600F91FA8 /* CHCSVParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHCSVParser.h; sourceTree = "<group>"; };
 		CB394F00179585A600F91FA8 /* CHCSVParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHCSVParser.m; sourceTree = "<group>"; };
+		CB58B99D19D1ED310097EEB1 /* README */ = {isa = PBXFileReference; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		CBBE02AC178F215000744F77 /* YCMatrix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = YCMatrix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBBE02AF178F215000744F77 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		CBBE02B2178F215000744F77 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -54,17 +56,16 @@
 		CBBE02C4178F215100744F77 /* YCMatrixTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YCMatrixTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBBE02CD178F215100744F77 /* YCMatrixTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "YCMatrixTests-Info.plist"; sourceTree = "<group>"; };
 		CBBE02CF178F215100744F77 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		CBBE02D1178F215100744F77 /* YCMatrixTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YCMatrixTests.h; sourceTree = "<group>"; };
 		CBBE02D2178F215100744F77 /* YCMatrixTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YCMatrixTests.m; sourceTree = "<group>"; };
 		CBBE02DC178F216800744F77 /* YCMatrix+Advanced.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "YCMatrix+Advanced.h"; sourceTree = "<group>"; };
 		CBBE02DD178F216800744F77 /* YCMatrix+Advanced.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "YCMatrix+Advanced.m"; sourceTree = "<group>"; };
 		CBBE02DE178F216800744F77 /* YCMatrix+Manipulate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "YCMatrix+Manipulate.h"; sourceTree = "<group>"; };
 		CBBE02DF178F216800744F77 /* YCMatrix+Manipulate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "YCMatrix+Manipulate.m"; sourceTree = "<group>"; };
-		CBBE02E6178F218600744F77 /* ManipulateTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ManipulateTests.h; sourceTree = "<group>"; };
-		CBBE02E7178F218600744F77 /* ManipulateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ManipulateTests.m; sourceTree = "<group>"; };
+		CBBE02E7178F218600744F77 /* YCMatrixManipulateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCMatrixManipulateTests.m; sourceTree = "<group>"; };
 		CBBE02EA178F22BD00744F77 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		CBD7D3D018A4DD10006A04C0 /* YCMatrix+Normalize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "YCMatrix+Normalize.h"; sourceTree = "<group>"; };
 		CBD7D3D118A4DD10006A04C0 /* YCMatrix+Normalize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "YCMatrix+Normalize.m"; sourceTree = "<group>"; };
+		CBE9E7AC19D0D79600460953 /* YCMatrixAdvancedTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCMatrixAdvancedTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +98,7 @@
 				CBBE02CB178F215100744F77 /* YCMatrixTests */,
 				CBBE02AE178F215000744F77 /* Frameworks */,
 				CBBE02AD178F215000744F77 /* Products */,
+				CB58B99D19D1ED310097EEB1 /* README */,
 			);
 			sourceTree = "<group>";
 		};
@@ -159,10 +161,9 @@
 		CBBE02CB178F215100744F77 /* YCMatrixTests */ = {
 			isa = PBXGroup;
 			children = (
-				CBBE02D1178F215100744F77 /* YCMatrixTests.h */,
 				CBBE02D2178F215100744F77 /* YCMatrixTests.m */,
-				CBBE02E6178F218600744F77 /* ManipulateTests.h */,
-				CBBE02E7178F218600744F77 /* ManipulateTests.m */,
+				CBE9E7AC19D0D79600460953 /* YCMatrixAdvancedTests.m */,
+				CBBE02E7178F218600744F77 /* YCMatrixManipulateTests.m */,
 				CBBE02CC178F215100744F77 /* Supporting Files */,
 			);
 			path = YCMatrixTests;
@@ -311,8 +312,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBE9E7AD19D0D79600460953 /* YCMatrixAdvancedTests.m in Sources */,
 				CBBE02D3178F215100744F77 /* YCMatrixTests.m in Sources */,
-				CBBE02E9178F218600744F77 /* ManipulateTests.m in Sources */,
+				CBBE02E9178F218600744F77 /* YCMatrixManipulateTests.m in Sources */,
 				CB394F01179585A600F91FA8 /* CHCSVParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
