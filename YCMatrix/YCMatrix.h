@@ -1,6 +1,8 @@
 //
 // YCMatrix.h
 //
+// YCMatrix
+//
 // Copyright (c) 2013, 2014 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 // http://yconst.com
 //
