@@ -30,9 +30,9 @@ frameworks.
 The matrix functionality is split into three files: The base class
 definition, and two categories:
 
-YCMatrix.h              YCMatrix class definition and basic operations.
-YCMatrix+Advanced.h     Interface to more advanced LAPACK functions.
-YCMatrix+Manipulate.h   Functions for manipulating rows/columns etc.
+- YCMatrix.h              YCMatrix class definition and basic operations.
+- YCMatrix+Advanced.h     Interface to more advanced LAPACK functions.
+- YCMatrix+Manipulate.h   Functions for manipulating rows/columns etc.
 
 Please refer to the docs for a complete overview of the functionality 
 contained in each of the categories.
