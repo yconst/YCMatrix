@@ -428,6 +428,17 @@
 	return result;
 }
 
+- (YCMatrix *)diagonal
+{
+    int minDim = MIN(rows, columns);
+    YCMatrix *result = [YCMatrix matrixOfRows:minDim Columns:1];
+    for (int i=0; i<minDim; i++)
+    {
+        [result setValue:[self getValueAtRow:i Column:i] Row:i Column:0];
+    }
+    return result;
+}
+
 - (int)rows
 {
 	return self->rows;

@@ -386,6 +386,15 @@
 @property (readonly) NSArray *numberArray;
 
 /**
+ Returns a column matrix (vector) containing the elements of the diagonal.
+ 
+ @warning   Calling this method repeatedly will incur a performance penalty,
+            since the elements need to be extracted every time. Better store
+            the result and reuse.
+ */
+@property (readonly) YCMatrix *diagonal;
+
+/**
  Returns the number of rows of this YCMatrix.
  */
 @property (readonly) int rows;

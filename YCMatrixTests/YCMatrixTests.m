@@ -73,6 +73,19 @@
     XCTAssertTrue([simple_matrix getValueAtRow:2 Column:1] == 8.0, @"GetValue error!");
 }
 
+- (void)testDiagonal
+{
+    double source_array[12] = { 1.0, 2.0, 3.0,
+        4.0, 5.0, 6.0,
+        7.0, 8.0, 9.0,
+        1.0, 2.0, 6.0};
+    YCMatrix *sourceMatrix = [YCMatrix matrixFromArray:source_array Rows:4 Columns:3];
+    double target_array[3] = { 1.0, 5.0, 9.0 };
+    YCMatrix *targetMatrix = [YCMatrix matrixFromArray:target_array Rows:3 Columns:1];
+    YCMatrix *diagonal = [sourceMatrix diagonal];
+    XCTAssertEqualObjects(diagonal, targetMatrix, @"Error in deriving diagonal.");
+}
+
 - (void)testTransposition
 {
     TitleNSLog(@"Transposition");
