@@ -7,6 +7,17 @@
 A flexible Matrix library for Objective-C, which interfaces 
 BLAS, LAPACK and vDSP functions via the Accelerate Framework.
 
+##Installation
+
+It is recommended to install YCMatrix using [Cocoapods](http://cocoapods.org/).
+
+#### Podfile
+
+```ruby
+platform :osx, '10.7'
+pod "YCMatrix"
+```
+
 ##Getting started
 
 Import the project in your workspace, or compile the framework
