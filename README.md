@@ -2,6 +2,8 @@
 
 #YCMatrix
 
+[![Build Status](https://travis-ci.org/yconst/YCMatrix.svg?branch=master)](https://travis-ci.org/yconst/YCMatrix)
+
 A flexible Matrix library for Objective-C, which interfaces 
 BLAS, LAPACK and vDSP functions via the Accelerate Framework.
 
