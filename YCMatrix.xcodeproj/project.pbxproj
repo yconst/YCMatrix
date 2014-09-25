@@ -8,16 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		CB14DF7818B413120056F29F /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB14DF7718B413120056F29F /* XCTest.framework */; };
-		CB2242BF19D4154C005B3F7E /* YCMatrix.html in Resources */ = {isa = PBXBuildFile; fileRef = CB2242B319D4154C005B3F7E /* YCMatrix.html */; };
-		CB2242C019D4154C005B3F7E /* styles.css in Resources */ = {isa = PBXBuildFile; fileRef = CB2242B519D4154C005B3F7E /* styles.css */; };
-		CB2242C119D4154C005B3F7E /* stylesPrint.css in Resources */ = {isa = PBXBuildFile; fileRef = CB2242B619D4154C005B3F7E /* stylesPrint.css */; };
-		CB2242C219D4154C005B3F7E /* hierarchy.html in Resources */ = {isa = PBXBuildFile; fileRef = CB2242B719D4154C005B3F7E /* hierarchy.html */; };
-		CB2242C319D4154C005B3F7E /* button_bar_background.png in Resources */ = {isa = PBXBuildFile; fileRef = CB2242B919D4154C005B3F7E /* button_bar_background.png */; };
-		CB2242C419D4154C005B3F7E /* disclosure.png in Resources */ = {isa = PBXBuildFile; fileRef = CB2242BA19D4154C005B3F7E /* disclosure.png */; };
-		CB2242C519D4154C005B3F7E /* disclosure_open.png in Resources */ = {isa = PBXBuildFile; fileRef = CB2242BB19D4154C005B3F7E /* disclosure_open.png */; };
-		CB2242C619D4154C005B3F7E /* library_background.png in Resources */ = {isa = PBXBuildFile; fileRef = CB2242BC19D4154C005B3F7E /* library_background.png */; };
-		CB2242C719D4154C005B3F7E /* title_background.png in Resources */ = {isa = PBXBuildFile; fileRef = CB2242BD19D4154C005B3F7E /* title_background.png */; };
-		CB2242C819D4154C005B3F7E /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = CB2242BE19D4154C005B3F7E /* index.html */; };
 		CBBE02B0178F215000744F77 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBE02AF178F215000744F77 /* Cocoa.framework */; };
 		CBBE02BA178F215000744F77 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBBE02B8178F215000744F77 /* InfoPlist.strings */; };
 		CBBE02BE178F215000744F77 /* YCMatrix.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBE02BD178F215000744F77 /* YCMatrix.m */; };
@@ -51,18 +41,9 @@
 /* Begin PBXFileReference section */
 		CB14DF7718B413120056F29F /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		CB2242AF19D413C0005B3F7E /* AppledocSettings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = AppledocSettings.plist; sourceTree = "<group>"; };
-		CB2242B319D4154C005B3F7E /* YCMatrix.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = YCMatrix.html; sourceTree = "<group>"; };
-		CB2242B519D4154C005B3F7E /* styles.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = styles.css; sourceTree = "<group>"; };
-		CB2242B619D4154C005B3F7E /* stylesPrint.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = stylesPrint.css; sourceTree = "<group>"; };
-		CB2242B719D4154C005B3F7E /* hierarchy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = hierarchy.html; sourceTree = "<group>"; };
-		CB2242B919D4154C005B3F7E /* button_bar_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_bar_background.png; sourceTree = "<group>"; };
-		CB2242BA19D4154C005B3F7E /* disclosure.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = disclosure.png; sourceTree = "<group>"; };
-		CB2242BB19D4154C005B3F7E /* disclosure_open.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = disclosure_open.png; sourceTree = "<group>"; };
-		CB2242BC19D4154C005B3F7E /* library_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = library_background.png; sourceTree = "<group>"; };
-		CB2242BD19D4154C005B3F7E /* title_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = title_background.png; sourceTree = "<group>"; };
-		CB2242BE19D4154C005B3F7E /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		CB4BAA9919D2CE3D001E7A7A /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		CB58B99D19D1ED310097EEB1 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		CB84DE0219D4B254009EED7E /* YCMatrix.podspec.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = YCMatrix.podspec.json; sourceTree = "<group>"; };
 		CBBE02AC178F215000744F77 /* YCMatrix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = YCMatrix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBBE02AF178F215000744F77 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		CBBE02B2178F215000744F77 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -113,55 +94,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		CB2242B019D4152E005B3F7E /* Documentation */ = {
-			isa = PBXGroup;
-			children = (
-				CB2242B119D4154C005B3F7E /* html */,
-			);
-			name = Documentation;
-			sourceTree = "<group>";
-		};
-		CB2242B119D4154C005B3F7E /* html */ = {
-			isa = PBXGroup;
-			children = (
-				CB2242B219D4154C005B3F7E /* Classes */,
-				CB2242B419D4154C005B3F7E /* css */,
-				CB2242B719D4154C005B3F7E /* hierarchy.html */,
-				CB2242B819D4154C005B3F7E /* img */,
-				CB2242BE19D4154C005B3F7E /* index.html */,
-			);
-			path = html;
-			sourceTree = "<group>";
-		};
-		CB2242B219D4154C005B3F7E /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				CB2242B319D4154C005B3F7E /* YCMatrix.html */,
-			);
-			path = Classes;
-			sourceTree = "<group>";
-		};
-		CB2242B419D4154C005B3F7E /* css */ = {
-			isa = PBXGroup;
-			children = (
-				CB2242B519D4154C005B3F7E /* styles.css */,
-				CB2242B619D4154C005B3F7E /* stylesPrint.css */,
-			);
-			path = css;
-			sourceTree = "<group>";
-		};
-		CB2242B819D4154C005B3F7E /* img */ = {
-			isa = PBXGroup;
-			children = (
-				CB2242B919D4154C005B3F7E /* button_bar_background.png */,
-				CB2242BA19D4154C005B3F7E /* disclosure.png */,
-				CB2242BB19D4154C005B3F7E /* disclosure_open.png */,
-				CB2242BC19D4154C005B3F7E /* library_background.png */,
-				CB2242BD19D4154C005B3F7E /* title_background.png */,
-			);
-			path = img;
-			sourceTree = "<group>";
-		};
 		CBBE02A2178F215000744F77 = {
 			isa = PBXGroup;
 			children = (
@@ -169,11 +101,11 @@
 				CBBE02CB178F215100744F77 /* YCMatrixTests */,
 				CBBE02AE178F215000744F77 /* Frameworks */,
 				CBBE02AD178F215000744F77 /* Products */,
-				CB2242B019D4152E005B3F7E /* Documentation */,
 				CB58B99D19D1ED310097EEB1 /* README.md */,
 				CB4BAA9919D2CE3D001E7A7A /* .gitignore */,
 				CBD5120519D2D720004DD8D3 /* .travis.yml */,
 				CB2242AF19D413C0005B3F7E /* AppledocSettings.plist */,
+				CB84DE0219D4B254009EED7E /* YCMatrix.podspec.json */,
 			);
 			sourceTree = "<group>";
 		};
@@ -341,17 +273,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CB2242C019D4154C005B3F7E /* styles.css in Resources */,
-				CB2242C819D4154C005B3F7E /* index.html in Resources */,
-				CB2242C419D4154C005B3F7E /* disclosure.png in Resources */,
 				CBBE02BA178F215000744F77 /* InfoPlist.strings in Resources */,
-				CB2242BF19D4154C005B3F7E /* YCMatrix.html in Resources */,
-				CB2242C619D4154C005B3F7E /* library_background.png in Resources */,
-				CB2242C519D4154C005B3F7E /* disclosure_open.png in Resources */,
-				CB2242C719D4154C005B3F7E /* title_background.png in Resources */,
-				CB2242C319D4154C005B3F7E /* button_bar_background.png in Resources */,
-				CB2242C219D4154C005B3F7E /* hierarchy.html in Resources */,
-				CB2242C119D4154C005B3F7E /* stylesPrint.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
