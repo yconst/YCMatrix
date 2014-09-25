@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Ioannis Chatzikonstantinou. All rights reserved.
 //
 
-#define ARC4RANDOM_MAX      0x100000000
-
 #import <XCTest/XCTest.h>
 #import "YCMatrix.h"
 #import "YCMatrix+Advanced.h"

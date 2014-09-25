@@ -23,6 +23,7 @@
 		CBBE02E9178F218600744F77 /* YCMatrixManipulateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBE02E7178F218600744F77 /* YCMatrixManipulateTests.m */; };
 		CBBE02EB178F22BD00744F77 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBE02EA178F22BD00744F77 /* Accelerate.framework */; };
 		CBBE0301178F258B00744F77 /* YCMatrix.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBE02BC178F215000744F77 /* YCMatrix.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CBD5120719D37764004DD8D3 /* Constants.h in Headers */ = {isa = PBXBuildFile; fileRef = CBD5120619D37764004DD8D3 /* Constants.h */; };
 		CBD7D3D218A4DD10006A04C0 /* YCMatrix+Normalize.h in Headers */ = {isa = PBXBuildFile; fileRef = CBD7D3D018A4DD10006A04C0 /* YCMatrix+Normalize.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBD7D3D318A4DD10006A04C0 /* YCMatrix+Normalize.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD7D3D118A4DD10006A04C0 /* YCMatrix+Normalize.m */; };
 		CBE9E7AD19D0D79600460953 /* YCMatrixAdvancedTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE9E7AC19D0D79600460953 /* YCMatrixAdvancedTests.m */; };
@@ -65,6 +66,7 @@
 		CBBE02E7178F218600744F77 /* YCMatrixManipulateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCMatrixManipulateTests.m; sourceTree = "<group>"; };
 		CBBE02EA178F22BD00744F77 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		CBD5120519D2D720004DD8D3 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
+		CBD5120619D37764004DD8D3 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		CBD7D3D018A4DD10006A04C0 /* YCMatrix+Normalize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "YCMatrix+Normalize.h"; sourceTree = "<group>"; };
 		CBD7D3D118A4DD10006A04C0 /* YCMatrix+Normalize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "YCMatrix+Normalize.m"; sourceTree = "<group>"; };
 		CBE9E7AC19D0D79600460953 /* YCMatrixAdvancedTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCMatrixAdvancedTests.m; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 				CBBE02B7178F215000744F77 /* YCMatrix-Info.plist */,
 				CBBE02B8178F215000744F77 /* InfoPlist.strings */,
 				CBBE02BB178F215000744F77 /* YCMatrix-Prefix.pch */,
+				CBD5120619D37764004DD8D3 /* Constants.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -191,6 +194,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBD5120719D37764004DD8D3 /* Constants.h in Headers */,
 				CBBE02E0178F216800744F77 /* YCMatrix+Advanced.h in Headers */,
 				CBBE02E2178F216800744F77 /* YCMatrix+Manipulate.h in Headers */,
 				CBBE0301178F258B00744F77 /* YCMatrix.h in Headers */,
@@ -449,7 +453,6 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					"\\\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\\\"",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
@@ -465,7 +468,6 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					"\\\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\\\"",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
