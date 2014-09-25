@@ -44,6 +44,7 @@
 		CB4BAA9919D2CE3D001E7A7A /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		CB58B99D19D1ED310097EEB1 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		CB84DE0219D4B254009EED7E /* YCMatrix.podspec.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = YCMatrix.podspec.json; sourceTree = "<group>"; };
+		CB84DE0319D4BD32009EED7E /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		CBBE02AC178F215000744F77 /* YCMatrix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = YCMatrix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBBE02AF178F215000744F77 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		CBBE02B2178F215000744F77 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -102,6 +103,7 @@
 				CBBE02AE178F215000744F77 /* Frameworks */,
 				CBBE02AD178F215000744F77 /* Products */,
 				CB58B99D19D1ED310097EEB1 /* README.md */,
+				CB84DE0319D4BD32009EED7E /* LICENSE */,
 				CB4BAA9919D2CE3D001E7A7A /* .gitignore */,
 				CBD5120519D2D720004DD8D3 /* .travis.yml */,
 				CB2242AF19D413C0005B3F7E /* AppledocSettings.plist */,
