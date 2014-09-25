@@ -12,7 +12,7 @@
   },
   "source": {
     "git": "https://github.com/yconst/YCMatrix.git",
-    "tag": "0.5.0"
+    "tag": "v0.5.0"
   },
   "platforms": {
     "osx": "10.7"
