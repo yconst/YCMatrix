@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CB14DF7818B413120056F29F /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB14DF7718B413120056F29F /* XCTest.framework */; };
+		CB9F9CFB19DAE71E00B6A1E4 /* ycmatrix.png in Resources */ = {isa = PBXBuildFile; fileRef = CB9F9CFA19DAE71E00B6A1E4 /* ycmatrix.png */; };
 		CBBE02B0178F215000744F77 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBE02AF178F215000744F77 /* Cocoa.framework */; };
 		CBBE02BA178F215000744F77 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBBE02B8178F215000744F77 /* InfoPlist.strings */; };
 		CBBE02BE178F215000744F77 /* YCMatrix.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBE02BD178F215000744F77 /* YCMatrix.m */; };
@@ -45,6 +46,7 @@
 		CB58B99D19D1ED310097EEB1 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		CB84DE0219D4B254009EED7E /* YCMatrix.podspec.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = YCMatrix.podspec.json; sourceTree = "<group>"; };
 		CB84DE0319D4BD32009EED7E /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		CB9F9CFA19DAE71E00B6A1E4 /* ycmatrix.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ycmatrix.png; sourceTree = "<group>"; };
 		CBBE02AC178F215000744F77 /* YCMatrix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = YCMatrix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBBE02AF178F215000744F77 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		CBBE02B2178F215000744F77 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -108,6 +110,7 @@
 				CBD5120519D2D720004DD8D3 /* .travis.yml */,
 				CB2242AF19D413C0005B3F7E /* AppledocSettings.plist */,
 				CB84DE0219D4B254009EED7E /* YCMatrix.podspec.json */,
+				CB9F9CFA19DAE71E00B6A1E4 /* ycmatrix.png */,
 			);
 			sourceTree = "<group>";
 		};
@@ -275,6 +278,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB9F9CFB19DAE71E00B6A1E4 /* ycmatrix.png in Resources */,
 				CBBE02BA178F215000744F77 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
