@@ -305,7 +305,7 @@
     double *newMatrix = malloc(columns * (rows + 1) * sizeof(double));
     memcpy(newMatrix, self->matrix, columns * rows * sizeof(double));
     memcpy(newMatrix + columns*rows, newRow->matrix, columns * sizeof(double));
-    return [YCMatrix matrixFromArray:newMatrix Rows:rows + 1 Columns:columns];
+    return [YCMatrix matrixFromArray:newMatrix Rows:rows + 1 Columns:columns Copy:NO];
 }
 
 - (YCMatrix *)appendColumn:(YCMatrix *)newColumn
@@ -323,7 +323,7 @@
         memcpy(newMatrix + newCols * i, self->matrix + columns * i, columns * sizeof(double));
         newMatrix[newCols * i + columns] = newColumn->matrix[i];
     }
-    return [YCMatrix matrixFromArray:newMatrix Rows:rows Columns:columns + 1];
+    return [YCMatrix matrixFromArray:newMatrix Rows:rows Columns:columns + 1 Copy:NO];
 }
 
 - (YCMatrix *)removeRow:(int)rowNumber
