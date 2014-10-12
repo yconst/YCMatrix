@@ -64,7 +64,7 @@
 - (void)setRow:(int)rowIndex Value:(YCMatrix *)rowValue;
 
 /**
- Returns an NSArray of row matrices, each representing one row of the matrix.
+ Returns an NSArray of row matrices, each representing one row of the receiver.
  
  @return The NSArray of row matrices.
  */
@@ -90,7 +90,7 @@
 /**
  Creates column matrices from the columns of the matrix and returns them as an NSArray.
  
- @return The NSArray containing the columns of the matrix.
+ @return The NSArray containing the columns of the receiver.
  */
 - (NSArray *)ColumnsAsNSArray;
 
@@ -229,7 +229,7 @@
 - (YCMatrix *)newFromShufflingRows;
 
 /**
- Shuffles the rows of the matrix.
+ Shuffles the rows of the receiver.
  */
 - (void)shuffleRows;
 
@@ -241,7 +241,7 @@
 - (YCMatrix *)newFromShufflingColumns;
 
 /**
- Shuffles the columns of the matrix.
+ Shuffles the columns of the receiver.
  */
 - (void)shuffleColumns;
 

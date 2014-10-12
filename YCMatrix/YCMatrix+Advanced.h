@@ -31,17 +31,17 @@
 @interface YCMatrix (Advanced)
 
 /**
- Returns the pseudo-inverse of this matrix.
+ Returns the pseudo-inverse of the receiver.
  The calculation is performed using Singular Value Decomposition.
  
- @return The pseudo-inverse of this YCMatrix.
+ @return The pseudo-inverse of the receiver.
  */
 - (YCMatrix *)pseudoInverse;
 
 /**
- Performs Singular Value Decomposition on this matrix.
+ Performs Singular Value Decomposition on the receiver.
  
- @return An NSDictionary containing the "U", "S", "V" components of the SVD of this YCMatrix.
+ @return An NSDictionary containing the "U", "S", "V" components of the SVD of the receiver.
  
  @warning   As a matter of efficiency, and because the corresponding LAPACK function requires
             column-major matrices, the output dictionary will contain the "V" matrix, and not 
@@ -50,8 +50,7 @@
 - (NSDictionary *)SVD;
 
 /**
- Returns the X vector that is the solution to the linear system A * X = B, with this
- matrix being A.
+ Returns the X vector that is the solution to the linear system A * X = B, with the receiver being A.
  
  @param B The matrix B.
  
@@ -60,28 +59,28 @@
 - (YCMatrix *)solve:(YCMatrix *)B;
 
 /**
- Performs an in-place Cholesky decomposition on this matrix.
+ Performs an in-place Cholesky decomposition on the receiver.
  Makes lower triangular R such that R * R' = self. Modifies self.
  */
 - (void)cholesky;
 
 /**
- Returns a new matrix by performing Cholesky decomposition on this matrix.
+ Returns a new matrix by performing Cholesky decomposition on the receiver.
  Makes lower triangular R such that R * R' = self.
  
- @return The matrix resulting from the Cholesky decomposition of this YCMatrix.
+ @return The matrix resulting from the Cholesky decomposition of the receiver.
  */
 - (YCMatrix *)matrixByCholesky;
 
 /**
- Returns a row YCMatrix containing the Eigenvalues of this matrix.
+ Returns a row YCMatrix containing the Eigenvalues of the receiver.
  
  @return The resulting row YCMatrix.
  */
 - (YCMatrix *)eigenvalues;
 
 /**
- Returns an NSDictionary with the results of performing an Eigenvalue decomposition.
+ Returns an NSDictionary with the results of performing an Eigenvalue decomposition on the receiver.
  
  @return    A dictionary with the following key/value assignments:
             "Eigenvalues" : nx1 vector containing the matrix eigenvalues.
@@ -93,7 +92,7 @@
 /**
  Returns the determinant of this YCMatrix.
  
- @return A double value corresponsing to the determinant of this matrix.
+ @return A double value corresponsing to the determinant of the receiver.
  
  @warning This method has not been extensively tested and may contain serious flaws.
  */
