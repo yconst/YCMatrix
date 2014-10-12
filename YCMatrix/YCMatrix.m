@@ -139,16 +139,28 @@
 
 #pragma mark Instance Methods
 
-- (double)getValueAtRow:(int)row Column:(int)column
+- (double)valueAtRow:(int)row Column:(int)column
 {
 	[self checkBoundsForRow:row Column:column];
 	return matrix[row*columns + column];
+}
+
+- (double)m:(int)m n:(int)n
+{
+	[self checkBoundsForRow:m Column:n];
+	return matrix[m*columns + n];
 }
 
 - (void)setValue:(double)vl Row:(int)row Column:(int)column
 {
 	[self checkBoundsForRow:row Column:column];
 	matrix[row*columns + column] = vl;
+}
+
+- (void)m:(int)m n:(int)n is:(double)vl
+{
+	[self checkBoundsForRow:m Column:n];
+	matrix[m*columns + n] = vl;
 }
 
 - (void)checkBoundsForRow:(int)row Column:(int)column
@@ -434,7 +446,7 @@
     YCMatrix *result = [YCMatrix matrixOfRows:minDim Columns:1];
     for (int i=0; i<minDim; i++)
     {
-        [result setValue:[self getValueAtRow:i Column:i] Row:i Column:0];
+        [result setValue:[self valueAtRow:i Column:i] Row:i Column:0];
     }
     return result;
 }

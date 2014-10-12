@@ -136,23 +136,42 @@
 /// @name Accessing and setting data
 
 /**
- Returns the value at position |row|, |column| of the matrix.
+ Returns the value at position |row|, |column| of the receiver.
  
  @param row    The row.
  @param column The column.
  
  @return A double corresponding to the value at position |row|, |column|.
  */
-- (double)getValueAtRow:(int)i Column:(int)column;
+- (double)valueAtRow:(int)row Column:(int)column;
 
 /**
- Sets value |vl| at |row|, |column| of the matrix.
+ Returns the value at position |m|, |n| of the receiver.
+ 
+ @param m    The row.
+ @param n The column.
+ 
+ @return A double corresponding to the value at position |m|, |n|.
+ */
+- (double)m:(int)m n:(int)n;
+
+/**
+ Sets value |vl| at |row|, |column| of the receiver.
  
  @param vl     The value to set.
  @param row    The row.
  @param column The column.
  */
 - (void)setValue:(double)vl Row:(int)row Column:(int)column;
+
+/**
+ Sets value |vl| at |m|, |n| of the receiver.
+ 
+ @param m    The row.
+ @param n    The column.
+ @param vl   The value to set.
+ */
+- (void)m:(int)m n:(int)n is:(double)vl;
 
 
 /// @name Matrix Operations
@@ -167,7 +186,7 @@
 - (YCMatrix *)matrixByAdding:(YCMatrix *)addend;
 
 /**
- Returns the result of subtracting |subtrahend| from the matrix.
+ Returns the result of subtracting |subtrahend| from the receiver.
  
  @param subtrahend The YCMatrix to subtract from this.
  
@@ -176,7 +195,7 @@
 - (YCMatrix *)matrixBySubtracting:(YCMatrix *)subtrahend;
 
 /**
- Returns the result of multiplying with right matrix |mt|.
+ Returns the result of multiplying the receiver with right matrix |mt|.
  
  @param mt The YCMatrix to multiply with.
  
@@ -185,7 +204,7 @@
 - (YCMatrix *)matrixByMultiplyingWithRight:(YCMatrix *)mt;
 
 /**
- Returns the result of multiplying with right matrix |mt| and optionally transposing
+ Returns the result of multiplying the receiver with right matrix |mt| and optionally transposing
  the result.
  
  @param mt    The YCMatrix to multiply with.
@@ -196,7 +215,7 @@
 - (YCMatrix *)matrixByMultiplyingWithRight:(YCMatrix *)mt AndTransposing:(bool)trans;
 
 /**
- Returns the result of multiplying with right matrix |mt| and adding
+ Returns the result of multiplying the receiver with right matrix |mt| and adding
  YCMatrix |ma| to the result.
  
  @param mt The YCMatrix to multiply with.
@@ -207,7 +226,7 @@
 - (YCMatrix *)matrixByMultiplyingWithRight:(YCMatrix *)mt AndAdding:(YCMatrix *)ma;
 
 /**
- Returns the result of multiplying with right matrix |mt| and then with scalar |factor|.
+ Returns the result of multiplying the receiver with right matrix |mt| and then with scalar |factor|.
  
  @param mt The YCMatrix to multiply with.
  @param sf The scalar factor to multiply with.
@@ -217,7 +236,7 @@
 - (YCMatrix *)matrixByMultiplyingWithRight:(YCMatrix *)mt AndFactor:(double)sf;
 
 /**
- Returns the result of transposing and multiplying with right matrix |mt|.
+ Returns the result of transposing the receiver and multiplying with right matrix |mt|.
  
  @param mt The YCMatrix to multiply with.
  
@@ -226,7 +245,7 @@
 - (YCMatrix *)matrixByTransposingAndMultiplyingWithRight:(YCMatrix *)mt;
 
 /**
- Returns the result of transposing and multiplying with left matrix |mt|.
+ Returns the result of transposing the receiver and multiplying with left matrix |mt|.
  
  @param mt The YCMatrix to multiply with.
  
@@ -235,7 +254,7 @@
 - (YCMatrix *)matrixByTransposingAndMultiplyingWithLeft:(YCMatrix *)mt;
 
 /**
- Returns the result of multiplying with scalar |ms|.
+ Returns the result of multiplying the receiver with scalar |ms|.
  
  @param ms The scalar to multiply with.
  
@@ -244,7 +263,7 @@
 - (YCMatrix *)matrixByMultiplyingWithScalar:(double)ms;
 
 /**
- Returns the result of multiplying with scalar |ms| and adding matrix |addend|.
+ Returns the result of multiplying the receiver with scalar |ms| and adding matrix |addend|.
  
  @param ms     The scalar to multiply with
  @param addend The YCMatrix to add.
@@ -254,21 +273,21 @@
 - (YCMatrix *)matrixByMultiplyingWithScalar:(double)ms AndAdding:(YCMatrix *)addend;
 
 /**
- Negates the matrix.
+ Negates the receiver.
  
  @return The result of the negation.
  */
 - (YCMatrix *)matrixByNegating;
 
 /**
- Transposes the matrix.
+ Transposes the receiver.
  
  @return The result of the transposition.
  */
 - (YCMatrix *)matrixByTransposing;
 
 /**
- Returns the result of elementwise multiplication with matrix |mt|.
+ Returns the result of elementwise multiplication of the receiver with matrix |mt|.
  
  @param mt The YCMatrix to elementwise multiply with.
  
@@ -294,7 +313,7 @@
 - (void)subtract:(YCMatrix *)subtrahend;
 
 /**
- Performs an in-place scalar multiplication of this matrix.
+ Performs an in-place scalar multiplication of the receiver.
  
  @param ms The scalar to multiply with.
  */
@@ -315,12 +334,12 @@
 /**
  Returns the trace of this matrix.
  
- @return A double corresponding to the calculated trace of this matrix.
+ @return A double corresponding to the calculated trace of the receiver.
  */
 - (double)trace;
 
 /**
- Returns a double resulting from the summation of an elementwise multiplication with |other|
+ Returns a double resulting from the summation of an elementwise multiplication of the receiver with |other|
 
  @param other The YCMatrix to perform the elementwise multiplication with.
 
@@ -337,14 +356,14 @@
 - (YCMatrix *)matrixByUnitizing;
 
 /**
- Returns YES if the matrix is square.
+ Returns YES if the receiver is a square matrix.
 
  @return Boolean denoting if the matrix is square.
  */
 - (BOOL)isSquare;
 
 /**
- Performs a comparison with another YCMatrix, using the specified precision
+ Compares the receiver with a YCMatrix, using the specified precision
  
  @param aMatrix The other matrix
  @param decimals the decimal places to use for comparisons
@@ -365,28 +384,28 @@
 - (void)checkBoundsForRow:(int)row Column:(int)column;
 
 /**
- Checks if matrix is square. Throws YCMatrixException if not.
+ Checks if the receiver is square. Throws YCMatrixException if not.
  */
 - (void)checkSquare;
 
 
 /**
- Returns the data array of this YCMatrix.
+ Returns the data array of the receiver.
  */
 @property (readonly) double *array;
 
 /**
- Returns a copy of the data array of this YCMatrix.
+ Returns a copy of the data array of thereceiver.
  */
 @property (readonly) double *arrayCopy;
 
 /**
- Returns an NSArray with the content of the data array of this YCMatrix.
+ Returns an NSArray with the content of the data array of the receiver.
  */
 @property (readonly) NSArray *numberArray;
 
 /**
- Returns a column matrix (vector) containing the elements of the diagonal.
+ Returns a column matrix (vector) containing the elements of the diagonal of the receiver.
  
  @warning   Calling this method repeatedly will incur a performance penalty,
             since the elements need to be extracted every time. Better store
@@ -395,22 +414,22 @@
 @property (readonly) YCMatrix *diagonal;
 
 /**
- Returns the number of rows of this YCMatrix.
+ Returns the number of rows of the receiver.
  */
 @property (readonly) int rows;
 
 /**
- Returns the number of columns of this YCMatrix.
+ Returns the number of columns of the receiver.
  */
 @property (readonly) int columns;
 
 /**
- Returns the length of the data array of this YCMatrix.
+ Returns the length of the data array of the receiver.
  */
 @property (readonly) NSUInteger count;
 
 /**
- Returns the sum of all the elements of this YCMatrix.
+ Returns the sum of all the elements of the receiver.
  */
 @property (readonly) double sum;
 

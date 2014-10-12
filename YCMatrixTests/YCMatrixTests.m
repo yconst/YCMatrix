@@ -60,17 +60,20 @@
     
     // Perform various get item tests
     TitleNSLog(@"Get Items Test");
-    CleanNSLog(@"Value at 0,0: %f",[simple_matrix getValueAtRow:0 Column:0]);
-    CleanNSLog(@"Value at 1,1: %f",[simple_matrix getValueAtRow:1 Column:1]);
-    CleanNSLog(@"Value at 2,1: %f",[simple_matrix getValueAtRow:2 Column:1]);
-    CleanNSLog(@"Value at 1,2: %f",[simple_matrix getValueAtRow:1 Column:2]);
-    CleanNSLog(@"Value at 2,2: %f",[simple_matrix getValueAtRow:2 Column:2]);
-    XCTAssertTrue([simple_matrix getValueAtRow:0 Column:0] == 1.0, @"GetValue error!");
-    XCTAssertTrue([simple_matrix getValueAtRow:1 Column:0] == 4.0, @"GetValue error!");
-    XCTAssertTrue([simple_matrix getValueAtRow:2 Column:0] == 7.0, @"GetValue error!");
-    XCTAssertTrue([simple_matrix getValueAtRow:0 Column:1] == 2.0, @"GetValue error!");
-    XCTAssertTrue([simple_matrix getValueAtRow:0 Column:2] == 3.0, @"GetValue error!");
-    XCTAssertTrue([simple_matrix getValueAtRow:2 Column:1] == 8.0, @"GetValue error!");
+    CleanNSLog(@"Value at 0,0: %f",[simple_matrix valueAtRow:0 Column:0]);
+    CleanNSLog(@"Value at 1,1: %f",[simple_matrix valueAtRow:1 Column:1]);
+    CleanNSLog(@"Value at 2,1: %f",[simple_matrix valueAtRow:2 Column:1]);
+    CleanNSLog(@"Value at 1,2: %f",[simple_matrix valueAtRow:1 Column:2]);
+    CleanNSLog(@"Value at 2,2: %f",[simple_matrix valueAtRow:2 Column:2]);
+    XCTAssertTrue([simple_matrix valueAtRow:0 Column:0] == 1.0, @"GetValue error!");
+    XCTAssertTrue([simple_matrix valueAtRow:1 Column:0] == 4.0, @"GetValue error!");
+    XCTAssertTrue([simple_matrix valueAtRow:2 Column:0] == 7.0, @"GetValue error!");
+    XCTAssertTrue([simple_matrix valueAtRow:0 Column:1] == 2.0, @"GetValue error!");
+    XCTAssertTrue([simple_matrix valueAtRow:0 Column:2] == 3.0, @"GetValue error!");
+    XCTAssertTrue([simple_matrix valueAtRow:2 Column:1] == 8.0, @"GetValue error!");
+    XCTAssertTrue([simple_matrix m:0 n:1] == 2.0, @"GetValue error!");
+    XCTAssertTrue([simple_matrix m:0 n:2] == 3.0, @"GetValue error!");
+    XCTAssertTrue([simple_matrix m:2 n:1] == 8.0, @"GetValue error!");
 }
 
 - (void)testDiagonal
