@@ -32,33 +32,20 @@
 
 + (instancetype)matrixOfRows:(int)m Columns:(int)n
 {
-	YCMatrix *mt = [[YCMatrix alloc] init];
-	double *new_m = calloc(m*n, sizeof(double));
-	mt->rows = m;
-	mt->columns = n;
-	mt->matrix = new_m;
-	return mt;
+    return [self matrixOfRows:m Columns:n ValuesInDiagonal:nil Value:0];
 }
 
 + (instancetype)dirtyMatrixOfRows:(int)m Columns:(int)n
 {
-	YCMatrix *mt = [[YCMatrix alloc] init];
-	double *new_m = malloc(m*n * sizeof(double));
-	mt->rows = m;
-	mt->columns = n;
-	mt->matrix = new_m;
-	return mt;
+    double *new_m = malloc(m*n * sizeof(double));
+	YCMatrix *mt = [self matrixFromArray:new_m Rows:m Columns:n Copy:NO];
+    mt->freeData = YES;
+    return mt;
 }
 
 + (instancetype)matrixOfRows:(int)m Columns:(int)n Value:(double)val
 {
-	YCMatrix *mt = [YCMatrix matrixOfRows:m Columns:n];
-	int len = m*n;
-	for (int i=0; i<len; i++)
-	{
-		mt->matrix[i] = val;
-	}
-	return mt;
+	return [self matrixOfRows:m Columns:n ValuesInDiagonal:nil Value:val];
 }
 
 + (instancetype)matrixOfRows:(int)m
@@ -66,24 +53,28 @@
             ValuesInDiagonal:(double *)diagonal
                        Value:(double)val
 {
-	YCMatrix *mt = [YCMatrix matrixOfRows:m Columns:n Value:val];
-	int mind = MIN(m, n);
-	for (int i=0; i<mind; i++)
+	double *new_m = malloc(m*n*sizeof(double));
+	YCMatrix *mt = [self matrixFromArray:new_m Rows:m Columns:n Copy:NO];
+    mt->freeData = YES;
+	int len = m*n;
+	for (int i=0; i<len; i++)
 	{
-		mt->matrix[i*(n+1)] = diagonal[i];
+		mt->matrix[i] = val;
 	}
+    if (diagonal)
+    {
+        int mind = MIN(m, n);
+        for (int i=0; i<mind; i++)
+        {
+            mt->matrix[i*(n+1)] = diagonal[i];
+        }
+    }
 	return mt;
 }
 
 + (instancetype)matrixFromArray:(double *)arr Rows:(int)m Columns:(int)n
 {
-	YCMatrix *mt = [[YCMatrix alloc] init];
-	double *new_m = malloc(m*n*sizeof(double));
-	memcpy(new_m, arr, m*n*sizeof(double));
-	mt->matrix = new_m;
-	mt->rows = m;
-	mt->columns = n;
-	return mt;
+	return [self matrixFromArray:arr Rows:m Columns:n Copy:YES];
 }
 
 + (instancetype)matrixFromArray:(double *)arr Rows:(int)m Columns:(int)n Copy:(BOOL)copy
@@ -94,10 +85,12 @@
 		double *new_m = malloc(m*n*sizeof(double));
 		memcpy(new_m, arr, m*n*sizeof(double));
 		mt->matrix = new_m;
+        mt->freeData = YES;
 	}
 	else
 	{
 		mt->matrix = arr;
+        mt->freeData = NO;
 	}
 	mt->rows = m;
 	mt->columns = n;
@@ -120,7 +113,7 @@
 	return newMatrix;
 }
 
-+ (instancetype) matrixFromMatrix:(YCMatrix *)other
++ (instancetype)matrixFromMatrix:(YCMatrix *)other
 {
 	YCMatrix *mt = [YCMatrix matrixFromArray:other->matrix Rows:other->rows Columns:other->columns];
 	return mt;
@@ -517,7 +510,7 @@
 #pragma mark Object Destruction
 
 - (void)dealloc {
-	free(self->matrix);
+	if (self->freeData) free(self->matrix);
 }
 
 #pragma mark NSCoding Implementation

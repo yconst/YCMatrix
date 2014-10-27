@@ -35,6 +35,7 @@
 	@public double *matrix;
 	@public int rows;
 	@public int columns;
+    @private BOOL freeData;
 }
 
 
