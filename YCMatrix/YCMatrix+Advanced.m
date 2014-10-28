@@ -53,9 +53,9 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     
     SVDColumnMajor([self matrixByTransposing]->matrix, rows, columns, &sa, &ua, &va);
     
-    YCMatrix *U = [[YCMatrix matrixFromArray:ua Rows:self->columns Columns:self->rows Copy:NO] matrixByTransposing]; // mxm
+    YCMatrix *U = [[YCMatrix matrixFromArray:ua Rows:self->columns Columns:self->rows Mode:YCMWeak] matrixByTransposing]; // mxm
     YCMatrix *S = [YCMatrix matrixOfRows:self->columns Columns:self->columns ValuesInDiagonal:sa Value:0]; // mxn
-    YCMatrix *V = [YCMatrix matrixFromArray:va Rows:self->columns Columns:self->columns Copy:NO]; // nxn
+    YCMatrix *V = [YCMatrix matrixFromArray:va Rows:self->columns Columns:self->columns Mode:YCMWeak]; // nxn
 
     return @{@"U" : U, @"S" : S, @"V" : V};
 }

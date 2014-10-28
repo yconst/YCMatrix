@@ -27,6 +27,8 @@
 
 #define Matrix YCMatrix
 
+typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
+
 #import <Foundation/Foundation.h>
 #import <Accelerate/Accelerate.h>
 
@@ -92,15 +94,16 @@
 
 /**
  Initializes and returns a new YCMatrix of |m| rows and |n| columns,
- by copying array |arr|.
+ by either weakly or strongly referencing, or copying array |arr|.
 
- @param arr The array of values.
- @param m   The number of rows.
- @param n   The number of columns.
+ @param arr  The array of values.
+ @param m    The number of rows.
+ @param n    The number of columns.
+ @param mode The reference mode.
 
  @return A new YCMatrix of |m| rows and |n| columns.
  */
-+ (instancetype)matrixFromArray:(double *)arr Rows:(int)m Columns:(int)n Copy:(BOOL)copy;
++ (instancetype)matrixFromArray:(double *)arr Rows:(int)m Columns:(int)n Mode:(refMode)mode;
 
 /**
  Initializes and returns a new YCMatrix of |m| rows and |n| columns,

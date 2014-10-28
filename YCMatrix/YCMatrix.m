@@ -38,7 +38,7 @@
 + (instancetype)dirtyMatrixOfRows:(int)m Columns:(int)n
 {
     double *new_m = malloc(m*n * sizeof(double));
-	YCMatrix *mt = [self matrixFromArray:new_m Rows:m Columns:n Copy:NO];
+	YCMatrix *mt = [self matrixFromArray:new_m Rows:m Columns:n Mode:YCMWeak];
     mt->freeData = YES;
     return mt;
 }
@@ -54,7 +54,7 @@
                        Value:(double)val
 {
 	double *new_m = malloc(m*n*sizeof(double));
-	YCMatrix *mt = [self matrixFromArray:new_m Rows:m Columns:n Copy:NO];
+	YCMatrix *mt = [self matrixFromArray:new_m Rows:m Columns:n Mode:YCMWeak];
     mt->freeData = YES;
 	int len = m*n;
 	for (int i=0; i<len; i++)
@@ -74,13 +74,13 @@
 
 + (instancetype)matrixFromArray:(double *)arr Rows:(int)m Columns:(int)n
 {
-	return [self matrixFromArray:arr Rows:m Columns:n Copy:YES];
+	return [self matrixFromArray:arr Rows:m Columns:n Mode:YCMCopy];
 }
 
-+ (instancetype)matrixFromArray:(double *)arr Rows:(int)m Columns:(int)n Copy:(BOOL)copy
++ (instancetype)matrixFromArray:(double *)arr Rows:(int)m Columns:(int)n Mode:(refMode)mode
 {
 	YCMatrix *mt = [[YCMatrix alloc] init];
-	if (copy)
+	if (mode == YCMCopy)
 	{
 		double *new_m = malloc(m*n*sizeof(double));
 		memcpy(new_m, arr, m*n*sizeof(double));
@@ -92,6 +92,7 @@
 		mt->matrix = arr;
         mt->freeData = NO;
 	}
+    if (mode != YCMWeak) mt->freeData = YES;
 	mt->rows = m;
 	mt->columns = n;
 	return mt;
