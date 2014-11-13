@@ -448,6 +448,36 @@
     }
 }
 
+- (YCMatrix *)sumsOfRows
+{
+    YCMatrix *result = [YCMatrix matrixOfRows:self->rows Columns:1];
+    for (int i=0; i<self->rows; i++)
+    {
+        double sum = 0;
+        for (int j=0; j<self->columns; j++)
+        {
+            sum += self->matrix[i*self->columns + j];
+        }
+        result->matrix[i] = sum;
+    }
+    return result;
+}
+
+- (YCMatrix *)sumsOfColumns
+{
+    YCMatrix *result = [YCMatrix matrixOfRows:1 Columns:self->columns];
+    for (int i=0; i<self->columns; i++)
+    {
+        double sum = 0;
+        for (int j=0; j<self->rows; j++)
+        {
+            sum += self->matrix[j*self->columns + i];
+        }
+        result->matrix[i] = sum;
+    }
+    return result;
+}
+
 // Returns a new YCMatrix by sampling |sampleCount| rows. If |replacement| is YES, it does
 // so using replacement
 - (YCMatrix *)matrixBySamplingRows:(NSUInteger)sampleCount Replacement:(BOOL)replacement
