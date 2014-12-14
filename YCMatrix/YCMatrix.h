@@ -437,4 +437,9 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
  */
 @property (readonly) double sum;
 
+/**
+ Returns the product of all the elements of the receiver.
+ */
+@property (readonly) double product;
+
 @end

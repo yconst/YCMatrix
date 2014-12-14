@@ -471,6 +471,17 @@
 	return sum;
 }
 
+- (double)product
+{
+    double product = 1;
+    NSUInteger j= [self count];
+    for (int i=0; i<j; i++)
+    {
+        product *= self->matrix[i];
+    }
+    return product;
+}
+
 - (BOOL)isSquare
 {
 	return self->rows == self->columns;
