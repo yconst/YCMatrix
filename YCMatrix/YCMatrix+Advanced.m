@@ -37,6 +37,24 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
 
 @implementation YCMatrix (Advanced)
 
++ (instancetype)randomValuesMatrixWithLowerBound:(YCMatrix *)lower upperBound:(YCMatrix *)upper
+{
+    if (lower.rows != upper.rows || lower.columns != upper.columns)
+    {
+        @throw [NSException exceptionWithName:@"YCMatrixException"
+                                       reason:@"Lower and upper bounds are not of the same size."
+                                     userInfo:nil];
+    }
+    YCMatrix *result = [lower copy];
+    YCMatrix *range = [upper matrixBySubtracting:lower];
+    
+    for (int i=0, j=(int)[result count]; i<j; i++)
+    {
+        result->matrix[i] += ((double)arc4random() / ARC4RANDOM_MAX) * range->matrix[i];
+    }
+    return result;
+}
+
 - (YCMatrix *)pseudoInverse
 {
     YCMatrix *ret = [YCMatrix matrixOfRows:self->columns Columns:self->rows];

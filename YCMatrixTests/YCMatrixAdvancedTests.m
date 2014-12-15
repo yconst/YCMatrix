@@ -16,6 +16,22 @@
 
 @implementation YCMatrixAdvancedTests
 
+- (void)testRandom
+{
+    YCMatrix *lower = [YCMatrix matrixFromNSArray:@[@10, @5, @5, @10] Rows:1 Columns:4];
+    YCMatrix *upper = [YCMatrix matrixFromNSArray:@[@20, @6, @10, @30] Rows:1 Columns:4];
+    YCMatrix *random = [YCMatrix randomValuesMatrixWithLowerBound:lower upperBound:upper];
+    CleanNSLog(@"%@", random);
+    XCTAssert([random i:0 j:0]>10);
+    XCTAssert([random i:0 j:0]<20);
+    XCTAssert([random i:0 j:1]>5);
+    XCTAssert([random i:0 j:1]<6);
+    XCTAssert([random i:0 j:2]>5);
+    XCTAssert([random i:0 j:2]<10);
+    XCTAssert([random i:0 j:3]>10);
+    XCTAssert([random i:0 j:3]<30);
+}
+
 - (void)testSVD
 {
     TitleNSLog(@"Singular Value Decomposition");

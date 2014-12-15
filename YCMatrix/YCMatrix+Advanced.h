@@ -31,6 +31,18 @@
 @interface YCMatrix (Advanced)
 
 /**
+ Returns a matrix containing random values between |lower| and |upper|. 
+ The parameter matrices should have the same dimensions, and the resulting 
+ matrix will also be of the same dimensions as the parameters.
+ 
+ @param lower Matrix containing values for the lower bounds.
+ @param upper Matrix containing values for the upper bounds.
+ 
+ @return Matrix of random values between lower and upper, and of the same size.
+ */
++ (instancetype)randomValuesMatrixWithLowerBound:(YCMatrix *)lower upperBound:(YCMatrix *)upper;
+
+/**
  Returns the pseudo-inverse of the receiver.
  The calculation is performed using Singular Value Decomposition.
  

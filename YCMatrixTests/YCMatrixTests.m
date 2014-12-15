@@ -71,9 +71,9 @@
     XCTAssertTrue([simple_matrix valueAtRow:0 Column:1] == 2.0, @"GetValue error!");
     XCTAssertTrue([simple_matrix valueAtRow:0 Column:2] == 3.0, @"GetValue error!");
     XCTAssertTrue([simple_matrix valueAtRow:2 Column:1] == 8.0, @"GetValue error!");
-    XCTAssertTrue([simple_matrix m:0 n:1] == 2.0, @"GetValue error!");
-    XCTAssertTrue([simple_matrix m:0 n:2] == 3.0, @"GetValue error!");
-    XCTAssertTrue([simple_matrix m:2 n:1] == 8.0, @"GetValue error!");
+    XCTAssertTrue([simple_matrix i:0 j:1] == 2.0, @"GetValue error!");
+    XCTAssertTrue([simple_matrix i:0 j:2] == 3.0, @"GetValue error!");
+    XCTAssertTrue([simple_matrix i:2 j:1] == 8.0, @"GetValue error!");
 }
 
 - (void)testDiagonal
