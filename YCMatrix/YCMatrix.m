@@ -139,10 +139,10 @@
 	return matrix[row*columns + column];
 }
 
-- (double)m:(int)m n:(int)n
+- (double)i:(int)i j:(int)j
 {
-	[self checkBoundsForRow:m Column:n];
-	return matrix[m*columns + n];
+	[self checkBoundsForRow:i Column:j];
+	return matrix[i*columns + j];
 }
 
 - (void)setValue:(double)vl Row:(int)row Column:(int)column
@@ -151,10 +151,10 @@
 	matrix[row*columns + column] = vl;
 }
 
-- (void)m:(int)m n:(int)n is:(double)vl
+- (void)i:(int)i j:(int)j is:(double)vl
 {
-	[self checkBoundsForRow:m Column:n];
-	matrix[m*columns + n] = vl;
+	[self checkBoundsForRow:i Column:j];
+	matrix[i*columns + j] = vl;
 }
 
 - (void)checkBoundsForRow:(int)row Column:(int)column

@@ -150,14 +150,14 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
 - (double)valueAtRow:(int)row Column:(int)column;
 
 /**
- Returns the value at position |m|, |n| of the receiver.
+ Returns the value at position |i|, |j| of the receiver.
  
- @param m    The row.
- @param n The column.
+ @param i    The row.
+ @param j The column.
  
- @return A double corresponding to the value at position |m|, |n|.
+ @return A double corresponding to the value at position |i|, |j|.
  */
-- (double)m:(int)m n:(int)n;
+- (double)i:(int)i j:(int)j;
 
 /**
  Sets value |vl| at |row|, |column| of the receiver.
@@ -169,13 +169,13 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
 - (void)setValue:(double)vl Row:(int)row Column:(int)column;
 
 /**
- Sets value |vl| at |m|, |n| of the receiver.
+ Sets value |vl| at |i|, |j| of the receiver.
  
- @param m    The row.
- @param n    The column.
+ @param i    The row.
+ @param j    The column.
  @param vl   The value to set.
  */
-- (void)m:(int)m n:(int)n is:(double)vl;
+- (void)i:(int)i j:(int)j is:(double)vl;
 
 
 /// @name Matrix Operations
