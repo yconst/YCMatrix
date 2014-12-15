@@ -32,7 +32,7 @@ frameworks.
     YCMatrix *I = [YCMatrix identityOfRows:3 Columns:3];
     YCMatrix *C = [YCMatrix matrixOfRows:3 Columns:3 Value:2];
     YCMatrix *S = [I matrixByAddition:C];
-    NSLog(@"Result:\n%@", S];
+    NSLog(@"Result:\n%@", S);
     
     // Result:
     // 3.0  2.0  2.0
