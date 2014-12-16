@@ -151,7 +151,7 @@
 	matrix[row*columns + column] = vl;
 }
 
-- (void)i:(int)i j:(int)j is:(double)vl
+- (void)i:(int)i j:(int)j set:(double)vl
 {
 	[self checkBoundsForRow:i Column:j];
 	matrix[i*columns + j] = vl;

@@ -175,7 +175,7 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
  @param j    The column.
  @param vl   The value to set.
  */
-- (void)i:(int)i j:(int)j is:(double)vl;
+- (void)i:(int)i j:(int)j set:(double)vl;
 
 
 /// @name Matrix Operations
