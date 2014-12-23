@@ -201,6 +201,8 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     
     if(info > 0) {
         /* singular matrix */
+        free(ipvt);
+        free(A);
         return 0.0;
     }
     
@@ -467,6 +469,8 @@ with the row values consecutive order used by the FORTRAN dgesdd_ routine.
     }
     
     SVDColumnMajor(Atrans, rows, columns, &S, &U, &Vt);
+    
+    free(Atrans);
     
     /* Use the max of the eigenvalues to normalize the zero tolerance */
     minmn = MIN(rows,columns); // The dimensions of S are min(rows,columns)
