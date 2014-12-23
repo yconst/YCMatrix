@@ -316,11 +316,18 @@
 	return trans;
 }
 
-- (YCMatrix *)matrixByElementWiseMultiplyingWith:(YCMatrix *)mt
+- (YCMatrix *)matrixByElementWiseMultiplyWith:(YCMatrix *)mt
 {
 	YCMatrix *result = [self copy];
 	[result elementWiseMultiply:mt];
 	return result;
+}
+
+- (YCMatrix *)matrixByElementWisDivideBy:(YCMatrix *)mt
+{
+    YCMatrix *result = [self copy];
+    [result elementWiseDivide:mt];
+    return result;
 }
 
 - (void)add:(YCMatrix *)addend
@@ -361,6 +368,18 @@
 	{
 		self->matrix[i] *= mt->matrix[i];
 	}
+}
+
+- (void)elementWiseDivide:(YCMatrix *)mt
+{
+    if(columns != mt->columns || rows != mt->rows || sizeof(matrix) != sizeof(mt->matrix))
+        @throw [NSException exceptionWithName:@"MatrixSizeException"
+                                       reason:@"Matrix size mismatch."
+                                     userInfo:nil];
+    for (int i=0, j=self->rows * self->columns; i<j; i++)
+    {
+        self->matrix[i] /= mt->matrix[i];
+    }
 }
 
 - (double)trace

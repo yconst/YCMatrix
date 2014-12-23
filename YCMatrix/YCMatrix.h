@@ -297,8 +297,16 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
  
  @return The result of the elementwise multiplication.
  */
-- (YCMatrix *)matrixByElementWiseMultiplyingWith:(YCMatrix *)mt;
+- (YCMatrix *)matrixByElementWiseMultiplyWith:(YCMatrix *)mt;
 
+/**
+ Returns the result of elementwise division of the receiver by matrix |mt|.
+ 
+ @param mt The YCMatrix to elementwise divide by.
+ 
+ @return The result of the elementwise division.
+ */
+- (YCMatrix *)matrixByElementWisDivideBy:(YCMatrix *)mt;
 
 /// @name In-place Matrix Operations
 
@@ -334,6 +342,13 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
  @param mt The result of the elementwise multiplication.
  */
 - (void)elementWiseMultiply:(YCMatrix *)mt;
+
+/**
+ Returns the result of an elementwise division by YCMatrix |mt|.
+ 
+ @param mt The result of the elementwise division.
+ */
+- (void)elementWiseDivide:(YCMatrix *)mt;
 
 /**
  Returns the trace of this matrix.
