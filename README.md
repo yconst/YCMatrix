@@ -48,7 +48,7 @@ definition, and two categories:
 - YCMatrix+Advanced.h    : Interface to more advanced LAPACK functions.
 - YCMatrix+Manipulate.h  : Functions for manipulating rows/columns etc.
 
-Please refer to the [docs](http://cocoadocs.org/docsets/YCMatrix/0.5.0/) for a complete overview of the functionality 
+Please refer to the [docs](http://cocoadocs.org/docsets/YCMatrix/) for a complete overview of the functionality 
 contained in each of the categories.
 
 ##License
