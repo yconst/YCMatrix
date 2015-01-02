@@ -40,7 +40,6 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
     @private BOOL freeData;
 }
 
-
 /// @name Initialization
 
 /**
@@ -52,6 +51,24 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
  @return A new YCMatrix of |m| rows and |n| columns.
  */
 + (instancetype)matrixOfRows:(int)m Columns:(int)n;
+
+/**
+ Initializes and returns a new YCMatrix with the same number of rows and columns as |other|.
+ 
+ @param other The matrix whose number of rows and columns to clone.
+ 
+ @return A new YCMatrix with the same number of rows and columns as |other|.
+ */
++ (instancetype)matrixLike:(YCMatrix *)other;
+
+/**
+ Initializes and returns a new YCMatrix of ones with the same number of rows and columns as |other|.
+ 
+ @param other The matrix whose number of rows and columns to clone.
+ 
+ @return A new YCMatrix of ones with the same number of rows and columns as |other|.
+ */
++ (instancetype)onesLike:(YCMatrix *)other;
 
 /**
  Initializes and returns a new YCMatrix of |m| rows and |n| columns, each containing value |val|.

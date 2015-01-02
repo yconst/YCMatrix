@@ -49,6 +49,13 @@
     XCTAssertEqualObjects(idm, idmRef, @"Error in creating Identity Matrix");
 }
 
+- (void)testOnes
+{
+    YCMatrix *template = [YCMatrix matrixOfRows:5 Columns:5 Value:1];
+    YCMatrix *match = [YCMatrix onesLike:template];
+    XCTAssertEqualObjects(template, match, @"Error in creating matrix of ones.");
+}
+
 - (void)testRetrieval
 {
     TitleNSLog(@"Simple Array Test");

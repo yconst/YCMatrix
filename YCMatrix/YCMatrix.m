@@ -35,6 +35,16 @@
     return [self matrixOfRows:m Columns:n ValuesInDiagonal:nil Value:0];
 }
 
++ (instancetype)matrixLike:(YCMatrix *)other
+{
+    return [self matrixOfRows:other->rows Columns:other->columns];
+}
+
++ (instancetype)onesLike:(YCMatrix *)other
+{
+    return [self matrixOfRows:other->rows Columns:other->columns Value:1.0];
+}
+
 + (instancetype)dirtyMatrixOfRows:(int)m Columns:(int)n
 {
     double *new_m = malloc(m*n * sizeof(double));
