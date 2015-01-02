@@ -30,6 +30,7 @@
 //
 
 #import "YCMatrix+Advanced.h"
+#import "Constants.h"
 
 static void SVDColumnMajor(double *A, int rows, int columns, double **s, double **u, double **vt);
 static void pInv(double *A, int rows, int columns, double *Aplus);

@@ -25,6 +25,7 @@
 // THE SOFTWARE.
 
 #import "YCMatrix+Manipulate.h"
+#import "Constants.h"
 
 @implementation YCMatrix (Manipulate)
 

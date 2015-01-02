@@ -25,6 +25,7 @@
 // THE SOFTWARE.
 
 #import "YCMatrix.h"
+#import "Constants.h"
 
 @implementation YCMatrix
 
