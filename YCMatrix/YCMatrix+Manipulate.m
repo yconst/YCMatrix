@@ -155,7 +155,7 @@
     return columnsArray;
 }
 
-- (YCMatrix *)addRowToAllRows:(YCMatrix *)addend
+- (YCMatrix *)matrixByAddingRow:(YCMatrix *)addend
 {
     if (addend->rows != 1 || addend->columns != self->columns)
     {
@@ -178,12 +178,13 @@
     return sum;
 }
 
-- (YCMatrix *)subtractRowFromAllRows:(YCMatrix *)subtrahend
+- (YCMatrix *)matrixBySubtractingRow:(YCMatrix *)subtrahend
 {
-    return [self addRowToAllRows:[subtrahend matrixByNegating]];
+    // TODO: Reimplement as common function, with "subtract" option
+    return [self matrixByAddingRow:[subtrahend matrixByNegating]];
 }
 
-- (YCMatrix *)multiplyAllRowsWithRow:(YCMatrix *)factor{
+- (YCMatrix *)matrixByMultiplyingWithRow:(YCMatrix *)factor{
     if (factor->rows != 1 || factor->columns != self->columns)
     {
         @throw [NSException exceptionWithName:@"MatrixSizeException"
@@ -205,7 +206,7 @@
     return product;
 }
 
-- (YCMatrix *)addColumnToAllColumns:(YCMatrix *)addend
+- (YCMatrix *)matrixByAddingColumn:(YCMatrix *)addend
 {
     if (addend->columns != 1 || addend->rows != self->rows)
     {
@@ -228,12 +229,12 @@
     return sum;
 }
 
-- (YCMatrix *)subtractColumnFromAllColumns:(YCMatrix *)subtrahend
+- (YCMatrix *)matrixBySubtractingColumn:(YCMatrix *)subtrahend
 {
-    return [self addColumnToAllColumns:[subtrahend matrixByNegating]];
+    return [self matrixByAddingColumn:[subtrahend matrixByNegating]];
 }
 
-- (YCMatrix *)multiplyAllColumnsWithColumn:(YCMatrix *)factor
+- (YCMatrix *)matrixByMultiplyingWithColumn:(YCMatrix *)factor
 {
     if (factor->columns != 1 || factor->rows != self->rows)
     {

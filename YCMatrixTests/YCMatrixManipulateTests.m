@@ -130,4 +130,23 @@
     XCTAssertEqualObjects(expectedColumns, resultColumns, @"Error while extracting columns to sub-matrix");
 }
 
+- (void)testRowAndColumnAdditionsSubtractions
+{
+    TitleNSLog(@"Row / Column Additions / Subtractions");
+    double simple_array[16] = { 1.0, 2.0, 3.0, 4.0,
+        5.0, 6.0, 7.0, 8.0,
+        9.0, 10.0, 11.0, 12.0,
+        13.0, 14.0, 15.0, 16.0 };
+    YCMatrix *original = [YCMatrix matrixFromArray:simple_array Rows:4 Columns:4];
+    double element[4] = { 4.0, 1.0, -40.0, -22.5 };
+    YCMatrix *column = [YCMatrix matrixFromArray:element Rows:4 Columns:1];
+    YCMatrix *row = [YCMatrix matrixFromArray:element Rows:1 Columns:4];
+    YCMatrix *step1 = [original matrixByAddingRow:row];
+    YCMatrix *step2 = [step1 matrixByAddingColumn:column];
+    YCMatrix *step3 = [step2 matrixBySubtractingColumn:column];
+    YCMatrix *step4 = [step3 matrixBySubtractingRow:row];
+    
+    XCTAssertEqualObjects(original, step4, @"Error while Adding / Subtracting Rows / Columns");
+}
+
 @end

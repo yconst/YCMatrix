@@ -102,7 +102,7 @@
  
  @return The matrix after the addition.
  */
-- (YCMatrix *)addRowToAllRows:(YCMatrix *)addend;
+- (YCMatrix *)matrixByAddingRow:(YCMatrix *)addend;
 
 /**
  Returns a matrix resulting from subtracting the values in 
@@ -112,7 +112,7 @@
  
  @return The matrix after the subtraction.
  */
-- (YCMatrix *)subtractRowFromAllRows:(YCMatrix *)subtrahend;
+- (YCMatrix *)matrixBySubtractingRow:(YCMatrix *)subtrahend;
 
 /**
  Returns a matrix resulting from multiplying the values in 
@@ -122,7 +122,7 @@
  
  @return The matrix after the multiplication
  */
-- (YCMatrix *)multiplyAllRowsWithRow:(YCMatrix *)factor;
+- (YCMatrix *)matrixByMultiplyingWithRow:(YCMatrix *)factor;
 
 /**
  Returns a matrix resulting from adding the values in the 
@@ -132,7 +132,7 @@
  
  @return The matrix after the addition.
  */
-- (YCMatrix *)addColumnToAllColumns:(YCMatrix *)addend;
+- (YCMatrix *)matrixByAddingColumn:(YCMatrix *)addend;
 
 /**
  Returns a matrix resulting from subtracting the values in 
@@ -142,7 +142,7 @@
  
  @return The matrix after the subtraction.
  */
-- (YCMatrix *)subtractColumnFromAllColumns:(YCMatrix *)subtrahend;
+- (YCMatrix *)matrixBySubtractingColumn:(YCMatrix *)subtrahend;
 
 /**
  Returns a matrix resulting from multiplying the values in 
@@ -152,7 +152,7 @@
  
  @return The matrix after the multiplication
  */
-- (YCMatrix *)multiplyAllColumnsWithColumn:(YCMatrix *)factor;
+- (YCMatrix *)matrixByMultiplyingWithColumn:(YCMatrix *)factor;
 
 /**
  Returns a new matrix with the values of the columns 
