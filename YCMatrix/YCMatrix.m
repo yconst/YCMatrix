@@ -528,14 +528,14 @@
 	return YES;
 }
 
-- (BOOL)isEqualToMatrix:(YCMatrix *)aMatrix Precision:(int)decimals
+- (BOOL)isEqualToMatrix:(YCMatrix *)aMatrix tolerance:(double)tolerance
 {
     if (self->rows != aMatrix->rows || self->columns != aMatrix->columns) return NO;
-    double mult = pow(10, decimals);
     int arr_length = self->rows * self->columns;
     for (int i=0; i<arr_length; i++)
     {
-		if ( (int)((matrix[i] - aMatrix->matrix[i]) * mult) / mult ) return NO;
+        double diff = ABS(matrix[i] - aMatrix->matrix[i]);
+		if (  diff > tolerance ) return NO;
 	}
     return YES;
 }

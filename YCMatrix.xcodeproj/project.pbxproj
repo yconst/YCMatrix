@@ -155,9 +155,9 @@
 				CBBE02DD178F216800744F77 /* YCMatrix+Advanced.m */,
 				CBBE02DE178F216800744F77 /* YCMatrix+Manipulate.h */,
 				CBBE02DF178F216800744F77 /* YCMatrix+Manipulate.m */,
-				CBBE02B6178F215000744F77 /* Supporting Files */,
 				CBD7D3D018A4DD10006A04C0 /* YCMatrix+Map.h */,
 				CBD7D3D118A4DD10006A04C0 /* YCMatrix+Map.m */,
+				CBBE02B6178F215000744F77 /* Supporting Files */,
 			);
 			path = YCMatrix;
 			sourceTree = "<group>";

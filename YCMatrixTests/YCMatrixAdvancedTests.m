@@ -48,7 +48,7 @@
     YCMatrix *reconstructed = [[svdResults[@"U"] matrixByMultiplyingWithRight:svdResults[@"S"]] matrixByMultiplyingWithRight:[svdResults[@"V"] matrixByTransposing]];
     CleanNSLog(@"Original:\n%@", original);
     CleanNSLog(@"Reconstructed:\n%@", reconstructed);
-    XCTAssert([reconstructed isEqualToMatrix:original Precision:6], @"Error in Singular Value Decomposition");
+    XCTAssert([reconstructed isEqualToMatrix:original tolerance:1E-6], @"Error in Singular Value Decomposition");
 }
 
 - (void)testPseudoInverse
@@ -118,7 +118,7 @@
     YCMatrix *ev = [original eigenvalues];
     YCMatrix *evRef = [YCMatrix matrixFromArray:ref_array  Rows:1 Columns:3];
     CleanNSLog(@"%@", ev);
-    XCTAssert([ev isEqualToMatrix:evRef Precision:3], @"Error with Eigenvalue calculation");
+    XCTAssert([ev isEqualToMatrix:evRef tolerance:1E-4], @"Error with Eigenvalue calculation");
 }
 
 - (void)testDeterminant

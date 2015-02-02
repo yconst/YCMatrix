@@ -399,14 +399,14 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
 - (BOOL)isSquare;
 
 /**
- Compares the receiver with a YCMatrix, using the specified precision
+ Compares the receiver with a YCMatrix, using the specified numerical tolerance
  
  @param aMatrix The other matrix
- @param decimals the decimal places to use for comparisons
+ @param precision The numerical tolerance used for comparison
  
  @return Boolean showing whether the YCMatrix objects are equal or not.
  */
-- (BOOL)isEqualToMatrix:(YCMatrix *)aMatrix Precision:(int)decimals;
+- (BOOL)isEqualToMatrix:(YCMatrix *)aMatrix tolerance:(double)tolerance;
 
 
 /// @name Checks

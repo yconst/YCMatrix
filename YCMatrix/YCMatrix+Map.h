@@ -1,5 +1,5 @@
 //
-//  YCMatrix+Normalize.h
+//  YCMatrix+Map.h
 //
 // Copyright (c) 2013, 2014 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 // http://yconst.com
@@ -24,18 +24,48 @@
 
 #import <YCMatrix/YCMatrix.h>
 
-typedef enum MapBasis : int16_t {
+typedef enum _MapBasis : int16_t
+{
     StDev = 1,
     MinMax = 0
 } MapBasis;
+
+typedef struct _YCDomain
+{
+    double location;
+    double length;
+} YCDomain;
+
+static inline YCDomain YCMakeDomain(double loc, double len)
+{
+    YCDomain d;
+    d.location = loc;
+    d.length = len;
+    return d;
+}
+
+static inline NSUInteger YCMaxDomain(YCDomain domain)
+{
+    return (domain.location + domain.length);
+}
+
+static inline BOOL YCNumberInDomain(double num, YCDomain domain)
+{
+    return (!(num < domain.location) && (num - domain.location) < domain.length) ? YES : NO;
+}
+
+static inline BOOL YCEqualDomains(YCDomain domain1, YCDomain domain2)
+{
+    return (domain1.location == domain2.location && domain1.length == domain2.length);
+}
 
 @interface YCMatrix (Map)
 
 // Transform matrix |mtx| using transformation bi-vector |transform|
 - (YCMatrix *)matrixByRowWiseMapUsing:(YCMatrix *)transform;
 
-- (YCMatrix *)rowWiseMapToRange:(NSRange)range basis:(MapBasis)basis;
+- (YCMatrix *)rowWiseMapToDomain:(YCDomain)domain basis:(MapBasis)basis;
 
-- (YCMatrix *)rowWiseInverseMapFromRange:(NSRange)range basis:(MapBasis)basis;
+- (YCMatrix *)rowWiseInverseMapFromDomain:(YCDomain)domain basis:(MapBasis)basis;
 
 @end

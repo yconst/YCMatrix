@@ -45,15 +45,15 @@
     return transformed;
 }
 
-- (YCMatrix *)rowWiseMapToRange:(NSRange)range basis:(MapBasis)basis
+- (YCMatrix *)rowWiseMapToDomain:(YCDomain)domain basis:(MapBasis)basis
 {
     int numRows = self->rows;
     int numColumns = self->columns;
     NSArray *matrixRows = [self RowsAsNSArray];
     YCMatrix *transform = [YCMatrix matrixOfRows:numRows Columns:2];
     int i=0;
-    double tmean = range.location + range.length * 0.5;
-    double trange = range.length;
+    double tmean = domain.location + domain.length * 0.5;
+    double trange = domain.length;
     for (YCMatrix *m in matrixRows)
     {
         double a, b;
@@ -68,9 +68,9 @@
             double fstdev = 0;
             for (int j=0; j<numColumns; j++)
             {
-                fstdev += pow(m->matrix[j] - fmean,2);
+                fstdev += pow(m->matrix[j] - fmean, 2);
             }
-            fstdev = sqrt(fstdev/(numColumns - 1));
+            fstdev = sqrt(fstdev/numColumns);
             frange = 2*fstdev;
         }
         else
@@ -92,15 +92,15 @@
     return transform;
 }
 
-- (YCMatrix *)rowWiseInverseMapFromRange:(NSRange)range basis:(MapBasis)basis
+- (YCMatrix *)rowWiseInverseMapFromDomain:(YCDomain)domain basis:(MapBasis)basis
 {
     int numRows = self->rows;
     int numColumns = self->columns;
     NSArray *matrixRows = [self RowsAsNSArray];
     YCMatrix *transform = [YCMatrix matrixOfRows:numRows Columns:2];
     int i=0;
-    double fmean = range.location + range.length * 0.5;
-    double frange = range.length;
+    double fmean = domain.location + domain.length * 0.5;
+    double frange = domain.length;
     for (YCMatrix *m in matrixRows)
     {
         double a, b;
@@ -115,9 +115,9 @@
             double tstdev = 0;
             for (int j=0; j<numColumns; j++)
             {
-                tstdev += pow(m->matrix[j] - tmean,2);
+                tstdev += pow(m->matrix[j] - tmean, 2);
             }
-            tstdev = sqrt(tstdev/(numColumns - 1));
+            tstdev = sqrt(tstdev/numColumns);
             trange = 2*tstdev;
         }
         else
