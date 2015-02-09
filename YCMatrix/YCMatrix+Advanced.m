@@ -271,6 +271,15 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     }
 }
 
+- (double)euclideanDistanceTo:(YCMatrix *)other
+{
+    YCMatrix *result = [self matrixBySubtracting:other];
+    [result applyFunction:^double(double value) {
+        return value*value;
+    }];
+    return sqrt([result sum]);
+}
+
 @end
 
 static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, double *vecR)

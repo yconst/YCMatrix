@@ -119,7 +119,24 @@
 // Returns a new matrix with each cell being the result of a function application
 - (YCMatrix *)matrixByApplyingFunction:(double (^)(double value))function;
 
-// Applies a function to each cell
+/**
+ Applies a function to each cell of the receiver.
+ 
+ @param function The function to apply.
+ */
 - (void)applyFunction:(double (^)(double value))function;
+
+/**
+ Returns the multidimensional Euclidean distance of the receiver to another matrix.
+ 
+ @param other The matrix to claculate the distance to.
+ 
+ @return The calculated distance.
+ 
+ @warning This method will accept any kind of matrix as parameter, as long as the
+          dimensions are equal.
+ 
+ */
+- (double)euclideanDistanceTo:(YCMatrix *)other;
 
 @end

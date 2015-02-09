@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		CB14DF7818B413120056F29F /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB14DF7718B413120056F29F /* XCTest.framework */; };
+		CB26DAA21A856232007F73E2 /* NSArray+Matrix.h in Headers */ = {isa = PBXBuildFile; fileRef = CB26DAA01A856232007F73E2 /* NSArray+Matrix.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB26DAA31A856232007F73E2 /* NSArray+Matrix.m in Sources */ = {isa = PBXBuildFile; fileRef = CB26DAA11A856232007F73E2 /* NSArray+Matrix.m */; };
 		CB9F9CFD19DAE83E00B6A1E4 /* ycmatrix.png in Resources */ = {isa = PBXBuildFile; fileRef = CB9F9CFC19DAE83E00B6A1E4 /* ycmatrix.png */; };
 		CBBE02B0178F215000744F77 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBE02AF178F215000744F77 /* Cocoa.framework */; };
 		CBBE02BA178F215000744F77 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBBE02B8178F215000744F77 /* InfoPlist.strings */; };
@@ -43,6 +45,8 @@
 /* Begin PBXFileReference section */
 		CB14DF7718B413120056F29F /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		CB2242AF19D413C0005B3F7E /* AppledocSettings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = AppledocSettings.plist; sourceTree = "<group>"; };
+		CB26DAA01A856232007F73E2 /* NSArray+Matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Matrix.h"; sourceTree = "<group>"; };
+		CB26DAA11A856232007F73E2 /* NSArray+Matrix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Matrix.m"; sourceTree = "<group>"; };
 		CB4BAA9919D2CE3D001E7A7A /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		CB58B99D19D1ED310097EEB1 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		CB84DE0219D4B254009EED7E /* YCMatrix.podspec.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = YCMatrix.podspec.json; sourceTree = "<group>"; };
@@ -99,6 +103,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CB26DA9F1A856219007F73E2 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				CB26DAA01A856232007F73E2 /* NSArray+Matrix.h */,
+				CB26DAA11A856232007F73E2 /* NSArray+Matrix.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		CBBE02A2178F215000744F77 = {
 			isa = PBXGroup;
 			children = (
@@ -157,6 +170,7 @@
 				CBBE02DF178F216800744F77 /* YCMatrix+Manipulate.m */,
 				CBD7D3D018A4DD10006A04C0 /* YCMatrix+Map.h */,
 				CBD7D3D118A4DD10006A04C0 /* YCMatrix+Map.m */,
+				CB26DA9F1A856219007F73E2 /* Categories */,
 				CBBE02B6178F215000744F77 /* Supporting Files */,
 			);
 			path = YCMatrix;
@@ -203,6 +217,7 @@
 			files = (
 				CBD5120719D37764004DD8D3 /* Constants.h in Headers */,
 				CBBE02E0178F216800744F77 /* YCMatrix+Advanced.h in Headers */,
+				CB26DAA21A856232007F73E2 /* NSArray+Matrix.h in Headers */,
 				CBBE02E2178F216800744F77 /* YCMatrix+Manipulate.h in Headers */,
 				CBBE0301178F258B00744F77 /* YCMatrix.h in Headers */,
 				CBD7D3D218A4DD10006A04C0 /* YCMatrix+Map.h in Headers */,
@@ -317,6 +332,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB26DAA31A856232007F73E2 /* NSArray+Matrix.m in Sources */,
 				CBD7D3D318A4DD10006A04C0 /* YCMatrix+Map.m in Sources */,
 				CBBE02BE178F215000744F77 /* YCMatrix.m in Sources */,
 				CBBE02E1178F216800744F77 /* YCMatrix+Advanced.m in Sources */,
