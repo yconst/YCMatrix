@@ -273,11 +273,14 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
 
 - (double)euclideanDistanceTo:(YCMatrix *)other
 {
+    return sqrt([self quadranceTo:other]);
+}
+
+- (double)quadranceTo:(YCMatrix *)other
+{
     YCMatrix *result = [self matrixBySubtracting:other];
-    [result applyFunction:^double(double value) {
-        return value*value;
-    }];
-    return sqrt([result sum]);
+    [result elementWiseMultiply:result];
+    return [result sum];
 }
 
 @end
@@ -353,7 +356,7 @@ static void SVDColumnMajor(double *A, int rows, int columns, double **s, double 
      * First call of dgesdd is with lwork=-1 to calculate an optimal value of
      * lwork
      */
-    iwork = (int *) malloc(sizeof(long int)*8*MIN(rows,columns));
+    iwork = (int *) malloc(sizeof(int)*8*MIN(rows,columns));
     lwork=-1;
     
     /* Need a single location in work to store the recommended value of lwork */

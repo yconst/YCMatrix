@@ -139,4 +139,17 @@
  */
 - (double)euclideanDistanceTo:(YCMatrix *)other;
 
+/**
+ Returns the multidimensional Quadrance (square of Euclidean distance of the receiver to another matrix.
+ 
+ @param other The matrix to claculate the distance to.
+ 
+ @return The calculated quadrance.
+ 
+ @warning This method will accept any kind of matrix as parameter, as long as the
+ dimensions are equal.
+ 
+ */
+- (double)quadranceTo:(YCMatrix *)other;
+
 @end

@@ -480,65 +480,70 @@
     return result;
 }
 
-// Returns a new YCMatrix by sampling |sampleCount| rows. If |replacement| is YES, it does
-// so using replacement
 - (YCMatrix *)matrixBySamplingRows:(NSUInteger)sampleCount Replacement:(BOOL)replacement
 {
     int rowSize = self->rows;
     int colSize = self->columns;
     int colMemory = colSize * sizeof(double);
-    YCMatrix *new = [YCMatrix matrixOfRows:(int)sampleCount Columns:(int)colSize];
+    YCMatrix *new = [YCMatrix matrixOfRows:(int)sampleCount Columns:colSize];
     if (replacement)
     {
         for (int i=0; i<sampleCount; i++)
         {
             int rnd = arc4random_uniform((int)self->rows);
-            memcpy(new->matrix + i * colMemory, new->matrix + rnd * colMemory, colSize);
+            memcpy(new->matrix + i * colMemory, self->matrix + rnd * colMemory, colSize);
         }
     }
     else
     {
-        NSUInteger toGo = sampleCount;
-        for (int i=0; i<rowSize; i++)
+        // Knuth's S algorithm
+        int i = 0;
+        int n = (int)sampleCount;
+        int samples = n;
+        NSUInteger N = rowSize;
+        while (n > 0)
         {
-            int rnd = arc4random_uniform((int)rowSize);
-            if (rnd < toGo)
+            if (N * (double)arc4random() / 0x1000000000 <= n)
             {
-                toGo--;
-                memcpy(new->matrix + toGo * colMemory, new->matrix + i * colMemory, colSize);
+                memcpy(new->matrix + (samples - n) * colMemory, self->matrix + i * colMemory, colSize);
+                n--;
             }
+            i++;
+            N--;
         }
     }
     return new;
 }
 
-// Returns a new YCMatrix by sampling |sampleCount| columns. If |replacement| is YES, it does
-// so using replacement
 - (YCMatrix *)matrixBySamplingColumns:(NSUInteger)sampleCount Replacement:(BOOL)replacement
 {
     int rowSize = self->rows;
     int colSize = self->columns;
-    int colMemory = colSize * sizeof(double);
-    YCMatrix *new = [YCMatrix matrixOfRows:(int)rowSize Columns:(int)sampleCount];
+    YCMatrix *new = [YCMatrix matrixOfRows:rowSize Columns:(int)sampleCount];
     if (replacement)
     {
         for (int i=0; i<sampleCount; i++)
         {
-            //long rnd = arc4random_uniform((int)self->rows);
-            // copy column
+            int rnd = arc4random_uniform((int)self->rows);
+            [new setColumn:i Value:[self getColumn:rnd]];
         }
     }
     else
     {
-        NSUInteger toGo = sampleCount;
-        for (int i=0; i<colSize; i++)
+        // Knuth's S algorithm
+        int i = 0;
+        int n = (int)sampleCount;
+        int samples = n;
+        NSUInteger N = colSize;
+        while (n > 0)
         {
-            int rnd = arc4random_uniform((int)colSize);
-            if (rnd < toGo)
+            if (N * (double)arc4random() / 0x1000000000 <= n)
             {
-                toGo--;
-                // copy column
+                [new setColumn:samples - n Value:[self getColumn:i]];
+                n--;
             }
+            i++;
+            N--;
         }
     }
     return new;
