@@ -222,8 +222,37 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     return neg?-det:det;
 }
 
+- (YCMatrix *)sumsOfRows
+{
+    YCMatrix *result = [YCMatrix matrixOfRows:self->rows Columns:1];
+    for (int i=0; i<self->rows; i++)
+    {
+        double sum = 0;
+        for (int j=0; j<self->columns; j++)
+        {
+            sum += self->matrix[i*self->columns + j];
+        }
+        result->matrix[i] = sum;
+    }
+    return result;
+}
 
-- (YCMatrix *)rowMean
+- (YCMatrix *)sumsOfColumns
+{
+    YCMatrix *result = [YCMatrix matrixOfRows:1 Columns:self->columns];
+    for (int i=0; i<self->columns; i++)
+    {
+        double sum = 0;
+        for (int j=0; j<self->rows; j++)
+        {
+            sum += self->matrix[j*self->columns + i];
+        }
+        result->matrix[i] = sum;
+    }
+    return result;
+}
+
+- (YCMatrix *)meansOfRows
 {
     YCMatrix *means = [YCMatrix matrixOfRows:self->rows Columns:1];
     for (int i=0; i<rows; i++)
@@ -239,7 +268,7 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     return means;
 }
 
-- (YCMatrix *)columnMean
+- (YCMatrix *)meansOfColumns
 {
     YCMatrix *means = [YCMatrix matrixOfRows:self->columns Columns:1];
     for (int i=0; i<columns; i++)

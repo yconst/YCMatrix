@@ -99,8 +99,8 @@
     YCMatrix *columnMeanTargetMatrix = [YCMatrix matrixFromArray:columnMeanTargetArray Rows:3 Columns:1];
     YCMatrix *rowMeanTargetMatrix = [YCMatrix matrixFromArray:rowMeantargetArray Rows:4 Columns:1];
     YCMatrix *meanMatrix = [YCMatrix matrixFromArray:mean_array Rows:4 Columns:3];
-    YCMatrix *rowMeans = [meanMatrix rowMean];
-    YCMatrix *columnMeans = [meanMatrix columnMean];
+    YCMatrix *rowMeans = [meanMatrix meansOfRows];
+    YCMatrix *columnMeans = [meanMatrix meansOfColumns];
     XCTAssertEqualObjects(rowMeans, rowMeanTargetMatrix, @"Error in calculating Row Means.");
     XCTAssertEqualObjects(columnMeans, columnMeanTargetMatrix, @"Error in calculating Column Means.");
     CleanNSLog(@"%@", rowMeans);

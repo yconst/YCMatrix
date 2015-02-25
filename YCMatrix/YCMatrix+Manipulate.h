@@ -246,20 +246,6 @@
 - (void)shuffleColumns;
 
 /**
- Returns a column matrix with the sums of the rows of the receiver.
- 
- @return The column matrix containing the sums of rows.
- */
-- (YCMatrix *)sumsOfRows;
-
-/**
- Returns a row matrix with the sums of the columns of the receiver.
- 
- @return The row matrix containing the sums of columns.
- */
-- (YCMatrix *)sumsOfColumns;
-
-/**
  Returns a matrix resulting from uniform random sampling of |sampleCount| 
  rows, optionally with |replacement|.
  

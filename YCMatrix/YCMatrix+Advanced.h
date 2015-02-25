@@ -110,11 +110,33 @@
  */
 - (double)determinant;
 
-// Returns a vector of the means of the rows
-- (YCMatrix *)rowMean;
+/**
+ Returns a column matrix containing the sums of the rows of the receiver.
+ 
+ @return The column matrix containing the sums of rows.
+ */
+- (YCMatrix *)sumsOfRows;
 
-// Returns a vector of the means of the columns
-- (YCMatrix *)columnMean;
+/**
+ Returns a row matrix containing the sums of the columns of the receiver.
+ 
+ @return The row matrix containing the sums of columns.
+ */
+- (YCMatrix *)sumsOfColumns;
+
+/**
+ Returns a row matrix containing the means of the columns of the receiver.
+ 
+ @return The row matrix containing the sums of columns.
+ */
+- (YCMatrix *)meansOfRows;
+
+/**
+ Returns a column matrix containing the means of the rows of the receiver.
+ 
+ @return The column matrix containing the sums of rows.
+ */
+- (YCMatrix *)meansOfColumns;
 
 // Returns a new matrix with each cell being the result of a function application
 - (YCMatrix *)matrixByApplyingFunction:(double (^)(double value))function;
