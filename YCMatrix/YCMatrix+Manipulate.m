@@ -155,106 +155,46 @@
     return columnsArray;
 }
 
-- (YCMatrix *)matrixByAddingRow:(YCMatrix *)addend
+- (YCMatrix *)matrixByAddingRow:(YCMatrix *)row
 {
-    if (addend->rows != 1 || addend->columns != self->columns)
-    {
-        @throw [NSException exceptionWithName:@"MatrixSizeException"
-                                       reason:@"Matrix size mismatch."
-                                     userInfo:nil];
-    }
-    YCMatrix *sum = [YCMatrix matrixFromMatrix:self];
-    double *sumarray = sum->matrix;
-    double *addendarray = addend->matrix;
-    int cols = self->columns;
-    int rws = self->rows;
-    for (int i=0; i<rws; i++)
-    {
-        for (int j=0; j<cols; j++)
-        {
-            sumarray[i*cols + j] += addendarray[j]; //j!
-        }
-    }
-    return sum;
+    YCMatrix *result = [self copy];
+    [result addRow:row];
+    return result;
 }
 
-- (YCMatrix *)matrixBySubtractingRow:(YCMatrix *)subtrahend
+- (YCMatrix *)matrixBySubtractingRow:(YCMatrix *)row
 {
-    // TODO: Reimplement as common function, with "subtract" option
-    return [self matrixByAddingRow:[subtrahend matrixByNegating]];
+    YCMatrix *result = [self copy];
+    [result subtractRow:row];
+    return result;
 }
 
-- (YCMatrix *)matrixByMultiplyingWithRow:(YCMatrix *)factor{
-    if (factor->rows != 1 || factor->columns != self->columns)
-    {
-        @throw [NSException exceptionWithName:@"MatrixSizeException"
-                                       reason:@"Matrix size mismatch."
-                                     userInfo:nil];
-    }
-    YCMatrix *product = [YCMatrix matrixFromMatrix:self];
-    double *productarray = product->matrix;
-    double *factorarray = factor->matrix;
-    int cols = self->columns;
-    int rws = self->rows;
-    for (int i=0; i<rws; i++)
-    {
-        for (int j=0; j<cols; j++)
-        {
-            productarray[i*cols + j] *= factorarray[j]; //j!
-        }
-    }
-    return product;
+- (YCMatrix *)matrixByMultiplyingWithRow:(YCMatrix *)row
+{
+    YCMatrix *result = [self copy];
+    [result multiplyRow:row];
+    return result;
 }
 
-- (YCMatrix *)matrixByAddingColumn:(YCMatrix *)addend
+- (YCMatrix *)matrixByAddingColumn:(YCMatrix *)column
 {
-    if (addend->columns != 1 || addend->rows != self->rows)
-    {
-        @throw [NSException exceptionWithName:@"MatrixSizeException"
-                                       reason:@"Matrix size mismatch."
-                                     userInfo:nil];
-    }
-    YCMatrix *sum = [YCMatrix matrixFromMatrix:self];
-    double *sumarray = sum->matrix;
-    double *addendarray = addend->matrix;
-    int cols = self->columns;
-    int rws = self->rows;
-    for (int i=0; i<rws; i++)
-    {
-        for (int j=0; j<cols; j++)
-        {
-            sumarray[i*cols + j] += addendarray[i]; //i!
-        }
-    }
-    return sum;
+    YCMatrix *result = [self copy];
+    [result addColumn:column];
+    return result;
 }
 
-- (YCMatrix *)matrixBySubtractingColumn:(YCMatrix *)subtrahend
+- (YCMatrix *)matrixBySubtractingColumn:(YCMatrix *)column
 {
-    return [self matrixByAddingColumn:[subtrahend matrixByNegating]];
+    YCMatrix *result = [self copy];
+    [result subtractColumn:column];
+    return result;
 }
 
-- (YCMatrix *)matrixByMultiplyingWithColumn:(YCMatrix *)factor
+- (YCMatrix *)matrixByMultiplyingWithColumn:(YCMatrix *)column
 {
-    if (factor->columns != 1 || factor->rows != self->rows)
-    {
-        @throw [NSException exceptionWithName:@"MatrixSizeException"
-                                       reason:@"Matrix size mismatch."
-                                     userInfo:nil];
-    }
-    YCMatrix *product = [YCMatrix matrixFromMatrix:self];
-    double *productarray = product->matrix;
-    double *factorarray = factor->matrix;
-    int cols = self->columns;
-    int rws = self->rows;
-    for (int i=0; i<rws; i++)
-    {
-        for (int j=0; j<cols; j++)
-        {
-            productarray[i*cols + j] *= factorarray[i]; //i!
-        }
-    }
-    return product;
+    YCMatrix *result = [self copy];
+    [result multiplyColumn:column];
+    return result;
 }
 
 - (YCMatrix *)matrixWithRowsInRange:(NSRange)range
@@ -294,6 +234,116 @@
                rowLength * sizeof(double));
     }
     return newMatrix;
+}
+
+- (void)addRow:(YCMatrix *)row
+{
+    if (row->rows != 1 || row->columns != self->columns)
+    {
+        @throw [NSException exceptionWithName:@"MatrixSizeException"
+                                       reason:@"Matrix size mismatch."
+                                     userInfo:nil];
+    }
+    double *sumarray = self->matrix;
+    double *addendarray = row->matrix;
+    int cols = self->columns;
+    int rws = self->rows;
+    for (int i=0; i<rws; i++)
+    {
+        for (int j=0; j<cols; j++)
+        {
+            sumarray[i*cols + j] += addendarray[j]; //j!
+        }
+    }
+}
+
+- (void)subtractRow:(YCMatrix *)row
+{
+    if (row->rows != 1 || row->columns != self->columns)
+    {
+        @throw [NSException exceptionWithName:@"MatrixSizeException"
+                                       reason:@"Matrix size mismatch."
+                                     userInfo:nil];
+    }
+    double *subtractedarray = self->matrix;
+    double *subtrahendarray = row->matrix;
+    int cols = self->columns;
+    int rws = self->rows;
+    for (int i=0; i<rws; i++)
+    {
+        for (int j=0; j<cols; j++)
+        {
+            subtractedarray[i*cols + j] -= subtrahendarray[j]; //j!
+        }
+    }
+}
+
+- (void)multiplyRow:(YCMatrix *)row
+{
+    if (row->rows != 1 || row->columns != self->columns)
+    {
+        @throw [NSException exceptionWithName:@"MatrixSizeException"
+                                       reason:@"Matrix size mismatch."
+                                     userInfo:nil];
+    }
+    double *productarray = self->matrix;
+    double *factorarray = row->matrix;
+    int cols = self->columns;
+    int rws = self->rows;
+    for (int i=0; i<rws; i++)
+    {
+        for (int j=0; j<cols; j++)
+        {
+            productarray[i*cols + j] *= factorarray[j]; //j!
+        }
+    }
+}
+
+- (void)addColumn:(YCMatrix *)column
+{
+    if (column->columns != 1 || column->rows != self->rows)
+    {
+        @throw [NSException exceptionWithName:@"MatrixSizeException"
+                                       reason:@"Matrix size mismatch."
+                                     userInfo:nil];
+    }
+    double *sumarray = self->matrix;
+    double *addendarray = column->matrix;
+    int cols = self->columns;
+    int rws = self->rows;
+    for (int i=0; i<rws; i++)
+    {
+        for (int j=0; j<cols; j++)
+        {
+            sumarray[i*cols + j] += addendarray[i]; //i!
+        }
+    }
+}
+
+- (void)subtractColumn:(YCMatrix *)column
+{
+    [self addColumn:[column matrixByNegating]];
+}
+
+- (void)multiplyColumn:(YCMatrix *)column
+{
+    if (column->columns != 1 || column->rows != self->rows)
+    {
+        @throw [NSException exceptionWithName:@"MatrixSizeException"
+                                       reason:@"Matrix size mismatch."
+                                     userInfo:nil];
+    }
+    double *productarray = self->matrix;
+    double *factorarray = column->matrix;
+    int cols = self->columns;
+    int rws = self->rows;
+    for (int i=0; i<rws; i++)
+    {
+        for (int j=0; j<cols; j++)
+        {
+            productarray[i*cols + j] *= factorarray[i]; //i!
+        }
+    }
 }
 
 - (YCMatrix *)appendRow:(YCMatrix *)newRow
@@ -378,7 +428,7 @@
 }
 
 // Fisher-Yates Inside-out Shuffle (UNTESTED!)
-- (YCMatrix *)newFromShufflingRows
+- (YCMatrix *)matrixByShufflingRows
 {
     YCMatrix *ret = [YCMatrix matrixFromMatrix:self];
     int rowCount = self->rows;
@@ -415,7 +465,7 @@
 }
 
 // Fisher-Yates Inside-out Shuffle (UNTESTED!)
-- (YCMatrix *)newFromShufflingColumns
+- (YCMatrix *)matrixByShufflingColumns
 {
     YCMatrix *ret = [YCMatrix matrixFromMatrix:self];
     int rowCount = self->rows;

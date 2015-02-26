@@ -96,63 +96,63 @@
 
 /**
  Returns a matrix resulting from adding the values in the 
- row matrix |addend| to every row.
+ row matrix |row| to every row.
  
- @param addend The row matrix whose values to add.
+ @param row The row matrix whose values to add.
  
  @return The matrix after the addition.
  */
-- (YCMatrix *)matrixByAddingRow:(YCMatrix *)addend;
+- (YCMatrix *)matrixByAddingRow:(YCMatrix *)row;
 
 /**
  Returns a matrix resulting from subtracting the values in 
- row matrix |subtrahend| from every row.
+ row matrix |row| from every row.
  
- @param subtrahend The row matrix whose values to subtract.
+ @param row The row matrix whose values to subtract.
  
  @return The matrix after the subtraction.
  */
-- (YCMatrix *)matrixBySubtractingRow:(YCMatrix *)subtrahend;
+- (YCMatrix *)matrixBySubtractingRow:(YCMatrix *)row;
 
 /**
  Returns a matrix resulting from multiplying the values in 
- row matrix |factor| with every row.
+ row matrix |row| with every row.
  
- @param factor The row matrix whose values to multiply with.
+ @param row The row matrix whose values to multiply with.
  
  @return The matrix after the multiplication
  */
-- (YCMatrix *)matrixByMultiplyingWithRow:(YCMatrix *)factor;
+- (YCMatrix *)matrixByMultiplyingWithRow:(YCMatrix *)row;
 
 /**
  Returns a matrix resulting from adding the values in the 
- column matrix |addend| to every column.
+ column matrix |column| to every column.
  
- @param addend The column matrix whose values to add.
+ @param column The column matrix whose values to add.
  
  @return The matrix after the addition.
  */
-- (YCMatrix *)matrixByAddingColumn:(YCMatrix *)addend;
+- (YCMatrix *)matrixByAddingColumn:(YCMatrix *)column;
 
 /**
  Returns a matrix resulting from subtracting the values in 
- column matrix |subtrahend| from every column.
+ column matrix |column| from every column.
  
- @param subtrahend The rocolumnw matrix whose values to subtract.
+ @param column The rocolumnw matrix whose values to subtract.
  
  @return The matrix after the subtraction.
  */
-- (YCMatrix *)matrixBySubtractingColumn:(YCMatrix *)subtrahend;
+- (YCMatrix *)matrixBySubtractingColumn:(YCMatrix *)column;
 
 /**
  Returns a matrix resulting from multiplying the values in 
- column matrix |factor| with every column.
+ column matrix |column| with every column.
  
- @param factor The column matrix whose values to multiply with.
+ @param column The column matrix whose values to multiply with.
  
  @return The matrix after the multiplication
  */
-- (YCMatrix *)matrixByMultiplyingWithColumn:(YCMatrix *)factor;
+- (YCMatrix *)matrixByMultiplyingWithColumn:(YCMatrix *)column;
 
 /**
  Returns a new matrix with the values of the columns 
@@ -173,6 +173,48 @@
  @return The matrix of rows in |range|.
  */
 - (YCMatrix *)matrixWithRowsInRange:(NSRange)range;
+
+/**
+ Adds row matrix |row| to every row of the receiver.
+ 
+ @param row The row matrix to add
+ */
+- (void)addRow:(YCMatrix *)row;
+
+/**
+ Subtracts row matrix |row| to every row of the receiver.
+ 
+ @param row The row matrix to subtract
+ */
+- (void)subtractRow:(YCMatrix *)row;
+
+/**
+ Multiplies row matrix |row| to every row of the receiver.
+ 
+ @param row The row matrix to multiply
+ */
+- (void)multiplyRow:(YCMatrix *)row;
+
+/**
+ Adds column matrix |column| to every column of the receiver.
+ 
+ @param column The column matrix to add
+ */
+- (void)addColumn:(YCMatrix *)column;
+
+/**
+ Subtracts column matrix |column| to every column of the receiver.
+ 
+ @param column The column matrix to subtract
+ */
+- (void)subtractColumn:(YCMatrix *)column;
+
+/**
+ Multiplies column matrix |column| to every column of the receiver.
+ 
+ @param column The column matrix to multiply
+ */
+- (void)multiplyColumn:(YCMatrix *)column;
 
 /**
  Returns a new matrix by appending row matrix |row|.
@@ -226,7 +268,7 @@
  
  @return The matrix after shuffling rows.
  */
-- (YCMatrix *)newFromShufflingRows;
+- (YCMatrix *)matrixByShufflingRows;
 
 /**
  Shuffles the rows of the receiver.
@@ -238,7 +280,7 @@
  
  @return The matrix after shuffling columns.
  */
-- (YCMatrix *)newFromShufflingColumns;
+- (YCMatrix *)matrixByShufflingColumns;
 
 /**
  Shuffles the columns of the receiver.
