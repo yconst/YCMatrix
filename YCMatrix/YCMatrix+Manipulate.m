@@ -322,7 +322,23 @@
 
 - (void)subtractColumn:(YCMatrix *)column
 {
-    [self addColumn:[column matrixByNegating]];
+    if (column->columns != 1 || column->rows != self->rows)
+    {
+        @throw [NSException exceptionWithName:@"MatrixSizeException"
+                                       reason:@"Matrix size mismatch."
+                                     userInfo:nil];
+    }
+    double *subtractedarray = self->matrix;
+    double *subtrahendarray = column->matrix;
+    int cols = self->columns;
+    int rws = self->rows;
+    for (int i=0; i<rws; i++)
+    {
+        for (int j=0; j<cols; j++)
+        {
+            subtractedarray[i*cols + j] -= subtrahendarray[i]; //i!
+        }
+    }
 }
 
 - (void)multiplyColumn:(YCMatrix *)column

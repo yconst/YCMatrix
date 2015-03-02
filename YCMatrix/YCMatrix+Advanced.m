@@ -260,7 +260,7 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
         double rowMean = 0;
         for (int j=0; j<columns; j++)
         {
-            rowMean += matrix[i*columns + j];
+            rowMean += matrix[i*self->columns + j];
         }
         rowMean /= columns;
         means->matrix[i] = rowMean;
@@ -276,7 +276,7 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
         double columnMean = 0;
         for (int j=0; j<rows; j++)
         {
-            columnMean += matrix[j*columns + i];
+            columnMean += matrix[j*self->columns + i];
         }
         columnMean /= rows;
         means->matrix[i] = columnMean;
