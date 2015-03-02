@@ -170,4 +170,15 @@
     CleanNSLog(@"%@",C);
 }
 
+- (void)testSerialization
+{
+    double matrix_array[9] = { 1.0, 2.0, 3.0,
+        4.0, 5.0, 6.0,
+        7.0, 8.0, 9.0 };
+    YCMatrix *testm1 = [YCMatrix matrixFromArray:matrix_array Rows:3 Columns:3];
+    NSData *serialized = [NSKeyedArchiver archivedDataWithRootObject:testm1];
+    YCMatrix *recovered = [NSKeyedUnarchiver unarchiveObjectWithData:serialized];
+    NSAssert([testm1 isEqualTo:recovered], @"Error in deserialization");
+}
+
 @end

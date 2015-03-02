@@ -559,30 +559,36 @@
 
 - (void)encodeWithCoder:(NSCoder *)encoder
 {
-	int len = self->rows * self->columns;
-	NSMutableArray *matrixContent = [NSMutableArray arrayWithCapacity:len];
-	for (int i=0; i<len; i++)
-	{
-		matrixContent[i] = @(self->matrix[i]);
-	}
-	[encoder encodeObject:matrixContent forKey:@"matrixContent"];
+    [encoder encodeBytes:(const uint8_t *)self->matrix
+                  length:self.count * sizeof(double)
+                  forKey:@"matrix"];
 	[encoder encodeObject:@(self->rows) forKey:@"rows"];
 	[encoder encodeObject:@(self->columns) forKey:@"columns"];
 }
 
-- (id)initWithCoder:(NSCoder *)decoder
+- (instancetype)initWithCoder:(NSCoder *)decoder
 {
 	if (self = [super init])
 	{
 		self->rows = [[decoder decodeObjectForKey:@"rows"] intValue];
 		self->columns = [[decoder decodeObjectForKey:@"columns"] intValue];
-		NSArray *matrixContent = [decoder decodeObjectForKey:@"matrixContent"];
-		int len = self->rows*self->columns;
-		self->matrix = malloc(len*sizeof(double));
-		for (int i=0; i<len; i++)
-		{
-			self->matrix[i] = [matrixContent[i] doubleValue];
-		}
+        if ([decoder containsValueForKey:@"matrix"])
+        {
+            NSUInteger length;
+            self->matrix = (double *)[decoder decodeBytesForKey:@"matrix" returnedLength:&length];
+            NSAssert(length == self.count * sizeof(double), @"Decoded matrix length differs");
+        }
+        else
+        {
+            // legacy decoding
+            NSArray *matrixContent = [decoder decodeObjectForKey:@"matrixContent"];
+            int len = self->rows*self->columns;
+            self->matrix = malloc(len*sizeof(double));
+            for (int i=0; i<len; i++)
+            {
+                self->matrix[i] = [matrixContent[i] doubleValue];
+            }
+        }
 	}
 	return self;
 }
