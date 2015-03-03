@@ -26,6 +26,7 @@
 
 #import "YCMatrix.h"
 #import "YCMatrix+Manipulate.h"
+#import "YCMatrix+Map.h"
 #import <Accelerate/Accelerate.h>
 
 @interface YCMatrix (Advanced)
@@ -38,9 +39,20 @@
  @param lower Matrix containing values for the lower bounds.
  @param upper Matrix containing values for the upper bounds.
  
- @return Matrix of random values between lower and upper, and of the same size.
+ @return A matrix of random values between lower and upper, and of the same size.
  */
 + (instancetype)randomValuesMatrixWithLowerBound:(YCMatrix *)lower upperBound:(YCMatrix *)upper;
+
+/**
+ Returns a matrix containing random values within the specified domain.
+ 
+ @param rows    The number of rows of the matrix
+ @param columns The number of columns of the matrix
+ @param domain  The domain to generate uniform random number within
+ 
+ @return A matrix of random values.
+ */
++ (instancetype)randomValuesMatrixOfRows:(int)rows columns:(int)columns domain:(YCDomain)domain;
 
 /**
  Returns the pseudo-inverse of the receiver.

@@ -56,6 +56,16 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     return result;
 }
 
++ (instancetype)randomValuesMatrixOfRows:(int)rows columns:(int)columns domain:(YCDomain)domain
+{
+    YCMatrix *result = [YCMatrix matrixOfRows:rows Columns:columns];
+    for (int i=0, j=(int)[result count]; i<j; i++)
+    {
+        result->matrix[i] = ((double)arc4random() / ARC4RANDOM_MAX) * domain.length + domain.location;
+    }
+    return result;
+}
+
 - (YCMatrix *)pseudoInverse
 {
     YCMatrix *ret = [YCMatrix matrixOfRows:self->columns Columns:self->rows];
