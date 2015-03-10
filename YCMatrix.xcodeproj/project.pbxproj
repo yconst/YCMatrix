@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CB02F7B51AAF446400EF1E02 /* YCMatrix.h in Headers */ = {isa = PBXBuildFile; fileRef = CB02F7B41AAF446400EF1E02 /* YCMatrix.h */; };
+		CB02F7B51AAF446400EF1E02 /* YCMatrix.h in Headers */ = {isa = PBXBuildFile; fileRef = CB02F7B41AAF446400EF1E02 /* YCMatrix.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB14DF7818B413120056F29F /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB14DF7718B413120056F29F /* XCTest.framework */; };
 		CB26DAA21A856232007F73E2 /* NSArray+Matrix.h in Headers */ = {isa = PBXBuildFile; fileRef = CB26DAA01A856232007F73E2 /* NSArray+Matrix.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB26DAA31A856232007F73E2 /* NSArray+Matrix.m in Sources */ = {isa = PBXBuildFile; fileRef = CB26DAA11A856232007F73E2 /* NSArray+Matrix.m */; };
