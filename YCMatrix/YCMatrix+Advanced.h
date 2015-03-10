@@ -150,7 +150,13 @@
  */
 - (YCMatrix *)meansOfColumns;
 
-// Returns a new matrix with each cell being the result of a function application
+/**
+ Returns a new matrix by applying a function to each cell of the receiver.
+ 
+ @param function The function to apply.
+ 
+ @return The matrix resulting from applying the function.
+ */
 - (YCMatrix *)matrixByApplyingFunction:(double (^)(double value))function;
 
 /**
