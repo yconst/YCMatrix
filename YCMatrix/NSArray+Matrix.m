@@ -1,5 +1,6 @@
 //
 //  NSArray+Matrix.m
+//
 //  YCMatrix
 //
 //  Created by Ioannis Chatzikonstantinou on 6/2/15.
@@ -10,10 +11,10 @@
 
 @implementation NSArray (Matrix)
 
-- (YCMatrix *)matrixSum
+- (Matrix *)matrixSum
 {
-    YCMatrix *result;
-    for (YCMatrix *m in self)
+    Matrix *result;
+    for (Matrix *m in self)
     {
         if (!result)
         {
@@ -27,17 +28,17 @@
     return result;
 }
 
-- (YCMatrix *)matrixMean
+- (Matrix *)matrixMean
 {
-    YCMatrix *result = [self matrixSum];
+    Matrix *result = [self matrixSum];
     [result multiplyWithScalar:1.0 / (double)self.count];
     return result;
 }
 
-- (YCMatrix *)matrixProduct
+- (Matrix *)matrixProduct
 {
-    YCMatrix *result;
-    for (YCMatrix *m in self)
+    Matrix *result;
+    for (Matrix *m in self)
     {
         if (!result)
         {

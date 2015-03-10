@@ -1,5 +1,5 @@
 //
-//  YCMatrix+Normalize.m
+//  Matrix+Map.m
 //
 // Copyright (c) 2013, 2014 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 // http://yconst.com
@@ -22,16 +22,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "YCMatrix+Map.h"
-#import "YCMatrix+Manipulate.h"
+#import "Matrix+Map.h"
+#import "Matrix+Manipulate.h"
 
-@implementation YCMatrix (Map)
+@implementation Matrix (Map)
 
-- (YCMatrix *)matrixByRowWiseMapUsing:(YCMatrix *)transform
+- (Matrix *)matrixByRowWiseMapUsing:(Matrix *)transform
 {
     double *mtxArray = self->matrix;
     double *transformArray = transform->matrix;
-    YCMatrix *transformed = [YCMatrix matrixOfRows:rows Columns:columns];
+    Matrix *transformed = [Matrix matrixOfRows:rows Columns:columns];
     double *transformedArray = transformed->matrix;
     dispatch_apply(rows, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t i)
                    {
@@ -45,16 +45,16 @@
     return transformed;
 }
 
-- (YCMatrix *)rowWiseMapToDomain:(YCDomain)domain basis:(MapBasis)basis
+- (Matrix *)rowWiseMapToDomain:(YCDomain)domain basis:(MapBasis)basis
 {
     int numRows = self->rows;
     int numColumns = self->columns;
     NSArray *matrixRows = [self RowsAsNSArray];
-    YCMatrix *transform = [YCMatrix matrixOfRows:numRows Columns:2];
+    Matrix *transform = [Matrix matrixOfRows:numRows Columns:2];
     int i=0;
     double tmean = domain.location + domain.length * 0.5;
     double trange = domain.length;
-    for (YCMatrix *m in matrixRows)
+    for (Matrix *m in matrixRows)
     {
         double a, b;
         double fmean = 0, frange = 0;
@@ -92,16 +92,16 @@
     return transform;
 }
 
-- (YCMatrix *)rowWiseInverseMapFromDomain:(YCDomain)domain basis:(MapBasis)basis
+- (Matrix *)rowWiseInverseMapFromDomain:(YCDomain)domain basis:(MapBasis)basis
 {
     int numRows = self->rows;
     int numColumns = self->columns;
     NSArray *matrixRows = [self RowsAsNSArray];
-    YCMatrix *transform = [YCMatrix matrixOfRows:numRows Columns:2];
+    Matrix *transform = [Matrix matrixOfRows:numRows Columns:2];
     int i=0;
     double fmean = domain.location + domain.length * 0.5;
     double frange = domain.length;
-    for (YCMatrix *m in matrixRows)
+    for (Matrix *m in matrixRows)
     {
         double a, b;
         double tmean = 0, trange = 0;

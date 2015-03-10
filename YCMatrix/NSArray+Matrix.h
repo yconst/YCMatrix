@@ -1,5 +1,6 @@
 //
 //  NSArray+Matrix.h
+//
 //  YCMatrix
 //
 //  Created by Ioannis Chatzikonstantinou on 6/2/15.
@@ -7,14 +8,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "YCMatrix.h"
+#import "Matrix.h"
 
 @interface NSArray (Matrix)
 
-@property (readonly) YCMatrix *matrixSum;
+@property (readonly) Matrix *matrixSum;
 
-@property (readonly) YCMatrix *matrixProduct;
+@property (readonly) Matrix *matrixProduct;
 
-@property (readonly) YCMatrix *matrixMean;
+@property (readonly) Matrix *matrixMean;
 
 @end

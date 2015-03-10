@@ -27,7 +27,13 @@
 // http://en.wikipedia.org/wiki/Cholesky_decomposition
 
 #import <XCTest/XCTest.h>
-#import "YCMatrix.h"
+#import "Matrix.h"
+
+#define ARC4RANDOM_MAX 0x100000000 
+
+// Definitions for convenience logging functions (without date/object and title logging).
+#define CleanNSLog(FORMAT, ...) fprintf(stderr,"%s\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
+#define TitleNSLog(FORMAT, ...) fprintf(stderr,"\n%s\n_____________________________________\n\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
 
 @interface YCMatrixTests : XCTestCase
 
@@ -43,16 +49,16 @@
         0.0, 0.0, 1.0,
         0.0, 0.0, 0.0,
         0.0, 0.0, 0.0 };
-    YCMatrix *idmRef = [YCMatrix matrixFromArray:idm_ref_array Rows:5 Columns:3];
-    YCMatrix *idm = [YCMatrix identityOfRows:5 Columns:3];
+    Matrix *idmRef = [Matrix matrixFromArray:idm_ref_array Rows:5 Columns:3];
+    Matrix *idm = [Matrix identityOfRows:5 Columns:3];
     CleanNSLog(@"%@",idm);
     XCTAssertEqualObjects(idm, idmRef, @"Error in creating Identity Matrix");
 }
 
 - (void)testOnes
 {
-    YCMatrix *template = [YCMatrix matrixOfRows:5 Columns:5 Value:1];
-    YCMatrix *match = [YCMatrix onesLike:template];
+    Matrix *template = [Matrix matrixOfRows:5 Columns:5 Value:1];
+    Matrix *match = [Matrix onesLike:template];
     XCTAssertEqualObjects(template, match, @"Error in creating matrix of ones.");
 }
 
@@ -62,7 +68,7 @@
     double simple_array[9] = { 1.0, 2.0, 3.0,
         4.0, 5.0, 6.0,
         7.0, 8.0, 9.0 };
-    YCMatrix *simple_matrix = [YCMatrix matrixFromArray:simple_array Rows:3 Columns:3];
+    Matrix *simple_matrix = [Matrix matrixFromArray:simple_array Rows:3 Columns:3];
     CleanNSLog(@"%@",simple_matrix);
     
     // Perform various get item tests
@@ -89,10 +95,10 @@
         4.0, 5.0, 6.0,
         7.0, 8.0, 9.0,
         1.0, 2.0, 6.0};
-    YCMatrix *sourceMatrix = [YCMatrix matrixFromArray:source_array Rows:4 Columns:3];
+    Matrix *sourceMatrix = [Matrix matrixFromArray:source_array Rows:4 Columns:3];
     double target_array[3] = { 1.0, 5.0, 9.0 };
-    YCMatrix *targetMatrix = [YCMatrix matrixFromArray:target_array Rows:3 Columns:1];
-    YCMatrix *diagonal = [sourceMatrix diagonal];
+    Matrix *targetMatrix = [Matrix matrixFromArray:target_array Rows:3 Columns:1];
+    Matrix *diagonal = [sourceMatrix diagonal];
     XCTAssertEqualObjects(diagonal, targetMatrix, @"Error in deriving diagonal.");
 }
 
@@ -104,9 +110,9 @@
     double matrix_trans_arr[6] = { 1.0, 4.0,
         2.0, 5.0,
         3.0, 6.0 };
-    YCMatrix *orig = [YCMatrix matrixFromArray:matrix_orig_arr Rows:2 Columns:3];
-    YCMatrix *trans = [YCMatrix matrixFromArray:matrix_trans_arr Rows:3 Columns:2];
-    YCMatrix *trans2 = [orig matrixByTransposing];
+    Matrix *orig = [Matrix matrixFromArray:matrix_orig_arr Rows:2 Columns:3];
+    Matrix *trans = [Matrix matrixFromArray:matrix_trans_arr Rows:3 Columns:2];
+    Matrix *trans2 = [orig matrixByTransposing];
     CleanNSLog(@"%@",orig);
     CleanNSLog(@"%@",trans);
     CleanNSLog(@"%@",trans2);
@@ -118,7 +124,7 @@
 {
     TitleNSLog(@"Dot Product");
     double vectorarray[3] = { 1.0, 2.0, 3.0 };
-    YCMatrix *Vector = [YCMatrix matrixFromArray:vectorarray Rows:3 Columns:1];
+    Matrix *Vector = [Matrix matrixFromArray:vectorarray Rows:3 Columns:1];
     double dotp = [Vector dotWith:Vector];
     CleanNSLog(@"Dot Product: %f",dotp);
     XCTAssertEqual(dotp, 14.0, @"Error in calculating dot product");
@@ -130,7 +136,7 @@
     double matrix_array[9] = { 1.0, 2.0, 3.0,
         4.0, 5.0, 6.0,
         7.0, 8.0, 9.0 };
-    YCMatrix *tracetestm = [YCMatrix matrixFromArray:matrix_array Rows:3 Columns:3];
+    Matrix *tracetestm = [Matrix matrixFromArray:matrix_array Rows:3 Columns:3];
     double trace = [[tracetestm matrixByMultiplyingWithRight:tracetestm] trace];
     CleanNSLog(@"%f",trace);
     XCTAssertEqual(trace, 261.000, @"Trace is not correct!");
@@ -142,16 +148,16 @@
     double matrix_array[9] = { 1.0, 2.0, 3.0,
         4.0, 5.0, 6.0,
         7.0, 8.0, 9.0 };
-    YCMatrix *testm1 = [YCMatrix matrixFromArray:matrix_array Rows:3 Columns:3];
-    YCMatrix *testm2 = [YCMatrix matrixFromMatrix:testm1];
-    YCMatrix *testm_add = [testm1 matrixByAdding:testm2];
-    YCMatrix *testm_ms = [testm1 matrixByMultiplyingWithScalar:2];
+    Matrix *testm1 = [Matrix matrixFromArray:matrix_array Rows:3 Columns:3];
+    Matrix *testm2 = [Matrix matrixFromMatrix:testm1];
+    Matrix *testm_add = [testm1 matrixByAdding:testm2];
+    Matrix *testm_ms = [testm1 matrixByMultiplyingWithScalar:2];
     XCTAssertTrue([testm_ms isEqual: testm_add], @"M+M != 2*M");
     
     TitleNSLog(@"Matrix Multiplication");
     CleanNSLog(@"Test Matrix 1: %ix%i",testm1->rows, testm1->columns);
     CleanNSLog(@"Test Matrix 2: %ix%i",testm2->rows, testm2->columns);
-    YCMatrix *multResult = [testm1 matrixByMultiplyingWithRight:testm2];
+    Matrix *multResult = [testm1 matrixByMultiplyingWithRight:testm2];
     CleanNSLog(@"Resulting Matrix: %ix%i",multResult->rows, multResult->columns);
     CleanNSLog(@"%@",multResult);
 }
@@ -159,14 +165,14 @@
 - (void)testTransposedMultiply
 {
     double simple_array[6] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0 };
-    YCMatrix *A = [YCMatrix matrixFromArray:simple_array Rows:2 Columns:3];
+    Matrix *A = [Matrix matrixFromArray:simple_array Rows:2 Columns:3];
     CleanNSLog(@"%@",A);
     
     double simple_array_2[6] = { 2.0, 3.0, 1.0, 4.0, 0.0, 5.0 };
-    YCMatrix *B = [YCMatrix matrixFromArray:simple_array_2 Rows:3 Columns:2];
+    Matrix *B = [Matrix matrixFromArray:simple_array_2 Rows:3 Columns:2];
     CleanNSLog(@"%@",B);
     
-    YCMatrix *C = [A matrixByMultiplyingWithRight:B AndTransposing:YES];
+    Matrix *C = [A matrixByMultiplyingWithRight:B AndTransposing:YES];
     CleanNSLog(@"%@",C);
 }
 
@@ -175,9 +181,9 @@
     double matrix_array[9] = { 1.0, 2.0, 3.0,
         4.0, 5.0, 6.0,
         7.0, 8.0, 9.0 };
-    YCMatrix *testm1 = [YCMatrix matrixFromArray:matrix_array Rows:3 Columns:3];
+    Matrix *testm1 = [Matrix matrixFromArray:matrix_array Rows:3 Columns:3];
     NSData *serialized = [NSKeyedArchiver archivedDataWithRootObject:testm1];
-    YCMatrix *recovered = [NSKeyedUnarchiver unarchiveObjectWithData:serialized];
+    Matrix *recovered = [NSKeyedUnarchiver unarchiveObjectWithData:serialized];
     NSAssert([testm1 isEqualTo:recovered], @"Error in deserialization");
 }
 

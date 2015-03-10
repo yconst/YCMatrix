@@ -8,9 +8,15 @@
 
 #import <Cocoa/Cocoa.h>
 #import <XCTest/XCTest.h>
-#import "YCMatrix.h"
-#import "YCMatrix+Advanced.h"
-#import "YCMatrix+Map.h"
+#import "Matrix.h"
+#import "Matrix+Advanced.h"
+#import "Matrix+Map.h"
+
+#define ARC4RANDOM_MAX 0x100000000 
+
+// Definitions for convenience logging functions (without date/object and title logging).
+#define CleanNSLog(FORMAT, ...) fprintf(stderr,"%s\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
+#define TitleNSLog(FORMAT, ...) fprintf(stderr,"\n%s\n_____________________________________\n\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
 
 @interface YCMatrixMapTests : XCTestCase
 
@@ -20,25 +26,25 @@
 
 - (void)testMinMaxMapping
 {
-    YCMatrix *low = [YCMatrix matrixOfRows:4 Columns:5 Value:3];
-    YCMatrix *high = [YCMatrix matrixOfRows:4 Columns:5 Value:8];
-    YCMatrix *original = [YCMatrix randomValuesMatrixWithLowerBound:low upperBound:high];
-    YCMatrix *mapping = [original rowWiseMapToDomain:YCMakeDomain(0, 1) basis:MinMax];
-    YCMatrix *inverse = [original rowWiseInverseMapFromDomain:YCMakeDomain(0, 1) basis:MinMax];
-    YCMatrix *mapped = [original matrixByRowWiseMapUsing:mapping];
-    YCMatrix *copy = [mapped matrixByRowWiseMapUsing:inverse];
+    Matrix *low = [Matrix matrixOfRows:4 Columns:5 Value:3];
+    Matrix *high = [Matrix matrixOfRows:4 Columns:5 Value:8];
+    Matrix *original = [Matrix randomValuesMatrixWithLowerBound:low upperBound:high];
+    Matrix *mapping = [original rowWiseMapToDomain:YCMakeDomain(0, 1) basis:MinMax];
+    Matrix *inverse = [original rowWiseInverseMapFromDomain:YCMakeDomain(0, 1) basis:MinMax];
+    Matrix *mapped = [original matrixByRowWiseMapUsing:mapping];
+    Matrix *copy = [mapped matrixByRowWiseMapUsing:inverse];
     XCTAssert([copy isEqualToMatrix:original tolerance:1E-9], @"Mapping failed");
 }
 
 - (void)testStDevMapping
 {
-    YCMatrix *low = [YCMatrix matrixOfRows:4 Columns:5 Value:3];
-    YCMatrix *high = [YCMatrix matrixOfRows:4 Columns:5 Value:8];
-    YCMatrix *original = [YCMatrix randomValuesMatrixWithLowerBound:low upperBound:high];
-    YCMatrix *mapping = [original rowWiseMapToDomain:YCMakeDomain(-1, 2) basis:StDev];
-    YCMatrix *inverse = [original rowWiseInverseMapFromDomain:YCMakeDomain(-1, 2) basis:StDev];
-    YCMatrix *mapped = [original matrixByRowWiseMapUsing:mapping];
-    YCMatrix *copy = [mapped matrixByRowWiseMapUsing:inverse];
+    Matrix *low = [Matrix matrixOfRows:4 Columns:5 Value:3];
+    Matrix *high = [Matrix matrixOfRows:4 Columns:5 Value:8];
+    Matrix *original = [Matrix randomValuesMatrixWithLowerBound:low upperBound:high];
+    Matrix *mapping = [original rowWiseMapToDomain:YCMakeDomain(-1, 2) basis:StDev];
+    Matrix *inverse = [original rowWiseInverseMapFromDomain:YCMakeDomain(-1, 2) basis:StDev];
+    Matrix *mapped = [original matrixByRowWiseMapUsing:mapping];
+    Matrix *copy = [mapped matrixByRowWiseMapUsing:inverse];
     XCTAssert([copy isEqualToMatrix:original tolerance:1E-9], @"Mapping failed");
 }
 

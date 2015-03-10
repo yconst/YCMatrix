@@ -1,5 +1,5 @@
 //
-// YCMatrix+Manipulate.h
+// Matrix+Manipulate.h
 //
 // YCMatrix
 //
@@ -24,36 +24,36 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "YCMatrix.h"
+#import "Matrix.h"
 
-@interface YCMatrix (Manipulate)
-
-/**
- Initializes and returns a new YCMatrix from an NSArray of row matrices.
- 
- @param rows The NSArray containing row YCMatrix objects.
- 
- @return A new YCMatrix resulting from merging the rows.
- */
-+ (YCMatrix *)matrixFromRows:(NSArray *)rows;
+@interface Matrix (Manipulate)
 
 /**
- Initializes and returns a new YCMatrix from an NSArray of column matrices.
+ Initializes and returns a new matrix from an NSArray of row matrices.
  
- @param rows The NSArray containing column YCMatrix objects.
+ @param rows The NSArray containing row matrix objects.
  
- @return A new YCMatrix resulting from merging the column.
+ @return A new matrix resulting from merging the rows.
  */
-+ (YCMatrix *)matrixFromColumns:(NSArray *)columns;
++ (Matrix *)matrixFromRows:(NSArray *)rows;
+
+/**
+ Initializes and returns a new matrix from an NSArray of column matrices.
+ 
+ @param rows The NSArray containing column matrix objects.
+ 
+ @return A new matrix resulting from merging the column.
+ */
++ (Matrix *)matrixFromColumns:(NSArray *)columns;
 
 /**
  Returns a row matrix with the contents of row |rowNumber|.
  
  @param rowNumber The index of the row to copy.
  
- @return The row YCMatrix.
+ @return The row matrix.
  */
-- (YCMatrix *)getRow:(int)rowIndex;
+- (Matrix *)getRow:(int)rowIndex;
 
 /**
  Replaces the values of row |rowIndex| with those of row matrix |rowValue|
@@ -61,7 +61,7 @@
  @param rowIndex The index of the row to replace.
  @param rowValue The values to replace with.
  */
-- (void)setRow:(int)rowIndex Value:(YCMatrix *)rowValue;
+- (void)setRow:(int)rowIndex Value:(Matrix *)rowValue;
 
 /**
  Returns an NSArray of row matrices, each representing one row of the receiver.
@@ -77,7 +77,7 @@
  
  @return The column matrix with the values of the column |colIndex|.
  */
-- (YCMatrix *)getColumn:(int)colIndex;
+- (Matrix *)getColumn:(int)colIndex;
 
 /**
  Replaces values of column |colIndex| with those of column matrix |columnValue|
@@ -85,7 +85,7 @@
  @param colNumber   The index of the column to replace.
  @param columnValue The values to replace with.
  */
-- (void)setColumn:(int)colNumber Value:(YCMatrix *)columnValue;
+- (void)setColumn:(int)colNumber Value:(Matrix *)columnValue;
 
 /**
  Creates column matrices from the columns of the matrix and returns them as an NSArray.
@@ -102,7 +102,7 @@
  
  @return The matrix after the addition.
  */
-- (YCMatrix *)matrixByAddingRow:(YCMatrix *)row;
+- (Matrix *)matrixByAddingRow:(Matrix *)row;
 
 /**
  Returns a matrix resulting from subtracting the values in 
@@ -112,7 +112,7 @@
  
  @return The matrix after the subtraction.
  */
-- (YCMatrix *)matrixBySubtractingRow:(YCMatrix *)row;
+- (Matrix *)matrixBySubtractingRow:(Matrix *)row;
 
 /**
  Returns a matrix resulting from multiplying the values in 
@@ -122,7 +122,7 @@
  
  @return The matrix after the multiplication
  */
-- (YCMatrix *)matrixByMultiplyingWithRow:(YCMatrix *)row;
+- (Matrix *)matrixByMultiplyingWithRow:(Matrix *)row;
 
 /**
  Returns a matrix resulting from adding the values in the 
@@ -132,7 +132,7 @@
  
  @return The matrix after the addition.
  */
-- (YCMatrix *)matrixByAddingColumn:(YCMatrix *)column;
+- (Matrix *)matrixByAddingColumn:(Matrix *)column;
 
 /**
  Returns a matrix resulting from subtracting the values in 
@@ -142,7 +142,7 @@
  
  @return The matrix after the subtraction.
  */
-- (YCMatrix *)matrixBySubtractingColumn:(YCMatrix *)column;
+- (Matrix *)matrixBySubtractingColumn:(Matrix *)column;
 
 /**
  Returns a matrix resulting from multiplying the values in 
@@ -152,7 +152,7 @@
  
  @return The matrix after the multiplication
  */
-- (YCMatrix *)matrixByMultiplyingWithColumn:(YCMatrix *)column;
+- (Matrix *)matrixByMultiplyingWithColumn:(Matrix *)column;
 
 /**
  Returns a new matrix with the values of the columns 
@@ -162,7 +162,7 @@
  
  @return The matrix of columns in |range|.
  */
-- (YCMatrix *)matrixWithColumnsInRange:(NSRange)range;
+- (Matrix *)matrixWithColumnsInRange:(NSRange)range;
 
 /**
  Returns a new matrix with the values of the rows 
@@ -172,49 +172,49 @@
  
  @return The matrix of rows in |range|.
  */
-- (YCMatrix *)matrixWithRowsInRange:(NSRange)range;
+- (Matrix *)matrixWithRowsInRange:(NSRange)range;
 
 /**
  Adds row matrix |row| to every row of the receiver.
  
  @param row The row matrix to add
  */
-- (void)addRow:(YCMatrix *)row;
+- (void)addRow:(Matrix *)row;
 
 /**
  Subtracts row matrix |row| to every row of the receiver.
  
  @param row The row matrix to subtract
  */
-- (void)subtractRow:(YCMatrix *)row;
+- (void)subtractRow:(Matrix *)row;
 
 /**
  Multiplies row matrix |row| to every row of the receiver.
  
  @param row The row matrix to multiply
  */
-- (void)multiplyRow:(YCMatrix *)row;
+- (void)multiplyRow:(Matrix *)row;
 
 /**
  Adds column matrix |column| to every column of the receiver.
  
  @param column The column matrix to add
  */
-- (void)addColumn:(YCMatrix *)column;
+- (void)addColumn:(Matrix *)column;
 
 /**
  Subtracts column matrix |column| to every column of the receiver.
  
  @param column The column matrix to subtract
  */
-- (void)subtractColumn:(YCMatrix *)column;
+- (void)subtractColumn:(Matrix *)column;
 
 /**
  Multiplies column matrix |column| to every column of the receiver.
  
  @param column The column matrix to multiply
  */
-- (void)multiplyColumn:(YCMatrix *)column;
+- (void)multiplyColumn:(Matrix *)column;
 
 /**
  Returns a new matrix by appending row matrix |row|.
@@ -223,7 +223,7 @@
  
  @return The result of appending.
  */
-- (YCMatrix *)appendRow:(YCMatrix *)row;
+- (Matrix *)appendRow:(Matrix *)row;
 
 /**
  Returns a new matrix by appending column matrix |column|.
@@ -232,7 +232,7 @@
  
  @return The result of appending.
  */
-- (YCMatrix *)appendColumn:(YCMatrix *)column;
+- (Matrix *)appendColumn:(Matrix *)column;
 
 /**
  Returns a new matrix that is the result of removing 
@@ -242,7 +242,7 @@
  
  @return The matrix missing the removed row.
  */
-- (YCMatrix *)removeRow:(int)rowIndex;
+- (Matrix *)removeRow:(int)rowIndex;
 
 /**
  Returns a new matrix that is the result of removing 
@@ -252,7 +252,7 @@
  
  @return The matrix missing the removed column.
  */
-- (YCMatrix *)removeColumn:(int)columnIndex;
+- (Matrix *)removeColumn:(int)columnIndex;
 
 /**
  Returns a matrix resulting from appending a row with values |value|
@@ -261,14 +261,14 @@
  
  @return The matrix after appending.
  */
-- (YCMatrix *)appendValueAsRow:(double)value;
+- (Matrix *)appendValueAsRow:(double)value;
 
 /**
  Returns a matrix with shuffled rows
  
  @return The matrix after shuffling rows.
  */
-- (YCMatrix *)matrixByShufflingRows;
+- (Matrix *)matrixByShufflingRows;
 
 /**
  Shuffles the rows of the receiver.
@@ -280,7 +280,7 @@
  
  @return The matrix after shuffling columns.
  */
-- (YCMatrix *)matrixByShufflingColumns;
+- (Matrix *)matrixByShufflingColumns;
 
 /**
  Shuffles the columns of the receiver.
@@ -296,7 +296,7 @@
  
  @return The matrix resulting from the sampling.
  */
-- (YCMatrix *)matrixBySamplingRows:(NSUInteger)sampleCount Replacement:(BOOL)replacement;
+- (Matrix *)matrixBySamplingRows:(NSUInteger)sampleCount Replacement:(BOOL)replacement;
 
 /**
  Returns a matrix resulting from uniform random sampling of |sampleCount|
@@ -307,6 +307,6 @@
  
  @return The matrix resulting from the sampling.
  */
-- (YCMatrix *)matrixBySamplingColumns:(NSUInteger)sampleCount Replacement:(BOOL)replacement;
+- (Matrix *)matrixBySamplingColumns:(NSUInteger)sampleCount Replacement:(BOOL)replacement;
 
 @end
