@@ -298,6 +298,13 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
 - (Matrix *)matrixByNegating;
 
 /**
+ Returns a matrix by squaring the elements fo the receiver.
+ 
+ @return The matrix with squared elements.
+ */
+- (Matrix *)matrixBySquaring;
+
+/**
  Transposes the receiver.
  
  @return The result of the transposition.
@@ -351,6 +358,11 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
 - (void)negate;
 
 /**
+  Performs and in-place squaring of the receiver's elements.
+ */
+- (void)square;
+
+/**
  Returns the result of an elementwise multiplication with matrix |mt|.
  
  @param mt The result of the elementwise multiplication.
@@ -387,13 +399,6 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
  @warning This method is applicable only to vectors.
  */
 - (Matrix *)matrixByUnitizing;
-
-/**
- Returns YES if the receiver is a square matrix.
-
- @return Boolean denoting if the matrix is square.
- */
-- (BOOL)isSquare;
 
 /**
  Compares the receiver with a matrix, using the specified numerical tolerance
@@ -470,5 +475,10 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
  Returns the product of all the elements of the receiver.
  */
 @property (readonly) double product;
+
+/**
+ Returns YES if the receiver is a square matrix.
+ */
+@property (readonly) BOOL isSquareMatrix;
 
 @end

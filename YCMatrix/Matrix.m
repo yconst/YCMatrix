@@ -320,6 +320,13 @@
 	return [self matrixByMultiplyingWithScalar:-1];
 }
 
+- (Matrix *)matrixBySquaring
+{
+    Matrix *result = [Matrix matrixLike:self];
+    vDSP_vsqD(self->matrix, 1, result->matrix, 1, self.count);
+    return result;
+}
+
 - (Matrix *)matrixByTransposing
 {
 	Matrix *trans = [Matrix dirtyMatrixOfRows:columns Columns:rows];
@@ -343,7 +350,7 @@
 
 - (void)add:(Matrix *)addend
 {
-	if(columns != addend->columns || rows != addend->rows || sizeof(matrix) != sizeof(addend->matrix))
+	if(columns != addend->columns || rows != addend->rows)
 		@throw [NSException exceptionWithName:@"MatrixSizeException"
 		        reason:@"Matrix size mismatch."
 		        userInfo:nil];
@@ -352,7 +359,7 @@
 
 - (void)subtract:(Matrix *)subtrahend
 {
-	if(columns != subtrahend->columns || rows != subtrahend->rows || sizeof(matrix) != sizeof(subtrahend->matrix))
+	if(columns != subtrahend->columns || rows != subtrahend->rows)
 		@throw [NSException exceptionWithName:@"MatrixSizeException"
 		        reason:@"Matrix size mismatch."
 		        userInfo:nil];
@@ -369,9 +376,14 @@
 	[self multiplyWithScalar:-1];
 }
 
+- (void)square
+{
+    vDSP_vsqD(self->matrix, 1, self->matrix, 1, self.count);
+}
+
 - (void)elementWiseMultiply:(Matrix *)mt
 {
-	if(columns != mt->columns || rows != mt->rows || sizeof(matrix) != sizeof(mt->matrix))
+	if(columns != mt->columns || rows != mt->rows)
 		@throw [NSException exceptionWithName:@"MatrixSizeException"
 		        reason:@"Matrix size mismatch."
 		        userInfo:nil];
@@ -383,7 +395,7 @@
 
 - (void)elementWiseDivide:(Matrix *)mt
 {
-    if(columns != mt->columns || rows != mt->rows || sizeof(matrix) != sizeof(mt->matrix))
+    if(columns != mt->columns || rows != mt->rows)
         @throw [NSException exceptionWithName:@"MatrixSizeException"
                                        reason:@"Matrix size mismatch."
                                      userInfo:nil];
@@ -407,10 +419,6 @@
 - (double)dotWith:(Matrix *)other
 {
 	// A few more checks need to be made here.
-	if(sizeof(matrix) != sizeof(other->matrix))
-		@throw [NSException exceptionWithName:@"MatrixSizeException"
-		        reason:@"Matrix size mismatch."
-		        userInfo:nil];
 	if(columns != 1 && rows != 1)
 		@throw [NSException exceptionWithName:@"MatrixSizeException"
 		        reason:@"Dot can only be performed on vectors."
@@ -512,7 +520,7 @@
     return product;
 }
 
-- (BOOL)isSquare
+- (BOOL)isSquareMatrix
 {
 	return self->rows == self->columns;
 }

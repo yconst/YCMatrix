@@ -137,20 +137,63 @@
 - (Matrix *)sumsOfColumns;
 
 /**
- Returns a row matrix containing the means of the columns of the receiver.
+ Returns a column matrix containing the means of the rows of the receiver.
  
- @return The row matrix containing the sums of columns.
+ @return The column matrix containing the means of rows.
  */
 - (Matrix *)meansOfRows;
 
 /**
- Returns a column matrix containing the means of the rows of the receiver.
+ Returns a row matrix containing the means of the columns of the receiver.
  
- @return The column matrix containing the sums of rows.
+ @return The row matrix containing the means of columns.
  */
 - (Matrix *)meansOfColumns;
 
-// Returns a new matrix with each cell being the result of a function application
+/**
+ Returns a column matrix containing the population variances of the rows of the receiver.
+ 
+ @return The column matrix containing the variances of rows.
+ 
+ @warning This calculates the population variance.
+ */
+- (Matrix *)variancesOfRows;
+
+/**
+ Returns a row matrix containing the population variances of the columns of the receiver.
+ 
+ @return The row matrix containing the variances of columns.
+ 
+ @warning This calculates the population variance.
+ */
+- (Matrix *)variancesOfColumns;
+
+/**
+ Returns a column matrix containing the sample variances of the rows of the receiver.
+ 
+ @return The column matrix containing the variances of rows.
+ 
+ @warning This calculates the sample variance.
+ */
+- (Matrix *)sampleVariancesOfRows;
+
+/**
+ Returns a row matrix containing the sample variances of the columns of the receiver.
+ 
+ @return The row matrix containing the variances of columns.
+ 
+ @warning This calculates the sample variance.
+ */
+- (Matrix *)sampleVariancesOfColumns;
+
+/**
+ Returns a new matrix with each cell being the result of applying a function to
+ the corresponding cell of the receiver.
+ 
+ @param function The function to apply.
+ 
+ @return The matrix of transformed values.
+ */
 - (Matrix *)matrixByApplyingFunction:(double (^)(double value))function;
 
 /**

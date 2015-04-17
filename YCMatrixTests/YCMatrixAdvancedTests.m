@@ -102,7 +102,7 @@
         -100.0, 100.0, 0.0};
     double columnMeanTargetArray[3] = { -62.0, 177.75, 9.0 };
     double rowMeantargetArray[4] = { 1.0, 2.0/3.0, 494.0/3.0, 0.0  };
-    Matrix *columnMeanTargetMatrix = [Matrix matrixFromArray:columnMeanTargetArray Rows:3 Columns:1];
+    Matrix *columnMeanTargetMatrix = [Matrix matrixFromArray:columnMeanTargetArray Rows:1 Columns:3];
     Matrix *rowMeanTargetMatrix = [Matrix matrixFromArray:rowMeantargetArray Rows:4 Columns:1];
     Matrix *meanMatrix = [Matrix matrixFromArray:mean_array Rows:4 Columns:3];
     Matrix *rowMeans = [meanMatrix meansOfRows];
@@ -111,6 +111,28 @@
     XCTAssertEqualObjects(columnMeans, columnMeanTargetMatrix, @"Error in calculating Column Means.");
     CleanNSLog(@"%@", rowMeans);
     CleanNSLog(@"%@", columnMeans);
+}
+
+- (void)testVariances
+{
+    TitleNSLog(@"Variances Test");
+    double var_array[12] = { 1.0, 10.0, 1.0,
+        2.0, -6.0, -5.0,
+        -153.0, 34.0, 15.67,
+        -110.1, 1900.0, 0.0};
+    double columnVarTargetArray[3] = { 6207.66917, 890777.00000, 79.16722 };
+    double rowVartargetArray[4] = { 27.00, 19.00, 10625.76, 1277104.00 };
+    Matrix *columnVarTargetMatrix = [Matrix matrixFromArray:columnVarTargetArray Rows:1 Columns:3];
+    Matrix *rowVarTargetMatrix = [Matrix matrixFromArray:rowVartargetArray Rows:4 Columns:1];
+    Matrix *varMatrix = [Matrix matrixFromArray:var_array Rows:4 Columns:3];
+    Matrix *rowVars = [varMatrix sampleVariancesOfRows];
+    Matrix *columnVars = [varMatrix sampleVariancesOfColumns];
+    XCTAssert([rowVars isEqualToMatrix:rowVarTargetMatrix tolerance:0.01], @"Error in calculating Row Variances.");
+    XCTAssert([columnVars isEqualToMatrix:columnVarTargetMatrix tolerance:0.01], @"Error in calculating Column Variances.");
+    CleanNSLog(@"%@", rowVarTargetMatrix);
+    CleanNSLog(@"%@", columnVarTargetMatrix);
+    CleanNSLog(@"%@", rowVars);
+    CleanNSLog(@"%@", columnVars);
 }
 
 - (void)testEigenvalues

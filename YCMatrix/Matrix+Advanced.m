@@ -280,7 +280,7 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
 
 - (Matrix *)meansOfColumns
 {
-    Matrix *means = [Matrix matrixOfRows:self->columns Columns:1];
+    Matrix *means = [Matrix matrixOfRows:1 Columns:self->columns];
     for (int i=0; i<columns; i++)
     {
         double columnMean = 0;
@@ -292,6 +292,46 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
         means->matrix[i] = columnMean;
     }
     return means;
+}
+
+- (Matrix *)variancesOfRows
+{
+    Matrix *means = [self meansOfRows];
+    Matrix *d2 = [self matrixBySubtractingColumn:means];
+    [d2 elementWiseMultiply:d2];
+    Matrix *sums = [d2 sumsOfRows];
+    [sums multiplyWithScalar:1.0/self.columns];
+    return sums;
+}
+
+- (Matrix *)variancesOfColumns
+{
+    Matrix *means = [self meansOfColumns];
+    Matrix *d2 = [self matrixBySubtractingRow:means];
+    [d2 elementWiseMultiply:d2];
+    Matrix *sums = [d2 sumsOfColumns];
+    [sums multiplyWithScalar:1.0/self.rows];
+    return sums;
+}
+
+- (Matrix *)sampleVariancesOfRows
+{
+    Matrix *means = [self meansOfRows];
+    Matrix *d2 = [self matrixBySubtractingColumn:means];
+    [d2 elementWiseMultiply:d2];
+    Matrix *sums = [d2 sumsOfRows];
+    [sums multiplyWithScalar:1.0/(self.columns - 1)];
+    return sums;
+}
+
+- (Matrix *)sampleVariancesOfColumns
+{
+    Matrix *means = [self meansOfColumns];
+    Matrix *d2 = [self matrixBySubtractingRow:means];
+    [d2 elementWiseMultiply:d2];
+    Matrix *sums = [d2 sumsOfColumns];
+    [sums multiplyWithScalar:1.0/(self.rows - 1)];
+    return sums;
 }
 
 - (Matrix *)matrixByApplyingFunction:(double (^)(double value))function
