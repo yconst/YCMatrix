@@ -53,7 +53,7 @@
  
  @return The row matrix.
  */
-- (Matrix *)getRow:(int)rowIndex;
+- (Matrix *)row:(int)rowIndex;
 
 /**
  Replaces the values of row |rowIndex| with those of row matrix |rowValue|
@@ -68,7 +68,7 @@
  
  @return The NSArray of row matrices.
  */
-- (NSArray *)RowsAsNSArray;
+- (NSArray *)rowsAsNSArray;
 
 /**
  Returns the values of column |colIndex| as a column matrix.
@@ -77,7 +77,7 @@
  
  @return The column matrix with the values of the column |colIndex|.
  */
-- (Matrix *)getColumn:(int)colIndex;
+- (Matrix *)column:(int)colIndex;
 
 /**
  Replaces values of column |colIndex| with those of column matrix |columnValue|
@@ -92,7 +92,7 @@
  
  @return The NSArray containing the columns of the receiver.
  */
-- (NSArray *)ColumnsAsNSArray;
+- (NSArray *)columnsAsNSArray;
 
 /**
  Returns a matrix resulting from adding the values in the 

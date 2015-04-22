@@ -49,7 +49,7 @@
 {
     int numRows = self->rows;
     int numColumns = self->columns;
-    NSArray *matrixRows = [self RowsAsNSArray];
+    NSArray *matrixRows = [self rowsAsNSArray];
     Matrix *transform = [Matrix matrixOfRows:numRows Columns:2];
     int i=0;
     double tmean = domain.location + domain.length * 0.5;
@@ -96,7 +96,7 @@
 {
     int numRows = self->rows;
     int numColumns = self->columns;
-    NSArray *matrixRows = [self RowsAsNSArray];
+    NSArray *matrixRows = [self rowsAsNSArray];
     Matrix *transform = [Matrix matrixOfRows:numRows Columns:2];
     int i=0;
     double fmean = domain.location + domain.length * 0.5;

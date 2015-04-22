@@ -65,7 +65,7 @@
     return ret;
 }
 
-- (Matrix *)getRow:(int) rowIndex
+- (Matrix *)row:(int) rowIndex
 {
     if (rowIndex > self->rows - 1)
     {
@@ -98,17 +98,17 @@
     memcpy(self->matrix + columns * rowIndex, rowValue->matrix, columns * sizeof(double));
 }
 
-- (NSArray *)RowsAsNSArray
+- (NSArray *)rowsAsNSArray
 {
     NSMutableArray *rowsArray = [NSMutableArray arrayWithCapacity:rows];
     for (int i=0; i<rows; i++)
     {
-        [rowsArray addObject: [self getRow:i]];
+        [rowsArray addObject: [self row:i]];
     }
     return rowsArray;
 }
 
-- (Matrix *)getColumn:(int) colIndex
+- (Matrix *)column:(int) colIndex
 {
     if (colIndex > self->columns - 1)
     {
@@ -145,12 +145,12 @@
     }
 }
 
-- (NSArray *)ColumnsAsNSArray // needs some speed improvement
+- (NSArray *)columnsAsNSArray // needs some speed improvement
 {
     NSMutableArray *columnsArray = [NSMutableArray arrayWithCapacity:columns];
     for (int i=0; i<columns; i++)
     {
-        [columnsArray addObject: [self getColumn:i]];
+        [columnsArray addObject: [self column:i]];
     }
     return columnsArray;
 }
@@ -561,7 +561,7 @@
         for (int i=0; i<sampleCount; i++)
         {
             int rnd = arc4random_uniform((int)self->rows);
-            [new setColumn:i Value:[self getColumn:rnd]];
+            [new setColumn:i Value:[self column:rnd]];
         }
     }
     else
@@ -575,7 +575,7 @@
         {
             if (N * (double)arc4random() / 0x1000000000 <= n)
             {
-                [new setColumn:samples - n Value:[self getColumn:i]];
+                [new setColumn:samples - n Value:[self column:i]];
                 n--;
             }
             i++;

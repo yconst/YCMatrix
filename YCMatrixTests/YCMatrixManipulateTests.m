@@ -43,7 +43,7 @@
     TitleNSLog(@"Matrix row retrieval");
     double testmrarr[6] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0 };
     Matrix *testmr = [Matrix matrixFromArray:testmrarr Rows:2 Columns:3];
-    Matrix *rowm = [testmr getRow:1]; // This is being tested.
+    Matrix *rowm = [testmr row:1]; // This is being tested.
     CleanNSLog(@"%@", rowm);
     double templatermatrixarr[3] = { 4.0, 5.0, 6.0 };
     Matrix *templatemr = [Matrix matrixFromArray:templatermatrixarr Rows:1 Columns:3];
@@ -55,7 +55,7 @@
     TitleNSLog(@"Matrix column retrieval");
     double testmcarr[6] = { 1.0, 4.0, 2.0, 5.0, 3.0, 6.0 };
     Matrix *testmc = [Matrix matrixFromArray:testmcarr Rows:3 Columns:2];
-    Matrix *columnm = [testmc getColumn:1]; // This is being tested.
+    Matrix *columnm = [testmc column:1]; // This is being tested.
     CleanNSLog(@"%@", columnm);
     double templatecmatrixarr[3] = { 4.0, 5.0, 6.0 };
     Matrix *templatemc = [Matrix matrixFromArray:templatecmatrixarr Rows:3 Columns:1];
@@ -76,7 +76,7 @@
     Matrix *thirdRowMatrix = [Matrix matrixFromArray:thirdRow Rows:1 Columns:4];
     
     Matrix *rowsColumnsTestMatrix = [Matrix matrixFromArray:rowsColumnsArrayTest Rows:3 Columns:4];
-    NSArray *rowsTestRows = [rowsColumnsTestMatrix RowsAsNSArray];
+    NSArray *rowsTestRows = [rowsColumnsTestMatrix rowsAsNSArray];
     XCTAssertEqualObjects([rowsTestRows objectAtIndex:0], firstRowMatrix, @"Error in conversion to rows array(1).");
     XCTAssertEqualObjects([rowsTestRows objectAtIndex:1], secondRowMatrix, @"Error in conversion to rows array(2).");
     XCTAssertEqualObjects([rowsTestRows objectAtIndex:2], thirdRowMatrix, @"Error in conversion to rows array(3).");
@@ -99,7 +99,7 @@
     Matrix *fourthColumnMatrix = [Matrix matrixFromArray:fourthColumn Rows:3 Columns:1];
 
     Matrix *rowsColumnsTestMatrix = [Matrix matrixFromArray:rowsColumnsArrayTest Rows:3 Columns:4];
-    NSArray *columnsTestColumns = [rowsColumnsTestMatrix ColumnsAsNSArray];
+    NSArray *columnsTestColumns = [rowsColumnsTestMatrix columnsAsNSArray];
     XCTAssertEqualObjects([columnsTestColumns objectAtIndex:0], firstColumnMatrix,
                           @"Error in conversion to columns array(1).");
     XCTAssertEqualObjects([columnsTestColumns objectAtIndex:1], secondColumnMatrix,
