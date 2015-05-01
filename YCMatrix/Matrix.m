@@ -520,6 +520,28 @@
     return product;
 }
 
+- (double)min
+{
+    double min = DBL_MAX;
+    NSUInteger j= [self count];
+    for (int i=0; i<j; i++)
+    {
+        if (self->matrix[i] < min) min = self->matrix[i];
+    }
+    return min;
+}
+
+- (double)max
+{
+    double max = DBL_MIN;
+    NSUInteger j= [self count];
+    for (int i=0; i<j; i++)
+    {
+        if (self->matrix[i] > max) max = self->matrix[i];
+    }
+    return max;
+}
+
 - (BOOL)isSquareMatrix
 {
 	return self->rows == self->columns;

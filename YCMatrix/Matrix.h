@@ -477,6 +477,16 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
 @property (readonly) double product;
 
 /**
+ Returns the smallest value among the elements of the receiver.
+ */
+@property (readonly) double min;
+
+/**
+ Returns the largest value among the elements of the receiver.
+ */
+@property (readonly) double max;
+
+/**
  Returns YES if the receiver is a square matrix.
  */
 @property (readonly) BOOL isSquareMatrix;
