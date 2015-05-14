@@ -592,21 +592,24 @@
     [encoder encodeBytes:(const uint8_t *)self->matrix
                   length:self.count * sizeof(double)
                   forKey:@"matrix"];
-	[encoder encodeObject:@(self->rows) forKey:@"rows"];
-	[encoder encodeObject:@(self->columns) forKey:@"columns"];
+	[encoder encodeInt:self->rows forKey:@"rows"];
+    [encoder encodeInt:self->columns forKey:@"columns"];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)decoder
 {
 	if (self = [super init])
 	{
-		self->rows = [[decoder decodeObjectForKey:@"rows"] intValue];
-		self->columns = [[decoder decodeObjectForKey:@"columns"] intValue];
+        self->freeData = YES;
+		self->rows = [decoder decodeIntForKey:@"rows"];
+		self->columns = [decoder decodeIntForKey:@"columns"];
         if ([decoder containsValueForKey:@"matrix"])
         {
             NSUInteger length;
-            self->matrix = (double *)[decoder decodeBytesForKey:@"matrix" returnedLength:&length];
+            double *tempMatrix = (double *)[decoder decodeBytesForKey:@"matrix" returnedLength:&length];
             NSAssert(length == self.count * sizeof(double), @"Decoded matrix length differs");
+            self->matrix = malloc(length);
+            memcpy(self->matrix, tempMatrix, length);
         }
         else
         {

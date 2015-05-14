@@ -178,10 +178,11 @@
 
 - (void)testSerialization
 {
-    double matrix_array[9] = { 1.0, 2.0, 3.0,
-        4.0, 5.0, 6.0,
-        7.0, 8.0, 9.0 };
-    Matrix *testm1 = [Matrix matrixFromArray:matrix_array Rows:3 Columns:3];
+    double matrix_array[16] = { 1.0, 2.0, 3.0, 192837.445,
+        4.0, 5.0, 6.0, -4000005.5,
+        7.0, 8.0, 9.0, -0.000032348,
+        1.1, 0.00218, 0.5, -0.000121937};
+    Matrix *testm1 = [Matrix matrixFromArray:matrix_array Rows:4 Columns:4];
     NSData *serialized = [NSKeyedArchiver archivedDataWithRootObject:testm1];
     Matrix *recovered = [NSKeyedUnarchiver unarchiveObjectWithData:serialized];
     NSAssert([testm1 isEqualTo:recovered], @"Error in deserialization");
