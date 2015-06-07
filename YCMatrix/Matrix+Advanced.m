@@ -32,7 +32,8 @@
 #import "Matrix+Advanced.h"
 #import "Constants.h"
 
-static void SVDColumnMajor(double *A, int rows, int columns, double **s, double **u, double **vt);
+static void SVDColumnMajor(double *A, __CLPK_integer rows, __CLPK_integer columns,
+                           double **s, double **u, double **vt);
 static void pInv(double *A, int rows, int columns, double *Aplus);
 static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, double *vecR);
 
@@ -80,7 +81,7 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     double *sa = NULL;
     double *va = NULL;
     
-    SVDColumnMajor([self matrixByTransposing]->matrix, rows, columns, &sa, &ua, &va);
+    SVDColumnMajor([self matrixByTransposing]->matrix, (__CLPK_integer)rows, (__CLPK_integer)columns, &sa, &ua, &va);
     
     Matrix *U = [[Matrix matrixFromArray:ua Rows:self->columns Columns:self->rows Mode:YCMWeak] matrixByTransposing]; // mxm
     Matrix *S = [Matrix matrixOfRows:self->columns Columns:self->columns ValuesInDiagonal:sa Value:0]; // mxn
@@ -99,14 +100,14 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     }
     Matrix *aTranspose = [self matrixByTransposing];
     
-    int n = self->rows;
-    int nrhs = B->columns;
-    int lda = self->rows;
-    int ldb = self->rows;
+    __CLPK_integer n = self->rows;
+    __CLPK_integer nrhs = B->columns;
+    __CLPK_integer lda = self->rows;
+    __CLPK_integer ldb = self->rows;
     
-    int ipiv[n];
+    __CLPK_integer ipiv[n];
     
-    int info = 0;
+    __CLPK_integer info = 0;
     
     dgesv_(&n, &nrhs, aTranspose->matrix, &lda, ipiv, bTranspose->matrix, &ldb, &info);
     
@@ -133,11 +134,11 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
 - (void)cholesky
 {
     char uplo = 'U';
-    int rank = self->rows;
-    int info;
-    int i,j;
+    __CLPK_integer rank = self->rows;
+    __CLPK_integer info;
+    __CLPK_integer i,j;
 
-    dpotrf_(&uplo, &rank, self->matrix, &self->rows, &info);
+    dpotrf_(&uplo, &rank, self->matrix, (__CLPK_integer *)&self->rows, &info);
     
     if(info > 0)
     {
@@ -194,19 +195,19 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
 
 - (double)determinant
 {
-    int info;
+    __CLPK_integer info;
     double det = 1.0;
-    int neg = 0;
+    __CLPK_integer neg = 0;
     
     [self checkSquare];
     
-    int m = self->rows;
-    int length = m*m;
+    __CLPK_integer m = self->rows;
+    __CLPK_integer length = m*m;
     
     double *A = malloc(length * sizeof(double));
     memcpy(A, self->matrix, length * sizeof(double));
     
-    int *ipvt = malloc(m * sizeof(int));
+    __CLPK_integer *ipvt = malloc(m * sizeof(int));
     
     dgetrf_(&m, &m, A, &m, ipvt, &info);
     
@@ -374,12 +375,12 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
  */
 {
     char jobvl = vecL?'V':'N', jobvr = vecR?'V':'N';
-    int vecLSize = vecL?n:1, vecRSize = vecR?n:1;
-    int rank = m;
+    __CLPK_integer vecLSize = vecL?n:1, vecRSize = vecR?n:1;
+    __CLPK_integer rank = m;
     double *dup;
-    int lwork;
+    __CLPK_integer lwork;
     double *work;
-    int info;
+    __CLPK_integer info;
     
     double *wr = vr ? vr : malloc(rank * sizeof(double));
     double *wi = vi ? vi : malloc(rank * sizeof(double));
@@ -405,7 +406,8 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     }
 }
 
-static void SVDColumnMajor(double *A, int rows, int columns, double **s, double **u, double **vt)
+static void SVDColumnMajor(double *A, __CLPK_integer rows, __CLPK_integer columns,
+                           double **s, double **u, double **vt)
 /*
  
  Compute the Singular Value Decomposition of *column-major* matrix A
@@ -416,8 +418,8 @@ static void SVDColumnMajor(double *A, int rows, int columns, double **s, double 
  
  */
 {
-    int    i;
-    int    lwork, *iwork;
+    __CLPK_integer    i;
+    __CLPK_integer    lwork, *iwork;
     double     *work;
     double     *S, *U, *Vt;
     char        achar='A';   /* ? */
@@ -435,15 +437,15 @@ static void SVDColumnMajor(double *A, int rows, int columns, double **s, double 
      * First call of dgesdd is with lwork=-1 to calculate an optimal value of
      * lwork
      */
-    iwork = (int *) malloc(sizeof(int)*8*MIN(rows,columns));
+    iwork = (__CLPK_integer *)malloc(sizeof(__CLPK_integer)*8*MIN(rows,columns));
     lwork=-1;
     
     /* Need a single location in work to store the recommended value of lwork */
     work = (double *) malloc(sizeof(double)*1);
     
-    int lda = rows;
-    int ldu = rows;
-    int ldvt = columns;
+    __CLPK_integer lda = rows;
+    __CLPK_integer ldu = rows;
+    __CLPK_integer ldvt = columns;
     
     dgesdd_( &achar, &rows, &columns, A, &lda, S, U, &ldu, Vt, &ldvt, work, &lwork, iwork, &i );
     
