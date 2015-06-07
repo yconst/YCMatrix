@@ -155,4 +155,53 @@
     XCTAssertEqualObjects(original, step4, @"Error while Adding / Subtracting Rows / Columns");
 }
 
+- (void)testRowRemoval
+{
+    double original[16] = {
+        16.0, 2.0,  3.0,  13.0,
+        5.0,  11.0, 10.0, 8.0,
+        9.0,  7.0,  6.0,  12.0,
+        4.0,  14.0, 15.0, 0.05
+    };
+    
+    double test[12] = {
+        16.0, 2.0,  3.0,  13.0,
+        9.0,  7.0,  6.0,  12.0,
+        4.0,  14.0, 15.0, 0.05
+    };
+    
+    Matrix *originalMatrix = [Matrix matrixFromArray:original Rows:4 Columns:4];
+    Matrix *resultMatrix = [originalMatrix removeRow:1];
+    Matrix *testMatrix = [Matrix matrixFromArray:test Rows:3 Columns:4];
+    XCTAssertEqualObjects(testMatrix, resultMatrix);
+    CleanNSLog(@"Original:\n%@", originalMatrix);
+    CleanNSLog(@"Test:\n%@", testMatrix);
+    CleanNSLog(@"-removeRow: Result:\n%@", resultMatrix);
+}
+
+- (void)testColumnRemoval
+{
+    double original[16] = {
+        16.0, 2.0,  3.0,  13.0,
+        5.0,  11.0, 10.0, 8.0,
+        9.0,  7.0,  6.0,  12.0,
+        4.0,  14.0, 15.0, 0.05
+    };
+    
+    double test[12] = {
+        16.0,  3.0,  13.0,
+        5.0, 10.0, 8.0,
+        9.0,  6.0,  12.0,
+        4.0, 15.0, 0.05
+    };
+    
+    Matrix *originalMatrix = [Matrix matrixFromArray:original Rows:4 Columns:4];
+    Matrix *resultMatrix = [originalMatrix removeColumn:1];
+    Matrix *testMatrix = [Matrix matrixFromArray:test Rows:4 Columns:3];
+    XCTAssertEqualObjects(testMatrix, resultMatrix);
+    CleanNSLog(@"Original:\n%@", originalMatrix);
+    CleanNSLog(@"Test:\n%@", testMatrix);
+    CleanNSLog(@"-removeColumn: Result:\n%@", resultMatrix);
+}
+
 @end

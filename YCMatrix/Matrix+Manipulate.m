@@ -420,12 +420,16 @@
                                        reason:@"Column index input is out of bounds."
                                      userInfo:nil];
     }
-    double newCols = columns - 1;
+    int newCols = columns - 1;
     double *newMatrix = malloc(newCols * rows * sizeof(double));
     for (int i=0; i < rows; i++)
     {
-        memcpy(newMatrix, self->matrix, columnNumber * sizeof(double));
-        memcpy(newMatrix + columnNumber, self->matrix + columnNumber + 1, (newCols - columnNumber) * sizeof(double));
+        memcpy(newMatrix + i*newCols,
+               self->matrix + i*self->columns,
+               columnNumber * sizeof(double));
+        memcpy(newMatrix + columnNumber + i*newCols,
+               self->matrix + columnNumber + 1  + i*self->columns,
+               (newCols - columnNumber) * sizeof(double));
     }
     return [Matrix matrixFromArray:newMatrix Rows:rows Columns:newCols];
 }
