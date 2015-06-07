@@ -1,9 +1,9 @@
 //
-// YCMatrix.m
+// Matrix.m
 //
 // YCMatrix
 //
-// Copyright (c) 2013, 2014 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
+// Copyright (c) 2013 - 2015 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 // http://yconst.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,10 +24,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "YCMatrix.h"
+#import "Matrix.h"
 #import "Constants.h"
 
-@implementation YCMatrix
+@implementation Matrix
 
 #pragma mark Factory Methods
 
@@ -36,12 +36,12 @@
     return [self matrixOfRows:m Columns:n ValuesInDiagonal:nil Value:0];
 }
 
-+ (instancetype)matrixLike:(YCMatrix *)other
++ (instancetype)matrixLike:(Matrix *)other
 {
     return [self matrixOfRows:other->rows Columns:other->columns];
 }
 
-+ (instancetype)onesLike:(YCMatrix *)other
++ (instancetype)onesLike:(Matrix *)other
 {
     return [self matrixOfRows:other->rows Columns:other->columns Value:1.0];
 }
@@ -49,7 +49,7 @@
 + (instancetype)dirtyMatrixOfRows:(int)m Columns:(int)n
 {
     double *new_m = malloc(m*n * sizeof(double));
-	YCMatrix *mt = [self matrixFromArray:new_m Rows:m Columns:n Mode:YCMWeak];
+	Matrix *mt = [self matrixFromArray:new_m Rows:m Columns:n Mode:YCMWeak];
     mt->freeData = YES;
     return mt;
 }
@@ -65,7 +65,7 @@
                        Value:(double)val
 {
 	double *new_m = malloc(m*n*sizeof(double));
-	YCMatrix *mt = [self matrixFromArray:new_m Rows:m Columns:n Mode:YCMWeak];
+	Matrix *mt = [self matrixFromArray:new_m Rows:m Columns:n Mode:YCMWeak];
     mt->freeData = YES;
 	int len = m*n;
 	for (int i=0; i<len; i++)
@@ -90,7 +90,7 @@
 
 + (instancetype)matrixFromArray:(double *)arr Rows:(int)m Columns:(int)n Mode:(refMode)mode
 {
-	YCMatrix *mt = [[YCMatrix alloc] init];
+	Matrix *mt = [[Matrix alloc] init];
 	if (mode == YCMCopy)
 	{
 		double *new_m = malloc(m*n*sizeof(double));
@@ -115,7 +115,7 @@
 		@throw [NSException exceptionWithName:@"MatrixSizeException"
 		        reason:@"Matrix size does not match that of the input array."
 		        userInfo:nil];
-	YCMatrix *newMatrix = [YCMatrix matrixOfRows:m Columns:n];
+	Matrix *newMatrix = [Matrix matrixOfRows:m Columns:n];
 	double *cArray = newMatrix->matrix;
 	NSUInteger j=[arr count];
 	for (int i=0; i<j; i++)
@@ -125,9 +125,9 @@
 	return newMatrix;
 }
 
-+ (instancetype)matrixFromMatrix:(YCMatrix *)other
++ (instancetype)matrixFromMatrix:(Matrix *)other
 {
-	YCMatrix *mt = [YCMatrix matrixFromArray:other->matrix Rows:other->rows Columns:other->columns];
+	Matrix *mt = [Matrix matrixFromArray:other->matrix Rows:other->rows Columns:other->columns];
 	return mt;
 }
 
@@ -139,7 +139,7 @@
 	for(int i=0; i<minsize; i++) {
 		new_m[(n + 1)*i] = 1.0;
 	}
-	return [YCMatrix matrixFromArray:new_m Rows:m Columns:n];
+	return [Matrix matrixFromArray:new_m Rows:m Columns:n];
 }
 
 #pragma mark Instance Methods
@@ -188,17 +188,17 @@
                                      userInfo:nil];
 }
 
-- (YCMatrix *)matrixByAdding:(YCMatrix *)addend
+- (Matrix *)matrixByAdding:(Matrix *)addend
 {
 	return [self matrixByMultiplyingWithScalar:1 AndAdding:addend];
 }
 
-- (YCMatrix *)matrixBySubtracting:(YCMatrix *)subtrahend
+- (Matrix *)matrixBySubtracting:(Matrix *)subtrahend
 {
 	return [subtrahend matrixByMultiplyingWithScalar:-1 AndAdding:self];
 }
 
-- (YCMatrix *)matrixByMultiplyingWithRight:(YCMatrix *)mt
+- (Matrix *)matrixByMultiplyingWithRight:(Matrix *)mt
 {
 	return [self matrixByTransposing:NO
 	        TransposingRight:NO
@@ -207,10 +207,10 @@
 	        Adding:nil];
 }
 
-- (YCMatrix *)matrixByMultiplyingWithRight:(YCMatrix *)mt AndTransposing:(bool)trans
+- (Matrix *)matrixByMultiplyingWithRight:(Matrix *)mt AndTransposing:(bool)trans
 {
-	YCMatrix *M1 = trans ? mt : self;
-	YCMatrix *M2 = trans ? self : mt;
+	Matrix *M1 = trans ? mt : self;
+	Matrix *M2 = trans ? self : mt;
 	return [M1 matrixByTransposing:trans
 	        TransposingRight:trans
 	        MultiplyWithRight:M2
@@ -218,7 +218,7 @@
 	        Adding:nil];
 }
 
-- (YCMatrix *)matrixByMultiplyingWithRight:(YCMatrix *)mt AndAdding:(YCMatrix *)ma
+- (Matrix *)matrixByMultiplyingWithRight:(Matrix *)mt AndAdding:(Matrix *)ma
 {
 	return [self matrixByTransposing:NO
 	        TransposingRight:NO
@@ -227,7 +227,7 @@
 	        Adding:ma];
 }
 
-- (YCMatrix *)matrixByMultiplyingWithRight:(YCMatrix *)mt AndFactor:(double)sf
+- (Matrix *)matrixByMultiplyingWithRight:(Matrix *)mt AndFactor:(double)sf
 {
 	return [self matrixByTransposing:NO
 	        TransposingRight:NO
@@ -236,7 +236,7 @@
 	        Adding:nil];
 }
 
-- (YCMatrix *)matrixByTransposingAndMultiplyingWithRight:(YCMatrix *)mt
+- (Matrix *)matrixByTransposingAndMultiplyingWithRight:(Matrix *)mt
 {
 	return [self matrixByTransposing:YES
 	        TransposingRight:NO
@@ -245,7 +245,7 @@
 	        Adding:nil];
 }
 
-- (YCMatrix *)matrixByTransposingAndMultiplyingWithLeft:(YCMatrix *)mt
+- (Matrix *)matrixByTransposingAndMultiplyingWithLeft:(Matrix *)mt
 {
 	return [mt matrixByTransposing:NO
 	        TransposingRight:YES
@@ -257,11 +257,11 @@
 //
 // Actual calls to BLAS
 
-- (YCMatrix *)matrixByTransposing:(BOOL)transposeLeft
+- (Matrix *)matrixByTransposing:(BOOL)transposeLeft
         TransposingRight:(BOOL)transposeRight
-        MultiplyWithRight:(YCMatrix *)mt
+        MultiplyWithRight:(Matrix *)mt
         Factor:(double)factor
-        Adding:(YCMatrix *)addend
+        Adding:(Matrix *)addend
 {
 	int M = transposeLeft ? columns : rows;
 	int N = transposeRight ? mt->rows : mt->columns;
@@ -285,7 +285,7 @@
 	enum CBLAS_TRANSPOSE lT = transposeLeft ? CblasTrans : CblasNoTrans;
 	enum CBLAS_TRANSPOSE rT = transposeRight ? CblasTrans : CblasNoTrans;
 
-	YCMatrix *result = addend ?[YCMatrix matrixFromMatrix:addend] :[YCMatrix matrixOfRows:M
+	Matrix *result = addend ?[Matrix matrixFromMatrix:addend] :[Matrix matrixOfRows:M
 	                                                                Columns:N];
 	cblas_dgemm(CblasRowMajor, lT,          rT,         M,
 	            N,              K,          factor,     matrix,
@@ -294,20 +294,20 @@
 	return result;
 }
 
-- (YCMatrix *)matrixByMultiplyingWithScalar:(double)ms
+- (Matrix *)matrixByMultiplyingWithScalar:(double)ms
 {
-	YCMatrix *product = [YCMatrix matrixFromMatrix:self];
+	Matrix *product = [Matrix matrixFromMatrix:self];
 	cblas_dscal(rows*columns, ms, product->matrix, 1);
 	return product;
 }
 
-- (YCMatrix *)matrixByMultiplyingWithScalar:(double)ms AndAdding:(YCMatrix *)addend
+- (Matrix *)matrixByMultiplyingWithScalar:(double)ms AndAdding:(Matrix *)addend
 {
 	if(columns != addend->columns || rows != addend->rows || sizeof(matrix) != sizeof(addend->matrix))
 		@throw [NSException exceptionWithName:@"MatrixSizeException"
 		        reason:@"Matrix size mismatch."
 		        userInfo:nil];
-	YCMatrix *sum = [YCMatrix matrixFromMatrix:addend];
+	Matrix *sum = [Matrix matrixFromMatrix:addend];
 	cblas_daxpy(rows*columns, ms, self->matrix, 1, sum->matrix, 1);
 	return sum;
 }
@@ -315,44 +315,51 @@
 // End of actual calls to BLAS
 //
 
-- (YCMatrix *)matrixByNegating
+- (Matrix *)matrixByNegating
 {
 	return [self matrixByMultiplyingWithScalar:-1];
 }
 
-- (YCMatrix *)matrixByTransposing
+- (Matrix *)matrixBySquaring
 {
-	YCMatrix *trans = [YCMatrix dirtyMatrixOfRows:columns Columns:rows];
+    Matrix *result = [Matrix matrixLike:self];
+    vDSP_vsqD(self->matrix, 1, result->matrix, 1, self.count);
+    return result;
+}
+
+- (Matrix *)matrixByTransposing
+{
+	Matrix *trans = [Matrix dirtyMatrixOfRows:columns Columns:rows];
 	vDSP_mtransD(self->matrix, 1, trans->matrix, 1, trans->rows, trans->columns);
 	return trans;
 }
 
-- (YCMatrix *)matrixByElementWiseMultiplyWith:(YCMatrix *)mt
+- (Matrix *)matrixByElementWiseMultiplyWith:(Matrix *)mt
 {
-	YCMatrix *result = [self copy];
+	Matrix *result = [self copy];
 	[result elementWiseMultiply:mt];
 	return result;
 }
 
-- (YCMatrix *)matrixByElementWisDivideBy:(YCMatrix *)mt
+- (Matrix *)matrixByElementWisDivideBy:(Matrix *)mt
 {
-    YCMatrix *result = [self copy];
+    Matrix *result = [self copy];
     [result elementWiseDivide:mt];
     return result;
 }
 
-- (void)add:(YCMatrix *)addend
+- (void)add:(Matrix *)addend
 {
-	if(columns != addend->columns || rows != addend->rows || sizeof(matrix) != sizeof(addend->matrix))
+	if(columns != addend->columns || rows != addend->rows)
 		@throw [NSException exceptionWithName:@"MatrixSizeException"
 		        reason:@"Matrix size mismatch."
 		        userInfo:nil];
 	cblas_daxpy(rows*columns, 1, addend->matrix, 1, self->matrix, 1);
 }
 
-- (void)subtract:(YCMatrix *)subtrahend
+- (void)subtract:(Matrix *)subtrahend
 {
-	if(columns != subtrahend->columns || rows != subtrahend->rows || sizeof(matrix) != sizeof(subtrahend->matrix))
+	if(columns != subtrahend->columns || rows != subtrahend->rows)
 		@throw [NSException exceptionWithName:@"MatrixSizeException"
 		        reason:@"Matrix size mismatch."
 		        userInfo:nil];
@@ -369,9 +376,14 @@
 	[self multiplyWithScalar:-1];
 }
 
-- (void)elementWiseMultiply:(YCMatrix *)mt
+- (void)square
 {
-	if(columns != mt->columns || rows != mt->rows || sizeof(matrix) != sizeof(mt->matrix))
+    vDSP_vsqD(self->matrix, 1, self->matrix, 1, self.count);
+}
+
+- (void)elementWiseMultiply:(Matrix *)mt
+{
+	if(columns != mt->columns || rows != mt->rows)
 		@throw [NSException exceptionWithName:@"MatrixSizeException"
 		        reason:@"Matrix size mismatch."
 		        userInfo:nil];
@@ -381,9 +393,9 @@
 	}
 }
 
-- (void)elementWiseDivide:(YCMatrix *)mt
+- (void)elementWiseDivide:(Matrix *)mt
 {
-    if(columns != mt->columns || rows != mt->rows || sizeof(matrix) != sizeof(mt->matrix))
+    if(columns != mt->columns || rows != mt->rows)
         @throw [NSException exceptionWithName:@"MatrixSizeException"
                                        reason:@"Matrix size mismatch."
                                      userInfo:nil];
@@ -404,13 +416,9 @@
 	return trace;
 }
 
-- (double)dotWith:(YCMatrix *)other
+- (double)dotWith:(Matrix *)other
 {
 	// A few more checks need to be made here.
-	if(sizeof(matrix) != sizeof(other->matrix))
-		@throw [NSException exceptionWithName:@"MatrixSizeException"
-		        reason:@"Matrix size mismatch."
-		        userInfo:nil];
 	if(columns != 1 && rows != 1)
 		@throw [NSException exceptionWithName:@"MatrixSizeException"
 		        reason:@"Dot can only be performed on vectors."
@@ -418,7 +426,7 @@
 	return cblas_ddot(self->rows * self->columns, self->matrix, 1, other->matrix, 1);
 }
 
-- (YCMatrix *)matrixByUnitizing
+- (Matrix *)matrixByUnitizing
 {
 	if(columns != 1 && rows != 1)
 		@throw [NSException exceptionWithName:@"MatrixSizeException"
@@ -432,7 +440,7 @@
 		sqsum += v*v;
 	}
 	double invmag = 1/sqrt(sqsum);
-	YCMatrix *norm = [YCMatrix matrixOfRows:rows Columns:columns];
+	Matrix *norm = [Matrix matrixOfRows:rows Columns:columns];
 	double *normMatrix = norm->matrix;
 	for (int i=0; i<len; i++)
 	{
@@ -464,10 +472,10 @@
 	return result;
 }
 
-- (YCMatrix *)diagonal
+- (Matrix *)diagonal
 {
     int minDim = MIN(rows, columns);
-    YCMatrix *result = [YCMatrix matrixOfRows:minDim Columns:1];
+    Matrix *result = [Matrix matrixOfRows:minDim Columns:1];
     for (int i=0; i<minDim; i++)
     {
         [result setValue:[self valueAtRow:i Column:i] Row:i Column:0];
@@ -512,14 +520,36 @@
     return product;
 }
 
-- (BOOL)isSquare
+- (double)min
+{
+    double min = DBL_MAX;
+    NSUInteger j= [self count];
+    for (int i=0; i<j; i++)
+    {
+        if (self->matrix[i] < min) min = self->matrix[i];
+    }
+    return min;
+}
+
+- (double)max
+{
+    double max = DBL_MIN;
+    NSUInteger j= [self count];
+    for (int i=0; i<j; i++)
+    {
+        if (self->matrix[i] > max) max = self->matrix[i];
+    }
+    return max;
+}
+
+- (BOOL)isSquareMatrix
 {
 	return self->rows == self->columns;
 }
 
 - (BOOL)isEqual:(id)anObject {
 	if (![anObject isKindOfClass:[self class]]) return NO;
-	YCMatrix *other = (YCMatrix *)anObject;
+	Matrix *other = (Matrix *)anObject;
 	if (rows != other->rows || columns != other->columns) return NO;
 	int arr_length = self->rows * self->columns;
 	for (int i=0; i<arr_length; i++) {
@@ -528,7 +558,7 @@
 	return YES;
 }
 
-- (BOOL)isEqualToMatrix:(YCMatrix *)aMatrix tolerance:(double)tolerance
+- (BOOL)isEqualToMatrix:(Matrix *)aMatrix tolerance:(double)tolerance
 {
     if (self->rows != aMatrix->rows || self->columns != aMatrix->columns) return NO;
     int arr_length = self->rows * self->columns;
@@ -562,21 +592,24 @@
     [encoder encodeBytes:(const uint8_t *)self->matrix
                   length:self.count * sizeof(double)
                   forKey:@"matrix"];
-	[encoder encodeObject:@(self->rows) forKey:@"rows"];
-	[encoder encodeObject:@(self->columns) forKey:@"columns"];
+	[encoder encodeInt:self->rows forKey:@"rows"];
+    [encoder encodeInt:self->columns forKey:@"columns"];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)decoder
 {
 	if (self = [super init])
 	{
-		self->rows = [[decoder decodeObjectForKey:@"rows"] intValue];
-		self->columns = [[decoder decodeObjectForKey:@"columns"] intValue];
+        self->freeData = YES;
+		self->rows = [decoder decodeIntForKey:@"rows"];
+		self->columns = [decoder decodeIntForKey:@"columns"];
         if ([decoder containsValueForKey:@"matrix"])
         {
             NSUInteger length;
-            self->matrix = (double *)[decoder decodeBytesForKey:@"matrix" returnedLength:&length];
+            double *tempMatrix = (double *)[decoder decodeBytesForKey:@"matrix" returnedLength:&length];
             NSAssert(length == self.count * sizeof(double), @"Decoded matrix length differs");
+            self->matrix = malloc(length);
+            memcpy(self->matrix, tempMatrix, length);
         }
         else
         {
@@ -595,7 +628,7 @@
 
 - (instancetype)copyWithZone:(NSZone *)zone
 {
-	YCMatrix *newMatrix = [YCMatrix matrixFromArray:self->matrix
+	Matrix *newMatrix = [Matrix matrixFromArray:self->matrix
 	                       Rows:self->rows
 	                       Columns:self->columns];
 	return newMatrix;

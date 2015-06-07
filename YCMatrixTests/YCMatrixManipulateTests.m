@@ -1,7 +1,9 @@
 //
 //  ManipulateTests.m
 //
-// Copyright (c) 2013, 2014 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
+// YCMatrix
+//
+// Copyright (c) 2013 - 2015 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 // http://yconst.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,9 +24,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <XCTest/XCTest.h>
-#import "YCMatrix.h"
-#import "YCMatrix+Manipulate.h"
+@import XCTest;
+@import YCMatrix;
+
+#define ARC4RANDOM_MAX 0x100000000 
+
+// Definitions for convenience logging functions (without date/object and title logging).
+#define CleanNSLog(FORMAT, ...) fprintf(stderr,"%s\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
+#define TitleNSLog(FORMAT, ...) fprintf(stderr,"\n%s\n_____________________________________\n\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
 
 @interface YCMatrixManipulateTests : XCTestCase
 
@@ -36,11 +43,11 @@
 {
     TitleNSLog(@"Matrix row retrieval");
     double testmrarr[6] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0 };
-    YCMatrix *testmr = [YCMatrix matrixFromArray:testmrarr Rows:2 Columns:3];
-    YCMatrix *rowm = [testmr getRow:1]; // This is being tested.
+    Matrix *testmr = [Matrix matrixFromArray:testmrarr Rows:2 Columns:3];
+    Matrix *rowm = [testmr row:1]; // This is being tested.
     CleanNSLog(@"%@", rowm);
     double templatermatrixarr[3] = { 4.0, 5.0, 6.0 };
-    YCMatrix *templatemr = [YCMatrix matrixFromArray:templatermatrixarr Rows:1 Columns:3];
+    Matrix *templatemr = [Matrix matrixFromArray:templatermatrixarr Rows:1 Columns:3];
     XCTAssertTrue([rowm isEqual: templatemr], @"Matrix row retrieval is problematic.");
 }
 
@@ -48,11 +55,11 @@
 {
     TitleNSLog(@"Matrix column retrieval");
     double testmcarr[6] = { 1.0, 4.0, 2.0, 5.0, 3.0, 6.0 };
-    YCMatrix *testmc = [YCMatrix matrixFromArray:testmcarr Rows:3 Columns:2];
-    YCMatrix *columnm = [testmc getColumn:1]; // This is being tested.
+    Matrix *testmc = [Matrix matrixFromArray:testmcarr Rows:3 Columns:2];
+    Matrix *columnm = [testmc column:1]; // This is being tested.
     CleanNSLog(@"%@", columnm);
     double templatecmatrixarr[3] = { 4.0, 5.0, 6.0 };
-    YCMatrix *templatemc = [YCMatrix matrixFromArray:templatecmatrixarr Rows:3 Columns:1];
+    Matrix *templatemc = [Matrix matrixFromArray:templatecmatrixarr Rows:3 Columns:1];
     XCTAssertTrue([columnm isEqual: templatemc], @"Matrix column retrieval is problematic.");
 }
 
@@ -63,14 +70,14 @@
         5.0, 6.0, 7.0, 8.0,
         9.0, 10.0, 11.0, 12.0};
     double firstRow[4] = { 1.0, 2.0, 3.0, 4.0 };
-    YCMatrix *firstRowMatrix = [YCMatrix matrixFromArray:firstRow Rows:1 Columns:4];
+    Matrix *firstRowMatrix = [Matrix matrixFromArray:firstRow Rows:1 Columns:4];
     double secondRow[4] = { 5.0, 6.0, 7.0, 8.0 };
-    YCMatrix *secondRowMatrix = [YCMatrix matrixFromArray:secondRow Rows:1 Columns:4];
+    Matrix *secondRowMatrix = [Matrix matrixFromArray:secondRow Rows:1 Columns:4];
     double thirdRow[4] = { 9.0, 10.0, 11.0, 12.0 };
-    YCMatrix *thirdRowMatrix = [YCMatrix matrixFromArray:thirdRow Rows:1 Columns:4];
+    Matrix *thirdRowMatrix = [Matrix matrixFromArray:thirdRow Rows:1 Columns:4];
     
-    YCMatrix *rowsColumnsTestMatrix = [YCMatrix matrixFromArray:rowsColumnsArrayTest Rows:3 Columns:4];
-    NSArray *rowsTestRows = [rowsColumnsTestMatrix RowsAsNSArray];
+    Matrix *rowsColumnsTestMatrix = [Matrix matrixFromArray:rowsColumnsArrayTest Rows:3 Columns:4];
+    NSArray *rowsTestRows = [rowsColumnsTestMatrix rowsAsNSArray];
     XCTAssertEqualObjects([rowsTestRows objectAtIndex:0], firstRowMatrix, @"Error in conversion to rows array(1).");
     XCTAssertEqualObjects([rowsTestRows objectAtIndex:1], secondRowMatrix, @"Error in conversion to rows array(2).");
     XCTAssertEqualObjects([rowsTestRows objectAtIndex:2], thirdRowMatrix, @"Error in conversion to rows array(3).");
@@ -84,16 +91,16 @@
         5.0, 6.0, 7.0, 8.0,
         9.0, 10.0, 11.0, 12.0};
     double firstColumn[3] = { 1.0, 5.0, 9.0 };
-    YCMatrix *firstColumnMatrix = [YCMatrix matrixFromArray:firstColumn Rows:3 Columns:1];
+    Matrix *firstColumnMatrix = [Matrix matrixFromArray:firstColumn Rows:3 Columns:1];
     double secondColumn[3] = { 2.0, 6.0, 10.0 };
-    YCMatrix *secondColumnMatrix = [YCMatrix matrixFromArray:secondColumn Rows:3 Columns:1];
+    Matrix *secondColumnMatrix = [Matrix matrixFromArray:secondColumn Rows:3 Columns:1];
     double thirdColumn[3] = { 3.0, 7.0, 11.0 };
-    YCMatrix *thirdColumnMatrix = [YCMatrix matrixFromArray:thirdColumn Rows:3 Columns:1];
+    Matrix *thirdColumnMatrix = [Matrix matrixFromArray:thirdColumn Rows:3 Columns:1];
     double fourthColumn[3] = { 4.0, 8.0, 12.0 };
-    YCMatrix *fourthColumnMatrix = [YCMatrix matrixFromArray:fourthColumn Rows:3 Columns:1];
+    Matrix *fourthColumnMatrix = [Matrix matrixFromArray:fourthColumn Rows:3 Columns:1];
 
-    YCMatrix *rowsColumnsTestMatrix = [YCMatrix matrixFromArray:rowsColumnsArrayTest Rows:3 Columns:4];
-    NSArray *columnsTestColumns = [rowsColumnsTestMatrix ColumnsAsNSArray];
+    Matrix *rowsColumnsTestMatrix = [Matrix matrixFromArray:rowsColumnsArrayTest Rows:3 Columns:4];
+    NSArray *columnsTestColumns = [rowsColumnsTestMatrix columnsAsNSArray];
     XCTAssertEqualObjects([columnsTestColumns objectAtIndex:0], firstColumnMatrix,
                           @"Error in conversion to columns array(1).");
     XCTAssertEqualObjects([columnsTestColumns objectAtIndex:1], secondColumnMatrix,
@@ -111,12 +118,12 @@
         5.0, 6.0, 7.0, 8.0,
         9.0, 10.0, 11.0, 12.0,
         13.0, 14.0, 15.0, 16.0 };
-    YCMatrix *original = [YCMatrix matrixFromArray:simple_array Rows:4 Columns:4];
+    Matrix *original = [Matrix matrixFromArray:simple_array Rows:4 Columns:4];
     
     double expected_rows[8] = { 5.0, 6.0, 7.0, 8.0,
         9.0, 10.0, 11.0, 12.0 };
-    YCMatrix *expectedRows = [YCMatrix matrixFromArray:expected_rows Rows:2 Columns:4];
-    YCMatrix *resultRows = [original matrixWithRowsInRange:NSMakeRange(1, 2)];
+    Matrix *expectedRows = [Matrix matrixFromArray:expected_rows Rows:2 Columns:4];
+    Matrix *resultRows = [original matrixWithRowsInRange:NSMakeRange(1, 2)];
     CleanNSLog(@"%@", resultRows);
     XCTAssertEqualObjects(expectedRows, resultRows, @"Error while extracting rows to sub-matrix");
     
@@ -124,8 +131,8 @@
         6.0, 7.0,
         10.0, 11.0,
         14.0, 15.0 };
-    YCMatrix *expectedColumns = [YCMatrix matrixFromArray:expected_columns Rows:4 Columns:2];
-    YCMatrix *resultColumns = [original matrixWithColumnsInRange:NSMakeRange(1, 2)];
+    Matrix *expectedColumns = [Matrix matrixFromArray:expected_columns Rows:4 Columns:2];
+    Matrix *resultColumns = [original matrixWithColumnsInRange:NSMakeRange(1, 2)];
     CleanNSLog(@"%@", resultColumns);
     XCTAssertEqualObjects(expectedColumns, resultColumns, @"Error while extracting columns to sub-matrix");
 }
@@ -137,16 +144,65 @@
         5.0, 6.0, 7.0, 8.0,
         9.0, 10.0, 11.0, 12.0,
         13.0, 14.0, 15.0, 16.0 };
-    YCMatrix *original = [YCMatrix matrixFromArray:simple_array Rows:4 Columns:4];
+    Matrix *original = [Matrix matrixFromArray:simple_array Rows:4 Columns:4];
     double element[4] = { 4.0, 1.0, -40.0, -22.5 };
-    YCMatrix *column = [YCMatrix matrixFromArray:element Rows:4 Columns:1];
-    YCMatrix *row = [YCMatrix matrixFromArray:element Rows:1 Columns:4];
-    YCMatrix *step1 = [original matrixByAddingRow:row];
-    YCMatrix *step2 = [step1 matrixByAddingColumn:column];
-    YCMatrix *step3 = [step2 matrixBySubtractingColumn:column];
-    YCMatrix *step4 = [step3 matrixBySubtractingRow:row];
+    Matrix *column = [Matrix matrixFromArray:element Rows:4 Columns:1];
+    Matrix *row = [Matrix matrixFromArray:element Rows:1 Columns:4];
+    Matrix *step1 = [original matrixByAddingRow:row];
+    Matrix *step2 = [step1 matrixByAddingColumn:column];
+    Matrix *step3 = [step2 matrixBySubtractingColumn:column];
+    Matrix *step4 = [step3 matrixBySubtractingRow:row];
     
     XCTAssertEqualObjects(original, step4, @"Error while Adding / Subtracting Rows / Columns");
+}
+
+- (void)testRowRemoval
+{
+    double original[16] = {
+        16.0, 2.0,  3.0,  13.0,
+        5.0,  11.0, 10.0, 8.0,
+        9.0,  7.0,  6.0,  12.0,
+        4.0,  14.0, 15.0, 0.05
+    };
+    
+    double test[12] = {
+        16.0, 2.0,  3.0,  13.0,
+        9.0,  7.0,  6.0,  12.0,
+        4.0,  14.0, 15.0, 0.05
+    };
+    
+    Matrix *originalMatrix = [Matrix matrixFromArray:original Rows:4 Columns:4];
+    Matrix *resultMatrix = [originalMatrix removeRow:1];
+    Matrix *testMatrix = [Matrix matrixFromArray:test Rows:3 Columns:4];
+    XCTAssertEqualObjects(testMatrix, resultMatrix);
+    CleanNSLog(@"Original:\n%@", originalMatrix);
+    CleanNSLog(@"Test:\n%@", testMatrix);
+    CleanNSLog(@"-removeRow: Result:\n%@", resultMatrix);
+}
+
+- (void)testColumnRemoval
+{
+    double original[16] = {
+        16.0, 2.0,  3.0,  13.0,
+        5.0,  11.0, 10.0, 8.0,
+        9.0,  7.0,  6.0,  12.0,
+        4.0,  14.0, 15.0, 0.05
+    };
+    
+    double test[12] = {
+        16.0,  3.0,  13.0,
+        5.0, 10.0, 8.0,
+        9.0,  6.0,  12.0,
+        4.0, 15.0, 0.05
+    };
+    
+    Matrix *originalMatrix = [Matrix matrixFromArray:original Rows:4 Columns:4];
+    Matrix *resultMatrix = [originalMatrix removeColumn:1];
+    Matrix *testMatrix = [Matrix matrixFromArray:test Rows:4 Columns:3];
+    XCTAssertEqualObjects(testMatrix, resultMatrix);
+    CleanNSLog(@"Original:\n%@", originalMatrix);
+    CleanNSLog(@"Test:\n%@", testMatrix);
+    CleanNSLog(@"-removeColumn: Result:\n%@", resultMatrix);
 }
 
 @end

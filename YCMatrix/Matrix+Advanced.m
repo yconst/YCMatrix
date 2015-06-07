@@ -1,9 +1,9 @@
 //
-// YCMatrix+Advanced.m
+// Matrix+Advanced.m
 //
 // YCMatrix
 //
-// Copyright (c) 2013, 2014 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
+// Copyright (c) 2013 - 2015 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 // http://yconst.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,16 +29,16 @@
 // http://vismod.media.mit.edu/pub/tpminka/MRSAR/lapack.c
 //
 
-#import "YCMatrix+Advanced.h"
+#import "Matrix+Advanced.h"
 #import "Constants.h"
 
 static void SVDColumnMajor(double *A, int rows, int columns, double **s, double **u, double **vt);
 static void pInv(double *A, int rows, int columns, double *Aplus);
 static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, double *vecR);
 
-@implementation YCMatrix (Advanced)
+@implementation Matrix (Advanced)
 
-+ (instancetype)randomValuesMatrixWithLowerBound:(YCMatrix *)lower upperBound:(YCMatrix *)upper
++ (instancetype)randomValuesMatrixWithLowerBound:(Matrix *)lower upperBound:(Matrix *)upper
 {
     if (lower.rows != upper.rows || lower.columns != upper.columns)
     {
@@ -46,8 +46,8 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
                                        reason:@"Lower and upper bounds are not of the same size."
                                      userInfo:nil];
     }
-    YCMatrix *result = [lower copy];
-    YCMatrix *range = [upper matrixBySubtracting:lower];
+    Matrix *result = [lower copy];
+    Matrix *range = [upper matrixBySubtracting:lower];
     
     for (int i=0, j=(int)[result count]; i<j; i++)
     {
@@ -58,7 +58,7 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
 
 + (instancetype)randomValuesMatrixOfRows:(int)rows columns:(int)columns domain:(YCDomain)domain
 {
-    YCMatrix *result = [YCMatrix matrixOfRows:rows Columns:columns];
+    Matrix *result = [Matrix matrixOfRows:rows Columns:columns];
     for (int i=0, j=(int)[result count]; i<j; i++)
     {
         result->matrix[i] = ((double)arc4random() / ARC4RANDOM_MAX) * domain.length + domain.location;
@@ -66,9 +66,9 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     return result;
 }
 
-- (YCMatrix *)pseudoInverse
+- (Matrix *)pseudoInverse
 {
-    YCMatrix *ret = [YCMatrix matrixOfRows:self->columns Columns:self->rows];
+    Matrix *ret = [Matrix matrixOfRows:self->columns Columns:self->rows];
     
     pInv(self->matrix, self->rows, self->columns, ret->matrix);
     return ret;
@@ -82,22 +82,22 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     
     SVDColumnMajor([self matrixByTransposing]->matrix, rows, columns, &sa, &ua, &va);
     
-    YCMatrix *U = [[YCMatrix matrixFromArray:ua Rows:self->columns Columns:self->rows Mode:YCMWeak] matrixByTransposing]; // mxm
-    YCMatrix *S = [YCMatrix matrixOfRows:self->columns Columns:self->columns ValuesInDiagonal:sa Value:0]; // mxn
-    YCMatrix *V = [YCMatrix matrixFromArray:va Rows:self->columns Columns:self->columns Mode:YCMWeak]; // nxn
+    Matrix *U = [[Matrix matrixFromArray:ua Rows:self->columns Columns:self->rows Mode:YCMWeak] matrixByTransposing]; // mxm
+    Matrix *S = [Matrix matrixOfRows:self->columns Columns:self->columns ValuesInDiagonal:sa Value:0]; // mxn
+    Matrix *V = [Matrix matrixFromArray:va Rows:self->columns Columns:self->columns Mode:YCMWeak]; // nxn
 
     return @{@"U" : U, @"S" : S, @"V" : V};
 }
 
-- (YCMatrix *)solve:(YCMatrix *)B
+- (Matrix *)solve:(Matrix *)B
 {
     [self checkSquare];
-    YCMatrix *bTranspose = B;
+    Matrix *bTranspose = B;
     if (B->columns > 1)
     {
         bTranspose = [B matrixByTransposing];
     }
-    YCMatrix *aTranspose = [self matrixByTransposing];
+    Matrix *aTranspose = [self matrixByTransposing];
     
     int n = self->rows;
     int nrhs = B->columns;
@@ -156,21 +156,21 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     }
 }
 
-- (YCMatrix *)matrixByCholesky
+- (Matrix *)matrixByCholesky
 {
-    YCMatrix *newMatrix = [self copy];
+    Matrix *newMatrix = [self copy];
     [newMatrix cholesky];
     return newMatrix;
 }
 
-- (YCMatrix *)eigenvalues
+- (Matrix *)eigenvalues
 {
     [self checkSquare];
     double *evArray = malloc(self->rows * sizeof(double));
     
     MEVV(self->matrix, self->rows, self->columns, evArray, nil, nil, nil);
     
-    return [YCMatrix matrixFromArray:evArray Rows:1 Columns:self->columns];
+    return [Matrix matrixFromArray:evArray Rows:1 Columns:self->columns];
 }
 
 - (NSDictionary *)eigenvaluesAndEigenvectors
@@ -184,9 +184,9 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     
     MEVV(self->matrix, m, n, evArray, nil, leVecArray, reVecArray);
     
-    YCMatrix *evMatrix = [YCMatrix matrixFromArray:evArray Rows:1 Columns:n];
-    YCMatrix *leVecMatrix = [YCMatrix matrixFromArray:leVecArray Rows:m Columns:n];
-    YCMatrix *reVecMatrix = [YCMatrix matrixFromArray:reVecArray Rows:m Columns:n];
+    Matrix *evMatrix = [Matrix matrixFromArray:evArray Rows:1 Columns:n];
+    Matrix *leVecMatrix = [Matrix matrixFromArray:leVecArray Rows:m Columns:n];
+    Matrix *reVecMatrix = [Matrix matrixFromArray:reVecArray Rows:m Columns:n];
     return @{@"Eigenvalues":evMatrix,
              @"Left Eigenvectors":leVecMatrix,
              @"Right Eigenvectors":reVecMatrix};
@@ -232,9 +232,9 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     return neg?-det:det;
 }
 
-- (YCMatrix *)sumsOfRows
+- (Matrix *)sumsOfRows
 {
-    YCMatrix *result = [YCMatrix matrixOfRows:self->rows Columns:1];
+    Matrix *result = [Matrix matrixOfRows:self->rows Columns:1];
     for (int i=0; i<self->rows; i++)
     {
         double sum = 0;
@@ -247,9 +247,9 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     return result;
 }
 
-- (YCMatrix *)sumsOfColumns
+- (Matrix *)sumsOfColumns
 {
-    YCMatrix *result = [YCMatrix matrixOfRows:1 Columns:self->columns];
+    Matrix *result = [Matrix matrixOfRows:1 Columns:self->columns];
     for (int i=0; i<self->columns; i++)
     {
         double sum = 0;
@@ -262,9 +262,9 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     return result;
 }
 
-- (YCMatrix *)meansOfRows
+- (Matrix *)meansOfRows
 {
-    YCMatrix *means = [YCMatrix matrixOfRows:self->rows Columns:1];
+    Matrix *means = [Matrix matrixOfRows:self->rows Columns:1];
     for (int i=0; i<rows; i++)
     {
         double rowMean = 0;
@@ -278,9 +278,9 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     return means;
 }
 
-- (YCMatrix *)meansOfColumns
+- (Matrix *)meansOfColumns
 {
-    YCMatrix *means = [YCMatrix matrixOfRows:self->columns Columns:1];
+    Matrix *means = [Matrix matrixOfRows:1 Columns:self->columns];
     for (int i=0; i<columns; i++)
     {
         double columnMean = 0;
@@ -294,9 +294,49 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     return means;
 }
 
-- (YCMatrix *)matrixByApplyingFunction:(double (^)(double value))function
+- (Matrix *)variancesOfRows
 {
-    YCMatrix *newMatrix = [self copy];
+    Matrix *means = [self meansOfRows];
+    Matrix *d2 = [self matrixBySubtractingColumn:means];
+    [d2 elementWiseMultiply:d2];
+    Matrix *sums = [d2 sumsOfRows];
+    [sums multiplyWithScalar:1.0/self.columns];
+    return sums;
+}
+
+- (Matrix *)variancesOfColumns
+{
+    Matrix *means = [self meansOfColumns];
+    Matrix *d2 = [self matrixBySubtractingRow:means];
+    [d2 elementWiseMultiply:d2];
+    Matrix *sums = [d2 sumsOfColumns];
+    [sums multiplyWithScalar:1.0/self.rows];
+    return sums;
+}
+
+- (Matrix *)sampleVariancesOfRows
+{
+    Matrix *means = [self meansOfRows];
+    Matrix *d2 = [self matrixBySubtractingColumn:means];
+    [d2 elementWiseMultiply:d2];
+    Matrix *sums = [d2 sumsOfRows];
+    [sums multiplyWithScalar:1.0/(self.columns - 1)];
+    return sums;
+}
+
+- (Matrix *)sampleVariancesOfColumns
+{
+    Matrix *means = [self meansOfColumns];
+    Matrix *d2 = [self matrixBySubtractingRow:means];
+    [d2 elementWiseMultiply:d2];
+    Matrix *sums = [d2 sumsOfColumns];
+    [sums multiplyWithScalar:1.0/(self.rows - 1)];
+    return sums;
+}
+
+- (Matrix *)matrixByApplyingFunction:(double (^)(double value))function
+{
+    Matrix *newMatrix = [self copy];
     [newMatrix applyFunction:function];
     return newMatrix;
 }
@@ -310,14 +350,14 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     }
 }
 
-- (double)euclideanDistanceTo:(YCMatrix *)other
+- (double)euclideanDistanceTo:(Matrix *)other
 {
     return sqrt([self quadranceTo:other]);
 }
 
-- (double)quadranceTo:(YCMatrix *)other
+- (double)quadranceTo:(Matrix *)other
 {
-    YCMatrix *result = [self matrixBySubtracting:other];
+    Matrix *result = [self matrixBySubtracting:other];
     [result elementWiseMultiply:result];
     return [result sum];
 }

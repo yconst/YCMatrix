@@ -1,7 +1,9 @@
 //
-//  YCMatrix+Map.h
+//  Matrix+Map.h
 //
-// Copyright (c) 2013, 2014 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
+// YCMatrix
+//
+// Copyright (c) 2013 - 2015 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 // http://yconst.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,7 +24,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <YCMatrix/YCMatrix.h>
+#import <Foundation/Foundation.h>
+#import "Matrix.h"
 
 typedef enum _MapBasis : int16_t
 {
@@ -59,13 +62,13 @@ static inline BOOL YCEqualDomains(YCDomain domain1, YCDomain domain2)
     return (domain1.location == domain2.location && domain1.length == domain2.length);
 }
 
-@interface YCMatrix (Map)
+@interface Matrix (Map)
 
 // Transform matrix |mtx| using transformation bi-vector |transform|
-- (YCMatrix *)matrixByRowWiseMapUsing:(YCMatrix *)transform;
+- (Matrix *)matrixByRowWiseMapUsing:(Matrix *)transform;
 
-- (YCMatrix *)rowWiseMapToDomain:(YCDomain)domain basis:(MapBasis)basis;
+- (Matrix *)rowWiseMapToDomain:(YCDomain)domain basis:(MapBasis)basis;
 
-- (YCMatrix *)rowWiseInverseMapFromDomain:(YCDomain)domain basis:(MapBasis)basis;
+- (Matrix *)rowWiseInverseMapFromDomain:(YCDomain)domain basis:(MapBasis)basis;
 
 @end

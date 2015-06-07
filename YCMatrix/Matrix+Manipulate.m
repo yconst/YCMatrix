@@ -1,9 +1,9 @@
 //
-// YCMatrix+Manipulate.m
+// Matrix+Manipulate.m
 //
 // YCMatrix
 //
-// Copyright (c) 2013, 2014 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
+// Copyright (c) 2013 - 2015 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 // http://yconst.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,21 +24,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "YCMatrix+Manipulate.h"
+#import "Matrix+Manipulate.h"
 #import "Constants.h"
 
-@implementation YCMatrix (Manipulate)
+@implementation Matrix (Manipulate)
 
-+ (YCMatrix *)matrixFromRows:(NSArray *)rows
++ (Matrix *)matrixFromRows:(NSArray *)rows
 {
     NSUInteger rowCount = [rows count];
-    if (rowCount == 0) return [YCMatrix matrixOfRows:0 Columns:0];
-    YCMatrix *firstRow = rows[0];
+    if (rowCount == 0) return [Matrix matrixOfRows:0 Columns:0];
+    Matrix *firstRow = rows[0];
     int columnCount = firstRow->columns;
-    YCMatrix *ret = [YCMatrix matrixOfRows:(int)rowCount Columns:(int)columnCount];
+    Matrix *ret = [Matrix matrixOfRows:(int)rowCount Columns:(int)columnCount];
     for (int i=0; i<rowCount; i++)
     {
-        YCMatrix *currentRow = rows[i];
+        Matrix *currentRow = rows[i];
         for (int j=0; j<columnCount; j++)
         {
             [ret setValue:currentRow->matrix[j] Row:i Column:j];
@@ -47,16 +47,16 @@
     return ret;
 }
 
-+ (YCMatrix *)matrixFromColumns:(NSArray *)columns
++ (Matrix *)matrixFromColumns:(NSArray *)columns
 {
     NSUInteger columnCount = [columns count];
-    if (columnCount == 0) return [YCMatrix matrixOfRows:0 Columns:0];
-    YCMatrix *firstCol = columns[0];
+    if (columnCount == 0) return [Matrix matrixOfRows:0 Columns:0];
+    Matrix *firstCol = columns[0];
     int rowCount = firstCol->rows;
-    YCMatrix *ret = [YCMatrix matrixOfRows:(int)rowCount Columns:(int)columnCount];
+    Matrix *ret = [Matrix matrixOfRows:(int)rowCount Columns:(int)columnCount];
     for (int i=0; i<columnCount; i++)
     {
-        YCMatrix *currentCol = columns[i];
+        Matrix *currentCol = columns[i];
         for (int j=0; j<rowCount; j++)
         {
             [ret setValue:currentCol->matrix[j] Row:j Column:i];
@@ -65,7 +65,7 @@
     return ret;
 }
 
-- (YCMatrix *)getRow:(int) rowIndex
+- (Matrix *)row:(int) rowIndex
 {
     if (rowIndex > self->rows - 1)
     {
@@ -75,13 +75,13 @@
     }
     // http://stackoverflow.com/questions/5850000/how-to-split-array-into-two-arrays-in-c
     int startIndex = rowIndex * self->columns;
-    YCMatrix *rowmatrix = [YCMatrix matrixOfRows:1 Columns:self->columns];
+    Matrix *rowmatrix = [Matrix matrixOfRows:1 Columns:self->columns];
     double *row = rowmatrix->matrix;
     memcpy(row, self->matrix + startIndex, self->columns * sizeof(double));
     return rowmatrix;
 }
 
-- (void)setRow:(int)rowIndex Value:(YCMatrix *)rowValue
+- (void)setRow:(int)rowIndex Value:(Matrix *)rowValue
 {
     if (rowIndex > self->rows - 1)
     {
@@ -98,17 +98,17 @@
     memcpy(self->matrix + columns * rowIndex, rowValue->matrix, columns * sizeof(double));
 }
 
-- (NSArray *)RowsAsNSArray
+- (NSArray *)rowsAsNSArray
 {
     NSMutableArray *rowsArray = [NSMutableArray arrayWithCapacity:rows];
     for (int i=0; i<rows; i++)
     {
-        [rowsArray addObject: [self getRow:i]];
+        [rowsArray addObject: [self row:i]];
     }
     return rowsArray;
 }
 
-- (YCMatrix *)getColumn:(int) colIndex
+- (Matrix *)column:(int) colIndex
 {
     if (colIndex > self->columns - 1)
     {
@@ -116,7 +116,7 @@
                                        reason:@"Column index input is out of bounds."
                                      userInfo:nil];
     }
-    YCMatrix *columnmatrix = [YCMatrix matrixOfRows:self->rows Columns:1];
+    Matrix *columnmatrix = [Matrix matrixOfRows:self->rows Columns:1];
     double *column = columnmatrix->matrix;
     for (int i=0; i<self->rows; i++)
     {
@@ -125,7 +125,7 @@
     return columnmatrix;
 }
 
-- (void)setColumn:(int)colNumber Value:(YCMatrix *)columnValue
+- (void)setColumn:(int)colNumber Value:(Matrix *)columnValue
 {
     if (colNumber > self->columns - 1)
     {
@@ -145,59 +145,59 @@
     }
 }
 
-- (NSArray *)ColumnsAsNSArray // needs some speed improvement
+- (NSArray *)columnsAsNSArray // needs some speed improvement
 {
     NSMutableArray *columnsArray = [NSMutableArray arrayWithCapacity:columns];
     for (int i=0; i<columns; i++)
     {
-        [columnsArray addObject: [self getColumn:i]];
+        [columnsArray addObject: [self column:i]];
     }
     return columnsArray;
 }
 
-- (YCMatrix *)matrixByAddingRow:(YCMatrix *)row
+- (Matrix *)matrixByAddingRow:(Matrix *)row
 {
-    YCMatrix *result = [self copy];
+    Matrix *result = [self copy];
     [result addRow:row];
     return result;
 }
 
-- (YCMatrix *)matrixBySubtractingRow:(YCMatrix *)row
+- (Matrix *)matrixBySubtractingRow:(Matrix *)row
 {
-    YCMatrix *result = [self copy];
+    Matrix *result = [self copy];
     [result subtractRow:row];
     return result;
 }
 
-- (YCMatrix *)matrixByMultiplyingWithRow:(YCMatrix *)row
+- (Matrix *)matrixByMultiplyingWithRow:(Matrix *)row
 {
-    YCMatrix *result = [self copy];
+    Matrix *result = [self copy];
     [result multiplyRow:row];
     return result;
 }
 
-- (YCMatrix *)matrixByAddingColumn:(YCMatrix *)column
+- (Matrix *)matrixByAddingColumn:(Matrix *)column
 {
-    YCMatrix *result = [self copy];
+    Matrix *result = [self copy];
     [result addColumn:column];
     return result;
 }
 
-- (YCMatrix *)matrixBySubtractingColumn:(YCMatrix *)column
+- (Matrix *)matrixBySubtractingColumn:(Matrix *)column
 {
-    YCMatrix *result = [self copy];
+    Matrix *result = [self copy];
     [result subtractColumn:column];
     return result;
 }
 
-- (YCMatrix *)matrixByMultiplyingWithColumn:(YCMatrix *)column
+- (Matrix *)matrixByMultiplyingWithColumn:(Matrix *)column
 {
-    YCMatrix *result = [self copy];
+    Matrix *result = [self copy];
     [result multiplyColumn:column];
     return result;
 }
 
-- (YCMatrix *)matrixWithRowsInRange:(NSRange)range
+- (Matrix *)matrixWithRowsInRange:(NSRange)range
 {
     if (range.location + range.length > self->rows)
     {
@@ -208,13 +208,13 @@
     int valueOffset = (int)range.location * self->columns;
     int valueCount = (int)range.length * self->columns;
     
-    YCMatrix *newMatrix = [YCMatrix matrixOfRows:(int)range.length Columns:self->columns];
+    Matrix *newMatrix = [Matrix matrixOfRows:(int)range.length Columns:self->columns];
     memcpy(newMatrix->matrix, self->matrix+valueOffset, valueCount * sizeof(double));
     
     return newMatrix;
 }
 
-- (YCMatrix *)matrixWithColumnsInRange:(NSRange)range
+- (Matrix *)matrixWithColumnsInRange:(NSRange)range
 {
     if (range.location + range.length > self->columns)
     {
@@ -225,7 +225,7 @@
     int rowOffset = (int)range.location;
     int rowLength = (int)range.length;
     
-    YCMatrix *newMatrix = [YCMatrix matrixOfRows:self->rows Columns:rowLength];
+    Matrix *newMatrix = [Matrix matrixOfRows:self->rows Columns:rowLength];
     
     for (int i=0; i<self->rows; i++)
     {
@@ -236,7 +236,7 @@
     return newMatrix;
 }
 
-- (void)addRow:(YCMatrix *)row
+- (void)addRow:(Matrix *)row
 {
     if (row->rows != 1 || row->columns != self->columns)
     {
@@ -257,7 +257,7 @@
     }
 }
 
-- (void)subtractRow:(YCMatrix *)row
+- (void)subtractRow:(Matrix *)row
 {
     if (row->rows != 1 || row->columns != self->columns)
     {
@@ -278,7 +278,7 @@
     }
 }
 
-- (void)multiplyRow:(YCMatrix *)row
+- (void)multiplyRow:(Matrix *)row
 {
     if (row->rows != 1 || row->columns != self->columns)
     {
@@ -299,7 +299,7 @@
     }
 }
 
-- (void)addColumn:(YCMatrix *)column
+- (void)addColumn:(Matrix *)column
 {
     if (column->columns != 1 || column->rows != self->rows)
     {
@@ -320,7 +320,7 @@
     }
 }
 
-- (void)subtractColumn:(YCMatrix *)column
+- (void)subtractColumn:(Matrix *)column
 {
     if (column->columns != 1 || column->rows != self->rows)
     {
@@ -341,7 +341,7 @@
     }
 }
 
-- (void)multiplyColumn:(YCMatrix *)column
+- (void)multiplyColumn:(Matrix *)column
 {
     if (column->columns != 1 || column->rows != self->rows)
     {
@@ -362,7 +362,7 @@
     }
 }
 
-- (YCMatrix *)appendRow:(YCMatrix *)newRow
+- (Matrix *)appendRow:(Matrix *)newRow
 {
     if (newRow->rows != 1 || newRow->columns != columns)
     {
@@ -373,10 +373,10 @@
     double *newMatrix = malloc(columns * (rows + 1) * sizeof(double));
     memcpy(newMatrix, self->matrix, columns * rows * sizeof(double));
     memcpy(newMatrix + columns*rows, newRow->matrix, columns * sizeof(double));
-    return [YCMatrix matrixFromArray:newMatrix Rows:rows + 1 Columns:columns Mode:YCMStrong];
+    return [Matrix matrixFromArray:newMatrix Rows:rows + 1 Columns:columns Mode:YCMStrong];
 }
 
-- (YCMatrix *)appendColumn:(YCMatrix *)newColumn
+- (Matrix *)appendColumn:(Matrix *)newColumn
 {
     if (newColumn->columns != 1 || newColumn->rows != rows)
     {
@@ -391,10 +391,10 @@
         memcpy(newMatrix + newCols * i, self->matrix + columns * i, columns * sizeof(double));
         newMatrix[newCols * i + columns] = newColumn->matrix[i];
     }
-    return [YCMatrix matrixFromArray:newMatrix Rows:rows Columns:columns + 1 Mode:YCMStrong];
+    return [Matrix matrixFromArray:newMatrix Rows:rows Columns:columns + 1 Mode:YCMStrong];
 }
 
-- (YCMatrix *)removeRow:(int)rowNumber
+- (Matrix *)removeRow:(int)rowNumber
 {
     double newRows = rows - 1;
     if (rowNumber > newRows)
@@ -409,10 +409,10 @@
         int idx = i >= rowNumber ? i+1 : i;
         memcpy(newMatrix + columns * i, self->matrix + columns * idx, columns * sizeof(double));
     }
-    return [YCMatrix matrixFromArray:newMatrix Rows:newRows Columns:columns];
+    return [Matrix matrixFromArray:newMatrix Rows:newRows Columns:columns];
 }
 
-- (YCMatrix *)removeColumn:(int)columnNumber
+- (Matrix *)removeColumn:(int)columnNumber
 {
     if (columnNumber > self->columns - 1)
     {
@@ -420,17 +420,21 @@
                                        reason:@"Column index input is out of bounds."
                                      userInfo:nil];
     }
-    double newCols = columns - 1;
+    int newCols = columns - 1;
     double *newMatrix = malloc(newCols * rows * sizeof(double));
     for (int i=0; i < rows; i++)
     {
-        memcpy(newMatrix, self->matrix, columnNumber * sizeof(double));
-        memcpy(newMatrix + columnNumber, self->matrix + columnNumber + 1, (newCols - columnNumber) * sizeof(double));
+        memcpy(newMatrix + i*newCols,
+               self->matrix + i*self->columns,
+               columnNumber * sizeof(double));
+        memcpy(newMatrix + columnNumber + i*newCols,
+               self->matrix + columnNumber + 1  + i*self->columns,
+               (newCols - columnNumber) * sizeof(double));
     }
-    return [YCMatrix matrixFromArray:newMatrix Rows:rows Columns:newCols];
+    return [Matrix matrixFromArray:newMatrix Rows:rows Columns:newCols];
 }
 
-- (YCMatrix *)appendValueAsRow:(double)value
+- (Matrix *)appendValueAsRow:(double)value
 {
     if(columns != 1)
         @throw [NSException exceptionWithName:@"MatrixSizeException"
@@ -440,13 +444,13 @@
     double *newArray = malloc(columns * newRows * sizeof(double));
     memcpy(newArray, matrix, columns * rows * sizeof(double));
     newArray[columns * newRows - 1] = value;
-    return [YCMatrix matrixFromArray:newArray Rows:newRows Columns:columns];
+    return [Matrix matrixFromArray:newArray Rows:newRows Columns:columns];
 }
 
 // Fisher-Yates Inside-out Shuffle (UNTESTED!)
-- (YCMatrix *)matrixByShufflingRows
+- (Matrix *)matrixByShufflingRows
 {
-    YCMatrix *ret = [YCMatrix matrixFromMatrix:self];
+    Matrix *ret = [Matrix matrixFromMatrix:self];
     int rowCount = self->rows;
     int colCount = self->columns;
     for (int i=0; i<rowCount; i++)
@@ -481,9 +485,9 @@
 }
 
 // Fisher-Yates Inside-out Shuffle (UNTESTED!)
-- (YCMatrix *)matrixByShufflingColumns
+- (Matrix *)matrixByShufflingColumns
 {
-    YCMatrix *ret = [YCMatrix matrixFromMatrix:self];
+    Matrix *ret = [Matrix matrixFromMatrix:self];
     int rowCount = self->rows;
     int colCount = self->columns;
     for (int i=0; i<colCount; i++)
@@ -516,12 +520,12 @@
     }
 }
 
-- (YCMatrix *)matrixBySamplingRows:(NSUInteger)sampleCount Replacement:(BOOL)replacement
+- (Matrix *)matrixBySamplingRows:(NSUInteger)sampleCount Replacement:(BOOL)replacement
 {
     int rowSize = self->rows;
     int colSize = self->columns;
     int colMemory = colSize * sizeof(double);
-    YCMatrix *new = [YCMatrix matrixOfRows:(int)sampleCount Columns:colSize];
+    Matrix *new = [Matrix matrixOfRows:(int)sampleCount Columns:colSize];
     if (replacement)
     {
         for (int i=0; i<sampleCount; i++)
@@ -551,17 +555,17 @@
     return new;
 }
 
-- (YCMatrix *)matrixBySamplingColumns:(NSUInteger)sampleCount Replacement:(BOOL)replacement
+- (Matrix *)matrixBySamplingColumns:(NSUInteger)sampleCount Replacement:(BOOL)replacement
 {
     int rowSize = self->rows;
     int colSize = self->columns;
-    YCMatrix *new = [YCMatrix matrixOfRows:rowSize Columns:(int)sampleCount];
+    Matrix *new = [Matrix matrixOfRows:rowSize Columns:(int)sampleCount];
     if (replacement)
     {
         for (int i=0; i<sampleCount; i++)
         {
             int rnd = arc4random_uniform((int)self->rows);
-            [new setColumn:i Value:[self getColumn:rnd]];
+            [new setColumn:i Value:[self column:rnd]];
         }
     }
     else
@@ -575,7 +579,7 @@
         {
             if (N * (double)arc4random() / 0x1000000000 <= n)
             {
-                [new setColumn:samples - n Value:[self getColumn:i]];
+                [new setColumn:samples - n Value:[self column:i]];
                 n--;
             }
             i++;

@@ -1,9 +1,9 @@
 //
-// YCMatrix+Advanced.h
+// Matrix+Advanced.h
 //
 // YCMatrix
 //
-// Copyright (c) 2013, 2014 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
+// Copyright (c) 2013 - 2015 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 // http://yconst.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,12 +24,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "YCMatrix.h"
-#import "YCMatrix+Manipulate.h"
-#import "YCMatrix+Map.h"
+#import <Foundation/Foundation.h>
+#import "Matrix.h"
+#import "Matrix+Manipulate.h"
+#import "Matrix+Map.h"
 #import <Accelerate/Accelerate.h>
 
-@interface YCMatrix (Advanced)
+@interface Matrix (Advanced)
 
 /**
  Returns a matrix containing random values between |lower| and |upper|. 
@@ -41,7 +42,7 @@
  
  @return A matrix of random values between lower and upper, and of the same size.
  */
-+ (instancetype)randomValuesMatrixWithLowerBound:(YCMatrix *)lower upperBound:(YCMatrix *)upper;
++ (instancetype)randomValuesMatrixWithLowerBound:(Matrix *)lower upperBound:(Matrix *)upper;
 
 /**
  Returns a matrix containing random values within the specified domain.
@@ -60,7 +61,7 @@
  
  @return The pseudo-inverse of the receiver.
  */
-- (YCMatrix *)pseudoInverse;
+- (Matrix *)pseudoInverse;
 
 /**
  Performs Singular Value Decomposition on the receiver.
@@ -80,7 +81,7 @@
  
  @return The solution vector X.
  */
-- (YCMatrix *)solve:(YCMatrix *)B;
+- (Matrix *)solve:(Matrix *)B;
 
 /**
  Performs an in-place Cholesky decomposition on the receiver.
@@ -94,14 +95,14 @@
  
  @return The matrix resulting from the Cholesky decomposition of the receiver.
  */
-- (YCMatrix *)matrixByCholesky;
+- (Matrix *)matrixByCholesky;
 
 /**
- Returns a row YCMatrix containing the Eigenvalues of the receiver.
+ Returns a row matrix containing the Eigenvalues of the receiver.
  
- @return The resulting row YCMatrix.
+ @return The resulting row matrix.
  */
-- (YCMatrix *)eigenvalues;
+- (Matrix *)eigenvalues;
 
 /**
  Returns an NSDictionary with the results of performing an Eigenvalue decomposition on the receiver.
@@ -114,7 +115,7 @@
 - (NSDictionary *)eigenvaluesAndEigenvectors;
 
 /**
- Returns the determinant of this YCMatrix.
+ Returns the determinant of the receiver.
  
  @return A double value corresponsing to the determinant of the receiver.
  
@@ -127,37 +128,74 @@
  
  @return The column matrix containing the sums of rows.
  */
-- (YCMatrix *)sumsOfRows;
+- (Matrix *)sumsOfRows;
 
 /**
  Returns a row matrix containing the sums of the columns of the receiver.
  
  @return The row matrix containing the sums of columns.
  */
-- (YCMatrix *)sumsOfColumns;
-
-/**
- Returns a row matrix containing the means of the columns of the receiver.
- 
- @return The row matrix containing the sums of columns.
- */
-- (YCMatrix *)meansOfRows;
+- (Matrix *)sumsOfColumns;
 
 /**
  Returns a column matrix containing the means of the rows of the receiver.
  
- @return The column matrix containing the sums of rows.
+ @return The column matrix containing the means of rows.
  */
-- (YCMatrix *)meansOfColumns;
+- (Matrix *)meansOfRows;
 
 /**
- Returns a new matrix by applying a function to each cell of the receiver.
+ Returns a row matrix containing the means of the columns of the receiver.
+ 
+ @return The row matrix containing the means of columns.
+ */
+- (Matrix *)meansOfColumns;
+
+/**
+ Returns a column matrix containing the population variances of the rows of the receiver.
+ 
+ @return The column matrix containing the variances of rows.
+ 
+ @warning This calculates the population variance.
+ */
+- (Matrix *)variancesOfRows;
+
+/**
+ Returns a row matrix containing the population variances of the columns of the receiver.
+ 
+ @return The row matrix containing the variances of columns.
+ 
+ @warning This calculates the population variance.
+ */
+- (Matrix *)variancesOfColumns;
+
+/**
+ Returns a column matrix containing the sample variances of the rows of the receiver.
+ 
+ @return The column matrix containing the variances of rows.
+ 
+ @warning This calculates the sample variance.
+ */
+- (Matrix *)sampleVariancesOfRows;
+
+/**
+ Returns a row matrix containing the sample variances of the columns of the receiver.
+ 
+ @return The row matrix containing the variances of columns.
+ 
+ @warning This calculates the sample variance.
+ */
+- (Matrix *)sampleVariancesOfColumns;
+
+/**
+ Returns a new matrix with each cell being the result of applying a function to
+ the corresponding cell of the receiver.
  
  @param function The function to apply.
  
- @return The matrix resulting from applying the function.
+ @return The matrix of transformed values.
  */
-- (YCMatrix *)matrixByApplyingFunction:(double (^)(double value))function;
+- (Matrix *)matrixByApplyingFunction:(double (^)(double value))function;
 
 /**
  Applies a function to each cell of the receiver.
@@ -177,7 +215,7 @@
           dimensions are equal.
  
  */
-- (double)euclideanDistanceTo:(YCMatrix *)other;
+- (double)euclideanDistanceTo:(Matrix *)other;
 
 /**
  Returns the multidimensional Quadrance (square of Euclidean distance of the receiver to another matrix.
@@ -190,6 +228,6 @@
  dimensions are equal.
  
  */
-- (double)quadranceTo:(YCMatrix *)other;
+- (double)quadranceTo:(Matrix *)other;
 
 @end

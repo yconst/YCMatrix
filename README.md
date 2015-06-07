@@ -27,11 +27,11 @@ frameworks.
 
 ##Example Usage
 
-    #include "YCMatrix/YCMatrix.h"
+    @include YCMatrix;
     
-    YCMatrix *I = [YCMatrix identityOfRows:3 Columns:3];
-    YCMatrix *C = [YCMatrix matrixOfRows:3 Columns:3 Value:2];
-    YCMatrix *S = [I matrixByAddition:C];
+    Matrix *I = [Matrix identityOfRows:3 Columns:3];
+    Matrix *C = [Matrix matrixOfRows:3 Columns:3 Value:2];
+    Matrix *S = [I matrixByAddition:C];
     NSLog(@"Result:\n%@", S);
     
     // Result:
@@ -44,9 +44,9 @@ frameworks.
 The matrix functionality is split into three files: The base class
 definition, and two categories:
 
-- YCMatrix.h             : YCMatrix class definition and basic operations.
-- YCMatrix+Advanced.h    : Interface to more advanced LAPACK functions.
-- YCMatrix+Manipulate.h  : Functions for manipulating rows/columns etc.
+- Matrix.h             : YCMatrix class definition and basic operations.
+- Matrix+Advanced.h    : Interface to more advanced LAPACK functions.
+- Matrix+Manipulate.h  : Functions for manipulating rows/columns etc.
 
 Please refer to the [docs](http://cocoadocs.org/docsets/YCMatrix/) for a complete overview of the functionality 
 contained in each of the categories.
