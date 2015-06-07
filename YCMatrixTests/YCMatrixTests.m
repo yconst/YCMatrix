@@ -117,7 +117,7 @@
     CleanNSLog(@"%@",orig);
     CleanNSLog(@"%@",trans);
     CleanNSLog(@"%@",trans2);
-    XCTAssertTrue([trans isEqual: trans2], @"M^T != Mt");
+    XCTAssertEqualObjects(trans, trans2, @"M^T != Mt");
     XCTAssertEqualObjects(orig, [[orig matrixByTransposing] matrixByTransposing], @"M^T^T != M");
 }
 
@@ -153,7 +153,7 @@
     Matrix *testm2 = [Matrix matrixFromMatrix:testm1];
     Matrix *testm_add = [testm1 matrixByAdding:testm2];
     Matrix *testm_ms = [testm1 matrixByMultiplyingWithScalar:2];
-    XCTAssertTrue([testm_ms isEqual: testm_add], @"M+M != 2*M");
+    XCTAssertEqualObjects(testm_ms, testm_add, @"M+M != 2*M");
     
     TitleNSLog(@"Matrix Multiplication");
     CleanNSLog(@"Test Matrix 1: %ix%i",testm1->rows, testm1->columns);
@@ -186,7 +186,7 @@
     Matrix *testm1 = [Matrix matrixFromArray:matrix_array Rows:4 Columns:4];
     NSData *serialized = [NSKeyedArchiver archivedDataWithRootObject:testm1];
     Matrix *recovered = [NSKeyedUnarchiver unarchiveObjectWithData:serialized];
-    XCTAssert([testm1 isEqualTo:recovered], @"Error in deserialization");
+    XCTAssertEqualObjects(testm1, recovered, @"Error in deserialization");
 }
 
 @end

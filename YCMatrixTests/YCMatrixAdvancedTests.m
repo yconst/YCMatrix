@@ -106,8 +106,8 @@
     CleanNSLog(@"Original Matrix A: %@",A);
     Matrix *ch = [A matrixByCholesky];
     CleanNSLog(@"Cholesky Decomposition of A: %@",ch);
-    XCTAssert([[ch matrixByTransposingAndMultiplyingWithLeft:ch] isEqualTo:A],
-              @"Error with Cholesky decomposition");
+    XCTAssertEqualObjects([ch matrixByTransposingAndMultiplyingWithLeft:ch], A,
+                          @"Error with Cholesky decomposition");
 }
 
 - (void)testMeans

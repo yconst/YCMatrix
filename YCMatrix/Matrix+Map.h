@@ -24,7 +24,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <YCMatrix/Matrix.h>
+#import <Foundation/Foundation.h>
+#import "Matrix.h"
 
 typedef enum _MapBasis : int16_t
 {
