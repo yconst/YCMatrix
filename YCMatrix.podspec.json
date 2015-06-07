@@ -1,6 +1,6 @@
 {
   "name": "YCMatrix",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "summary": "A flexible Matrix library for Objective-C, which interfaces BLAS, LAPACK and vDSP functions via the Accelerate Framework",
   "homepage": "http://yconst.com/software/ycmatrix/",
   "license": {
@@ -12,10 +12,11 @@
   },
   "source": {
     "git": "https://github.com/yconst/YCMatrix.git",
-    "tag": "v0.6.1"
+    "tag": "v0.6.2"
   },
   "platforms": {
-    "osx": "10.7"
+    "osx": "10.7",
+    "ios": "8.0"
   },
   "requires_arc": true,
   "source_files": "YCMatrix/*.{h,m}"
