@@ -1,7 +1,9 @@
 //
 //  ManipulateTests.m
 //
-// Copyright (c) 2013, 2014 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
+// YCMatrix
+//
+// Copyright (c) 2013 - 2015 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 // http://yconst.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,9 +24,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <XCTest/XCTest.h>
-#import "Matrix.h"
-#import "Matrix+Manipulate.h"
+@import XCTest;
+@import YCMatrix;
 
 #define ARC4RANDOM_MAX 0x100000000 
 

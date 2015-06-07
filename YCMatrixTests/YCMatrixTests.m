@@ -1,8 +1,9 @@
 //
 //  YCMatrixTests.m
-//  YCMatrixTests
 //
-// Copyright (c) 2013, 2014 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
+// YCMatrix
+//
+// Copyright (c) 2013 - 2015 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 // http://yconst.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,8 +27,8 @@
 //References for this Document:
 // http://en.wikipedia.org/wiki/Cholesky_decomposition
 
-#import <XCTest/XCTest.h>
-#import "Matrix.h"
+@import XCTest;
+@import YCMatrix;
 
 #define ARC4RANDOM_MAX 0x100000000 
 
@@ -185,7 +186,7 @@
     Matrix *testm1 = [Matrix matrixFromArray:matrix_array Rows:4 Columns:4];
     NSData *serialized = [NSKeyedArchiver archivedDataWithRootObject:testm1];
     Matrix *recovered = [NSKeyedUnarchiver unarchiveObjectWithData:serialized];
-    NSAssert([testm1 isEqualTo:recovered], @"Error in deserialization");
+    XCTAssert([testm1 isEqualTo:recovered], @"Error in deserialization");
 }
 
 @end
