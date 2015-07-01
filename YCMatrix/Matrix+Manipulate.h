@@ -57,6 +57,15 @@
 - (Matrix *)row:(int)rowIndex;
 
 /**
+ Returns a new matrix with the contents of the rows at the specified indexes.
+ 
+ @param indexes The indexes of the rows.
+ 
+ @return The matrix containing the specified rows.
+ */
+- (Matrix *)rows:(NSIndexSet *)indexes;
+
+/**
  Replaces the values of row |rowIndex| with those of row matrix |rowValue|
  
  @param rowIndex The index of the row to replace.
@@ -79,6 +88,15 @@
  @return The column matrix with the values of the column |colIndex|.
  */
 - (Matrix *)column:(int)colIndex;
+
+/**
+ Returns a new matrix with the contents of the columns at the specified indexes.
+ 
+ @param indexes The indexes of the columns.
+ 
+ @return The matrix containing the specified columns.
+ */
+- (Matrix *)columns:(NSIndexSet *)indexes;
 
 /**
  Replaces values of column |colIndex| with those of column matrix |columnValue|

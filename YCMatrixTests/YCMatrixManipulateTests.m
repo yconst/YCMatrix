@@ -48,7 +48,20 @@
     CleanNSLog(@"%@", rowm);
     double templatermatrixarr[3] = { 4.0, 5.0, 6.0 };
     Matrix *templatemr = [Matrix matrixFromArray:templatermatrixarr Rows:1 Columns:3];
-    XCTAssertTrue([rowm isEqual: templatemr], @"Matrix row retrieval is problematic.");
+    XCTAssertTrue([rowm isEqual:templatemr], @"Matrix row retrieval error.");
+}
+
+- (void)testMultipleRowRetrieval
+{
+    TitleNSLog(@"Multiple matrix row retrieval");
+    double testmrarr[9] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0 };
+    Matrix *testmr = [Matrix matrixFromArray:testmrarr Rows:3 Columns:3];
+    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 2)];
+    Matrix *rowm = [testmr rows:indexSet]; // This is being tested.
+    CleanNSLog(@"%@", rowm);
+    double templatermatrixarr[6] = { 4.0, 5.0, 6.0, 7.0, 8.0, 9.0 };
+    Matrix *templatemr = [Matrix matrixFromArray:templatermatrixarr Rows:2 Columns:3];
+    XCTAssertTrue([rowm isEqual:templatemr], @"Multiple matrix row retrieval error.");
 }
 
 - (void)testColumnRetrieval
@@ -60,7 +73,20 @@
     CleanNSLog(@"%@", columnm);
     double templatecmatrixarr[3] = { 4.0, 5.0, 6.0 };
     Matrix *templatemc = [Matrix matrixFromArray:templatecmatrixarr Rows:3 Columns:1];
-    XCTAssertTrue([columnm isEqual: templatemc], @"Matrix column retrieval is problematic.");
+    XCTAssertTrue([columnm isEqual:templatemc], @"Matrix column retrieval error.");
+}
+
+- (void)testMultipleColumnRetrieval
+{
+    TitleNSLog(@"Multiple matrix column retrieval");
+    double testmcarr[9] = { 1.0, 4.0, 7.0, 2.0, 5.0, 8.0, 3.0, 6.0, 9.0 };
+    Matrix *testmc = [Matrix matrixFromArray:testmcarr Rows:3 Columns:3];
+    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 2)];
+    Matrix *columnm = [testmc columns:indexSet]; // This is being tested.
+    CleanNSLog(@"%@", columnm);
+    double templatecmatrixarr[6] = { 4.0, 7.0, 5.0, 8.0, 6.0, 9.0 };
+    Matrix *templatemc = [Matrix matrixFromArray:templatecmatrixarr Rows:3 Columns:2];
+    XCTAssertTrue([columnm isEqual:templatemc], @"Multiple matrix column retrieval error.");
 }
 
 - (void)testRowsToNSArray

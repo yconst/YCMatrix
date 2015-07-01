@@ -81,6 +81,23 @@
     return rowmatrix;
 }
 
+- (Matrix *)rows:(NSIndexSet *)indexes
+{
+    // TODO: Speed up retrieval of rows
+    __block Matrix *result;
+    [indexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+        if (result)
+        {
+            result = [result appendRow:[self row:(int)idx]];
+        }
+        else
+        {
+            result = [self row:(int)idx];
+        }
+    }];
+    return result;
+}
+
 - (void)setRow:(int)rowIndex Value:(Matrix *)rowValue
 {
     if (rowIndex > self->rows - 1)
@@ -123,6 +140,23 @@
         column[i] = self->matrix[i*self->columns + colIndex];
     }
     return columnmatrix;
+}
+
+- (Matrix *)columns:(NSIndexSet *)indexes
+{
+    // TODO: Speed up retrieval of columns
+    __block Matrix *result;
+    [indexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+        if (result)
+        {
+            result = [result appendColumn:[self column:(int)idx]];
+        }
+        else
+        {
+            result = [self column:(int)idx];
+        }
+    }];
+    return result;
 }
 
 - (void)setColumn:(int)colNumber Value:(Matrix *)columnValue
