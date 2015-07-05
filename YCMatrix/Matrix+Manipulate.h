@@ -48,6 +48,13 @@
 + (Matrix *)matrixFromColumns:(NSArray *)columns;
 
 /**
+ Copy all the values of the matrix passed as the argument, to the receiver.
+ 
+ @param matrix The matrix to copy the values from.
+ */
+- (void)copyValuesFrom:(Matrix *)aMatrix;
+
+/**
  Returns a row matrix with the contents of row |rowNumber|.
  
  @param rowNumber The index of the row to copy.
