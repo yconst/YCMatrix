@@ -141,4 +141,23 @@
     return transform;
 }
 
+
+- (Matrix *)matrixByColumnWiseMapUsing:(Matrix *)transform
+{
+    // TODO: Reimplement to improve performance (remove extra transposition)
+    return [[self matrixByTransposing] matrixByRowWiseMapUsing:transform];
+}
+
+- (Matrix *)columnWiseMapToDomain:(YCDomain)domain basis:(MapBasis)basis
+{
+    // TODO: Reimplement to improve performance (remove extra transposition)
+    return [[self matrixByTransposing] rowWiseMapToDomain:domain basis:basis];
+}
+
+- (Matrix *)columnWiseInverseMapFromDomain:(YCDomain)domain basis:(MapBasis)basis
+{
+    // TODO: Reimplement to improve performance (remove extra transposition)
+    return [[self matrixByTransposing] rowWiseInverseMapFromDomain:domain basis:basis];
+}
+
 @end
