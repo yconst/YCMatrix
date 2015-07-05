@@ -68,7 +68,7 @@
 - (void)copyValuesFrom:(Matrix *)aMatrix
 {
     NSAssert(aMatrix.rows == self.rows && aMatrix.columns == self.columns, @"Incorrect matrix size");
-    memcpy(self->matrix, aMatrix->matrix, self.rows * self.columns);
+    memcpy(self->matrix, aMatrix->matrix, self.rows * self.columns * sizeof(double));
 }
 
 - (Matrix *)row:(int) rowIndex
