@@ -231,4 +231,50 @@
     CleanNSLog(@"-removeColumn: Result:\n%@", resultMatrix);
 }
 
+- (void)testRowShuffling
+{
+    double original[20] = {
+        1.000000,    10.000000,   100.000000,  1000.000000, 10000.000000,
+        2.000000,    20.000000,   200.000000,  2000.000000, 20000.000000,
+        3.000000,    30.000000,   300.000000,  3000.000000, 30000.000000,
+        4.000000,    40.000000,   400.000000,  4000.000000, 40000.000000
+    };
+    
+    Matrix *originalMatrix = [Matrix matrixFromArray:original Rows:4 Columns:5];
+    CleanNSLog(@"%@", originalMatrix);
+    Matrix *shuffledMatrix = [originalMatrix copy];
+    [shuffledMatrix shuffleRows];
+    CleanNSLog(@"%@", shuffledMatrix);
+    // Sums of columns should remain the same
+    XCTAssertEqualObjects([originalMatrix sumsOfColumns], [shuffledMatrix sumsOfColumns]);
+    
+    shuffledMatrix = [originalMatrix matrixByShufflingRows];
+    CleanNSLog(@"%@", shuffledMatrix);
+    // Sums of columns should remain the same
+    XCTAssertEqualObjects([originalMatrix sumsOfColumns], [shuffledMatrix sumsOfColumns]);
+}
+
+- (void)testColumnShuffling
+{
+    double original[20] = {
+        1.000000,    10.000000,   100.000000,  1000.000000, 10000.000000,
+        2.000000,    20.000000,   200.000000,  2000.000000, 20000.000000,
+        3.000000,    30.000000,   300.000000,  3000.000000, 30000.000000,
+        4.000000,    40.000000,   400.000000,  4000.000000, 40000.000000
+    };
+    
+    Matrix *originalMatrix = [Matrix matrixFromArray:original Rows:4 Columns:5];
+    CleanNSLog(@"%@", originalMatrix);
+    Matrix *shuffledMatrix = [originalMatrix copy];
+    [shuffledMatrix shuffleColumns];
+    CleanNSLog(@"%@", shuffledMatrix);
+    // Sums of rows should remain the same
+    XCTAssertEqualObjects([originalMatrix sumsOfRows], [shuffledMatrix sumsOfRows]);
+    
+    shuffledMatrix = [originalMatrix matrixByShufflingColumns];
+    CleanNSLog(@"%@", shuffledMatrix);
+    // Sums of columns should remain the same
+    XCTAssertEqualObjects([originalMatrix sumsOfRows], [shuffledMatrix sumsOfRows]);
+}
+
 @end
