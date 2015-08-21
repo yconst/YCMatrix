@@ -180,4 +180,19 @@
     XCTAssertEqual(det, detRef, @"Error with Determinant calculation");
 }
 
+- (void)testBernoulli
+{
+    TitleNSLog(@"Bernoulli Distribution Test");
+    
+    Matrix *ones = [Matrix matrixOfRows:20 Columns:20 Value:1];
+    Matrix *onesWithProbability = [ones copy];
+    [onesWithProbability bernoulli];
+    XCTAssertEqualObjects(ones, onesWithProbability);
+    
+    Matrix *zeroes = [Matrix matrixOfRows:20 Columns:20 Value:0];
+    Matrix *zeroesWithProbability = [zeroes copy];
+    [zeroesWithProbability bernoulli];
+    XCTAssertEqualObjects(zeroes, zeroesWithProbability);
+}
+
 @end
