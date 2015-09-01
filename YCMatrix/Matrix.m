@@ -27,6 +27,8 @@
 #import "Matrix.h"
 #import "Constants.h"
 
+#include "clBLAS.h"
+
 @implementation Matrix
 
 #pragma mark Factory Methods
@@ -269,29 +271,98 @@
 	int lda = columns;
 	int ldb = mt->columns;
 	int ldc = N;
+    
+    Matrix *A = self;
+    Matrix *B = mt;
+    Matrix *C = addend ?[Matrix matrixFromMatrix:addend] :[Matrix matrixOfRows:M
+                                                                       Columns:N];
+    
+    if (true)
+    {
+        cl_int err;
+        cl_platform_id platform = 0;
+        cl_device_id device = 0;
+        cl_context_properties props[3] = { CL_CONTEXT_PLATFORM, 0, 0 };
+        cl_context ctx = 0;
+        cl_command_queue queue = 0;
+        cl_mem bufA, bufB, bufC;
+        cl_event event = NULL;
+        
+        /* Setup OpenCL environment. */
+        err = clGetPlatformIDs( 1, &platform, NULL );
+        err = clGetDeviceIDs( platform, CL_DEVICE_TYPE_CPU, 1, &device, NULL );
 
-	if ((transposeLeft ? rows : columns) != (transposeRight ? mt->columns : mt->rows))
-	{
-		@throw [NSException exceptionWithName:@"MatrixSizeException"
-		        reason:@"Matrix size unsuitable for multiplication."
-		        userInfo:nil];
-	}
-	if (addend && (addend->rows != M && addend->columns != N)) // FIX!!!
-	{
-		@throw [NSException exceptionWithName:@"MatrixSizeException"
-		        reason:@"Matrix size unsuitable for addition."
-		        userInfo:nil];
-	}
-	enum CBLAS_TRANSPOSE lT = transposeLeft ? CblasTrans : CblasNoTrans;
-	enum CBLAS_TRANSPOSE rT = transposeRight ? CblasTrans : CblasNoTrans;
+        props[1] = (cl_context_properties)platform;
+        ctx = clCreateContext( props, 1, &device, NULL, NULL, &err );
+        queue = clCreateCommandQueue( ctx, device, 0, &err );
+        
+        /* Setup clBLAS */
+        err = clblasSetup( );
+        
+        /* Prepare OpenCL memory objects and place matrices inside them. */
+        bufA = clCreateBuffer( ctx, CL_MEM_READ_ONLY, M * K * sizeof(*(A->matrix)),
+                              NULL, &err );
+        bufB = clCreateBuffer( ctx, CL_MEM_READ_ONLY, K * N * sizeof(*(B->matrix)),
+                              NULL, &err );
+        bufC = clCreateBuffer( ctx, CL_MEM_READ_WRITE, M * N * sizeof(*(C->matrix)),
+                              NULL, &err );
+        
+        err = clEnqueueWriteBuffer( queue, bufA, CL_TRUE, 0,
+                                   M * K * sizeof( *(A->matrix) ), A->matrix, 0, NULL, NULL );
+        err = clEnqueueWriteBuffer( queue, bufB, CL_TRUE, 0,
+                                   K * N * sizeof( *(B->matrix) ), B->matrix, 0, NULL, NULL );
+        err = clEnqueueWriteBuffer( queue, bufC, CL_TRUE, 0,
+                                   M * N * sizeof( *(C->matrix) ), C->matrix, 0, NULL, NULL );
+        
+        /* Call clBLAS extended function. Perform gemm for the lower right sub-matrices */
+        err = clblasDgemm(clblasRowMajor,   clblasNoTrans,  clblasNoTrans,  M,
+                          N,                K,              factor,         bufA,
+                          0,                lda,            bufB,           0,
+                          ldb,              1.0f,           bufC,           0,
+                          ldc,              1,              &queue,         0,
+                          NULL,             &event );
+        NSLog(@"%d", err);
+        /* Wait for calculations to be finished. */
+        err = clWaitForEvents( 1, &event );
+        
+        /* Fetch results of calculations from GPU memory. */
+        err = clEnqueueReadBuffer( queue, bufC, CL_TRUE, 0,
+                                  M * N * sizeof(*(C->matrix)),
+                                  C->matrix, 0, NULL, NULL );
+        
+        /* Release OpenCL memory objects. */
+        clReleaseMemObject( bufC );
+        clReleaseMemObject( bufB );
+        clReleaseMemObject( bufA );
+        
+        /* Finalize work with clBLAS */
+        //clblasTeardown( );
+    }
+    else
+    {
+        if ((transposeLeft ? rows : columns) != (transposeRight ? mt->columns : mt->rows))
+        {
+            @throw [NSException exceptionWithName:@"MatrixSizeException"
+                                           reason:@"Matrix size unsuitable for multiplication."
+                                         userInfo:nil];
+        }
+        if (addend && (addend->rows != M && addend->columns != N)) // FIX!!!
+        {
+            @throw [NSException exceptionWithName:@"MatrixSizeException"
+                                           reason:@"Matrix size unsuitable for addition."
+                                         userInfo:nil];
+        }
+        enum CBLAS_TRANSPOSE lT = transposeLeft ? CblasTrans : CblasNoTrans;
+        enum CBLAS_TRANSPOSE rT = transposeRight ? CblasTrans : CblasNoTrans;
+        
+        
+        cblas_dgemm(CblasRowMajor, lT,          rT,         M,
+                    N,              K,          factor,     matrix,
+                    lda,            mt->matrix, ldb,        1,
+                    C->matrix, ldc);
+    }
 
-	Matrix *result = addend ?[Matrix matrixFromMatrix:addend] :[Matrix matrixOfRows:M
-	                                                                Columns:N];
-	cblas_dgemm(CblasRowMajor, lT,          rT,         M,
-	            N,              K,          factor,     matrix,
-	            lda,            mt->matrix, ldb,        1,
-	            result->matrix, ldc);
-	return result;
+	return C;
 }
 
 - (Matrix *)matrixByMultiplyingWithScalar:(double)ms

@@ -10,6 +10,13 @@
 		CB02F7B51AAF446400EF1E02 /* YCMatrix.h in Headers */ = {isa = PBXBuildFile; fileRef = CB02F7B41AAF446400EF1E02 /* YCMatrix.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB26DAA21A856232007F73E2 /* NSArray+Matrix.h in Headers */ = {isa = PBXBuildFile; fileRef = CB26DAA01A856232007F73E2 /* NSArray+Matrix.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB26DAA31A856232007F73E2 /* NSArray+Matrix.m in Sources */ = {isa = PBXBuildFile; fileRef = CB26DAA11A856232007F73E2 /* NSArray+Matrix.m */; };
+		CB8D3B1F1B96223300B7EC0C /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB8D3B1E1B96223300B7EC0C /* Accelerate.framework */; };
+		CB8D3B241B96286A00B7EC0C /* libclBLAS.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CB8D3B231B96286A00B7EC0C /* libclBLAS.dylib */; };
+		CB8D3B261B9628EF00B7EC0C /* clBLAS.h in Headers */ = {isa = PBXBuildFile; fileRef = CB8D3B251B9628EF00B7EC0C /* clBLAS.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		CB8D3B2B1B96290700B7EC0C /* clAmdBlas.h in Headers */ = {isa = PBXBuildFile; fileRef = CB8D3B271B96290700B7EC0C /* clAmdBlas.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		CB8D3B2C1B96290700B7EC0C /* clAmdBlas.version.h in Headers */ = {isa = PBXBuildFile; fileRef = CB8D3B281B96290700B7EC0C /* clAmdBlas.version.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		CB8D3B2D1B96290700B7EC0C /* clBLAS-complex.h in Headers */ = {isa = PBXBuildFile; fileRef = CB8D3B291B96290700B7EC0C /* clBLAS-complex.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		CB8D3B2E1B96290700B7EC0C /* clBLAS.version.h in Headers */ = {isa = PBXBuildFile; fileRef = CB8D3B2A1B96290700B7EC0C /* clBLAS.version.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		CBBE02BA178F215000744F77 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBBE02B8178F215000744F77 /* InfoPlist.strings */; };
 		CBBE02BE178F215000744F77 /* Matrix.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBE02BD178F215000744F77 /* Matrix.m */; };
 		CBBE02CA178F215100744F77 /* YCMatrix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBE02AC178F215000744F77 /* YCMatrix.framework */; };
@@ -41,13 +48,19 @@
 /* Begin PBXFileReference section */
 		CB02F7B41AAF446400EF1E02 /* YCMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCMatrix.h; sourceTree = "<group>"; };
 		CB2242AF19D413C0005B3F7E /* AppledocSettings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = AppledocSettings.plist; sourceTree = "<group>"; };
-		CB265CCD1B24BB55004BE740 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/Accelerate.framework; sourceTree = DEVELOPER_DIR; };
 		CB26DAA01A856232007F73E2 /* NSArray+Matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Matrix.h"; sourceTree = "<group>"; };
 		CB26DAA11A856232007F73E2 /* NSArray+Matrix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Matrix.m"; sourceTree = "<group>"; };
 		CB4BAA9919D2CE3D001E7A7A /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		CB58B99D19D1ED310097EEB1 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		CB84DE0219D4B254009EED7E /* YCMatrix.podspec.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = YCMatrix.podspec.json; sourceTree = "<group>"; };
 		CB84DE0319D4BD32009EED7E /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		CB8D3B1E1B96223300B7EC0C /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		CB8D3B231B96286A00B7EC0C /* libclBLAS.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libclBLAS.dylib; path = ../../../../../usr/local/lib/libclBLAS.dylib; sourceTree = "<group>"; };
+		CB8D3B251B9628EF00B7EC0C /* clBLAS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = clBLAS.h; path = ../../../../../usr/local/include/clBLAS.h; sourceTree = "<group>"; };
+		CB8D3B271B96290700B7EC0C /* clAmdBlas.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = clAmdBlas.h; path = ../../../../../usr/local/include/clAmdBlas.h; sourceTree = "<group>"; };
+		CB8D3B281B96290700B7EC0C /* clAmdBlas.version.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = clAmdBlas.version.h; path = ../../../../../usr/local/include/clAmdBlas.version.h; sourceTree = "<group>"; };
+		CB8D3B291B96290700B7EC0C /* clBLAS-complex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "clBLAS-complex.h"; path = "../../../../../usr/local/include/clBLAS-complex.h"; sourceTree = "<group>"; };
+		CB8D3B2A1B96290700B7EC0C /* clBLAS.version.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = clBLAS.version.h; path = ../../../../../usr/local/include/clBLAS.version.h; sourceTree = "<group>"; };
 		CB9F9CFC19DAE83E00B6A1E4 /* ycmatrix.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ycmatrix.png; sourceTree = "<group>"; };
 		CBBE02AC178F215000744F77 /* YCMatrix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = YCMatrix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBBE02B4178F215000744F77 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -77,6 +90,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB8D3B241B96286A00B7EC0C /* libclBLAS.dylib in Frameworks */,
+				CB8D3B1F1B96223300B7EC0C /* Accelerate.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,6 +118,11 @@
 		CBBE02A2178F215000744F77 = {
 			isa = PBXGroup;
 			children = (
+				CB8D3B271B96290700B7EC0C /* clAmdBlas.h */,
+				CB8D3B281B96290700B7EC0C /* clAmdBlas.version.h */,
+				CB8D3B291B96290700B7EC0C /* clBLAS-complex.h */,
+				CB8D3B2A1B96290700B7EC0C /* clBLAS.version.h */,
+				CB8D3B251B9628EF00B7EC0C /* clBLAS.h */,
 				CBBE02B5178F215000744F77 /* YCMatrix */,
 				CBBE02CB178F215100744F77 /* YCMatrixTests */,
 				CBBE02AE178F215000744F77 /* Frameworks */,
@@ -129,7 +149,8 @@
 		CBBE02AE178F215000744F77 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CB265CCD1B24BB55004BE740 /* Accelerate.framework */,
+				CB8D3B231B96286A00B7EC0C /* libclBLAS.dylib */,
+				CB8D3B1E1B96223300B7EC0C /* Accelerate.framework */,
 				CBBE02B4178F215000744F77 /* Foundation.framework */,
 			);
 			name = Frameworks;
@@ -197,6 +218,11 @@
 				CB26DAA21A856232007F73E2 /* NSArray+Matrix.h in Headers */,
 				CBBE02E2178F216800744F77 /* Matrix+Manipulate.h in Headers */,
 				CBBE0301178F258B00744F77 /* Matrix.h in Headers */,
+				CB8D3B261B9628EF00B7EC0C /* clBLAS.h in Headers */,
+				CB8D3B2B1B96290700B7EC0C /* clAmdBlas.h in Headers */,
+				CB8D3B2C1B96290700B7EC0C /* clAmdBlas.version.h in Headers */,
+				CB8D3B2D1B96290700B7EC0C /* clBLAS-complex.h in Headers */,
+				CB8D3B2E1B96290700B7EC0C /* clBLAS.version.h in Headers */,
 				CBD7D3D218A4DD10006A04C0 /* Matrix+Map.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -432,6 +458,7 @@
 				INFOPLIST_FILE = "YCMatrix/YCMatrix-Info.plist";
 				INSTALL_PATH = "@rpath";
 				LD_RUNPATH_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = framework;
@@ -452,6 +479,7 @@
 				INFOPLIST_FILE = "YCMatrix/YCMatrix-Info.plist";
 				INSTALL_PATH = "@rpath";
 				LD_RUNPATH_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = framework;
