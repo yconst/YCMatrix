@@ -1,18 +1,24 @@
 
-<img src="https://raw.githubusercontent.com/yconst/YCMatrix/master/ycmatrix.png" alt="YCMatrix" style="width: 128px; height: 128px;"/>
+<img src="https://raw.githubusercontent.com/yconst/YCMatrix/master/ycmatrix.png" alt="YCMatrix" style="width: 64px; height: 64px;"/>
 
 #YCMatrix
 
 [![Build Status](https://travis-ci.org/yconst/YCMatrix.svg?branch=master)](https://travis-ci.org/yconst/YCMatrix)
 
-A flexible Matrix library for Objective-C, which interfaces 
+A flexible Matrix library for Objective-C and Swift, that interfaces 
 BLAS, LAPACK and vDSP functions via the Accelerate Framework.
 
 YCMatrix is available for OS X (10.7+), as well as iOS (8.0+).
 
-##Installation
+##Getting started
 
 It is recommended to install YCMatrix using [Cocoapods](http://cocoapods.org/).
+
+### Using CocoaPods
+
+There is an [official guide to using CocoaPods](https://guides.cocoapods.org/using/using-cocoapods.html). 
+YCMatrix may be easily added as a project dependency by following 
+the guide.
 
 #### Podfile
 
@@ -21,19 +27,48 @@ platform :osx, '10.7'
 pod "YCMatrix"
 ```
 
-##Getting started
+### Adding the framework manually
 
-Import the project in your workspace, or compile the framework
-and import. YCMatrix has no dependencies other than system 
-frameworks.
+Import the project in your workspace, or open the framework project
+in XCode, build and import the product.
 
-##Example Usage
+### Importing
+
+YCMatrix defines a module so in newer versions of XCode, 
+ you can simply import the framework with:
+
+    @include YCMatrix;
+
+Alternatively, you can do:
+
+    #import "YCMatrix/YCMatrix.h"
+
+### Dependencies
+
+YCMatrix has no dependencies other than system 
+frameworks (namely Foundation.framework and Accelerate.framework). 
+
+## Usage
+
+### Naming Conventions
+
+Methods that result in a new Matrix instance are usually prefixed with "matrixFrom",
+e.g. -matrixFromSubtraction: . Methods that change the receiver in-place
+do not have the prefix. In some cases, such as matrix-matrix multiplication,
+the prefix is not included in the method name, even though it is obvious that
+the result of the operation is a new Matrix instance.
+
+### Example
+
+The snippet below is a basic example of matrix multiplication. 
+It also shows how you can easily create matrices with predefined 
+values.
 
     @include YCMatrix;
     
-    Matrix *I = [Matrix identityOfRows:3 Columns:3];
-    Matrix *C = [Matrix matrixOfRows:3 Columns:3 Value:2];
-    Matrix *S = [I matrixByAddition:C];
+    Matrix *I = [Matrix identityOfRows:3 Columns:3]; // 3x3 Identity
+    Matrix *C = [Matrix matrixOfRows:3 Columns:3 Value:2]; // 3x3 filled with 2s
+    Matrix *S = [I matrixByAddition:C]; // Outputs a new matrix
     NSLog(@"Result:\n%@", S);
     
     // Result:
