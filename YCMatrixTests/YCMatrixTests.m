@@ -50,15 +50,15 @@
         0.0, 0.0, 1.0,
         0.0, 0.0, 0.0,
         0.0, 0.0, 0.0 };
-    Matrix *idmRef = [Matrix matrixFromArray:idm_ref_array Rows:5 Columns:3];
-    Matrix *idm = [Matrix identityOfRows:5 Columns:3];
+    Matrix *idmRef = [Matrix matrixFromArray:idm_ref_array rows:5 columns:3];
+    Matrix *idm = [Matrix identityOfRows:5 columns:3];
     CleanNSLog(@"%@",idm);
     XCTAssertEqualObjects(idm, idmRef, @"Error in creating Identity Matrix");
 }
 
 - (void)testOnes
 {
-    Matrix *template = [Matrix matrixOfRows:5 Columns:5 Value:1];
+    Matrix *template = [Matrix matrixOfRows:5 columns:5 value:1];
     Matrix *match = [Matrix onesLike:template];
     XCTAssertEqualObjects(template, match, @"Error in creating matrix of ones.");
 }
@@ -69,22 +69,22 @@
     double simple_array[9] = { 1.0, 2.0, 3.0,
         4.0, 5.0, 6.0,
         7.0, 8.0, 9.0 };
-    Matrix *simple_matrix = [Matrix matrixFromArray:simple_array Rows:3 Columns:3];
+    Matrix *simple_matrix = [Matrix matrixFromArray:simple_array rows:3 columns:3];
     CleanNSLog(@"%@",simple_matrix);
     
     // Perform various get item tests
     TitleNSLog(@"Get Items Test");
-    CleanNSLog(@"Value at 0,0: %f",[simple_matrix valueAtRow:0 Column:0]);
-    CleanNSLog(@"Value at 1,1: %f",[simple_matrix valueAtRow:1 Column:1]);
-    CleanNSLog(@"Value at 2,1: %f",[simple_matrix valueAtRow:2 Column:1]);
-    CleanNSLog(@"Value at 1,2: %f",[simple_matrix valueAtRow:1 Column:2]);
-    CleanNSLog(@"Value at 2,2: %f",[simple_matrix valueAtRow:2 Column:2]);
-    XCTAssertTrue([simple_matrix valueAtRow:0 Column:0] == 1.0, @"GetValue error!");
-    XCTAssertTrue([simple_matrix valueAtRow:1 Column:0] == 4.0, @"GetValue error!");
-    XCTAssertTrue([simple_matrix valueAtRow:2 Column:0] == 7.0, @"GetValue error!");
-    XCTAssertTrue([simple_matrix valueAtRow:0 Column:1] == 2.0, @"GetValue error!");
-    XCTAssertTrue([simple_matrix valueAtRow:0 Column:2] == 3.0, @"GetValue error!");
-    XCTAssertTrue([simple_matrix valueAtRow:2 Column:1] == 8.0, @"GetValue error!");
+    CleanNSLog(@"Value at 0,0: %f",[simple_matrix valueAtRow:0 column:0]);
+    CleanNSLog(@"Value at 1,1: %f",[simple_matrix valueAtRow:1 column:1]);
+    CleanNSLog(@"Value at 2,1: %f",[simple_matrix valueAtRow:2 column:1]);
+    CleanNSLog(@"Value at 1,2: %f",[simple_matrix valueAtRow:1 column:2]);
+    CleanNSLog(@"Value at 2,2: %f",[simple_matrix valueAtRow:2 column:2]);
+    XCTAssertTrue([simple_matrix valueAtRow:0 column:0] == 1.0, @"GetValue error!");
+    XCTAssertTrue([simple_matrix valueAtRow:1 column:0] == 4.0, @"GetValue error!");
+    XCTAssertTrue([simple_matrix valueAtRow:2 column:0] == 7.0, @"GetValue error!");
+    XCTAssertTrue([simple_matrix valueAtRow:0 column:1] == 2.0, @"GetValue error!");
+    XCTAssertTrue([simple_matrix valueAtRow:0 column:2] == 3.0, @"GetValue error!");
+    XCTAssertTrue([simple_matrix valueAtRow:2 column:1] == 8.0, @"GetValue error!");
     XCTAssertTrue([simple_matrix i:0 j:1] == 2.0, @"GetValue error!");
     XCTAssertTrue([simple_matrix i:0 j:2] == 3.0, @"GetValue error!");
     XCTAssertTrue([simple_matrix i:2 j:1] == 8.0, @"GetValue error!");
@@ -96,9 +96,9 @@
         4.0, 5.0, 6.0,
         7.0, 8.0, 9.0,
         1.0, 2.0, 6.0};
-    Matrix *sourceMatrix = [Matrix matrixFromArray:source_array Rows:4 Columns:3];
+    Matrix *sourceMatrix = [Matrix matrixFromArray:source_array rows:4 columns:3];
     double target_array[3] = { 1.0, 5.0, 9.0 };
-    Matrix *targetMatrix = [Matrix matrixFromArray:target_array Rows:3 Columns:1];
+    Matrix *targetMatrix = [Matrix matrixFromArray:target_array rows:3 columns:1];
     Matrix *diagonal = [sourceMatrix diagonal];
     XCTAssertEqualObjects(diagonal, targetMatrix, @"Error in deriving diagonal.");
 }
@@ -111,8 +111,8 @@
     double matrix_trans_arr[6] = { 1.0, 4.0,
         2.0, 5.0,
         3.0, 6.0 };
-    Matrix *orig = [Matrix matrixFromArray:matrix_orig_arr Rows:2 Columns:3];
-    Matrix *trans = [Matrix matrixFromArray:matrix_trans_arr Rows:3 Columns:2];
+    Matrix *orig = [Matrix matrixFromArray:matrix_orig_arr rows:2 columns:3];
+    Matrix *trans = [Matrix matrixFromArray:matrix_trans_arr rows:3 columns:2];
     Matrix *trans2 = [orig matrixByTransposing];
     CleanNSLog(@"%@",orig);
     CleanNSLog(@"%@",trans);
@@ -125,7 +125,7 @@
 {
     TitleNSLog(@"Dot Product");
     double vectorarray[3] = { 1.0, 2.0, 3.0 };
-    Matrix *Vector = [Matrix matrixFromArray:vectorarray Rows:3 Columns:1];
+    Matrix *Vector = [Matrix matrixFromArray:vectorarray rows:3 columns:1];
     double dotp = [Vector dotWith:Vector];
     CleanNSLog(@"Dot Product: %f",dotp);
     XCTAssertEqual(dotp, 14.0, @"Error in calculating dot product");
@@ -137,7 +137,7 @@
     double matrix_array[9] = { 1.0, 2.0, 3.0,
         4.0, 5.0, 6.0,
         7.0, 8.0, 9.0 };
-    Matrix *tracetestm = [Matrix matrixFromArray:matrix_array Rows:3 Columns:3];
+    Matrix *tracetestm = [Matrix matrixFromArray:matrix_array rows:3 columns:3];
     double trace = [[tracetestm matrixByMultiplyingWithRight:tracetestm] trace];
     CleanNSLog(@"%f",trace);
     XCTAssertEqual(trace, 261.000, @"Trace is not correct!");
@@ -149,7 +149,7 @@
     double matrix_array[9] = { 1.0, 2.0, 3.0,
         4.0, 5.0, 6.0,
         7.0, 8.0, 9.0 };
-    Matrix *testm1 = [Matrix matrixFromArray:matrix_array Rows:3 Columns:3];
+    Matrix *testm1 = [Matrix matrixFromArray:matrix_array rows:3 columns:3];
     Matrix *testm2 = [Matrix matrixFromMatrix:testm1];
     Matrix *testm_add = [testm1 matrixByAdding:testm2];
     Matrix *testm_ms = [testm1 matrixByMultiplyingWithScalar:2];
@@ -166,11 +166,11 @@
 - (void)testTransposedMultiply
 {
     double simple_array[6] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0 };
-    Matrix *A = [Matrix matrixFromArray:simple_array Rows:2 Columns:3];
+    Matrix *A = [Matrix matrixFromArray:simple_array rows:2 columns:3];
     CleanNSLog(@"%@",A);
     
     double simple_array_2[6] = { 2.0, 3.0, 1.0, 4.0, 0.0, 5.0 };
-    Matrix *B = [Matrix matrixFromArray:simple_array_2 Rows:3 Columns:2];
+    Matrix *B = [Matrix matrixFromArray:simple_array_2 rows:3 columns:2];
     CleanNSLog(@"%@",B);
     
     Matrix *C = [A matrixByMultiplyingWithRight:B AndTransposing:YES];
@@ -201,7 +201,7 @@
         4.0, 5.0, 6.0, -4000005.5,
         7.0, 8.0, 9.0, -0.000032348,
         1.1, 0.00218, 0.5, -0.000121937};
-    Matrix *testm1 = [Matrix matrixFromArray:matrix_array Rows:4 Columns:4];
+    Matrix *testm1 = [Matrix matrixFromArray:matrix_array rows:4 columns:4];
     NSData *serialized = [NSKeyedArchiver archivedDataWithRootObject:testm1];
     Matrix *recovered = [NSKeyedUnarchiver unarchiveObjectWithData:serialized];
     XCTAssertEqualObjects(testm1, recovered, @"Error in deserialization");

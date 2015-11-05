@@ -41,8 +41,8 @@
 
 - (void)testMinMaxMapping
 {
-    Matrix *low = [Matrix matrixOfRows:4 Columns:5 Value:3];
-    Matrix *high = [Matrix matrixOfRows:4 Columns:5 Value:8];
+    Matrix *low = [Matrix matrixOfRows:4 columns:5 value:3];
+    Matrix *high = [Matrix matrixOfRows:4 columns:5 value:8];
     Matrix *original = [Matrix randomValuesMatrixWithLowerBound:low upperBound:high];
     Matrix *mapping = [original rowWiseMapToDomain:YCMakeDomain(0, 1) basis:MinMax];
     Matrix *inverse = [original rowWiseInverseMapFromDomain:YCMakeDomain(0, 1) basis:MinMax];
@@ -53,8 +53,8 @@
 
 - (void)testStDevMapping
 {
-    Matrix *low = [Matrix matrixOfRows:4 Columns:5 Value:3];
-    Matrix *high = [Matrix matrixOfRows:4 Columns:5 Value:8];
+    Matrix *low = [Matrix matrixOfRows:4 columns:5 value:3];
+    Matrix *high = [Matrix matrixOfRows:4 columns:5 value:8];
     Matrix *original = [Matrix randomValuesMatrixWithLowerBound:low upperBound:high];
     Matrix *mapping = [original rowWiseMapToDomain:YCMakeDomain(-1, 2) basis:StDev];
     Matrix *inverse = [original rowWiseInverseMapFromDomain:YCMakeDomain(-1, 2) basis:StDev];

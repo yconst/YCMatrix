@@ -43,11 +43,11 @@
 {
     TitleNSLog(@"Matrix row retrieval");
     double testmrarr[6] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0 };
-    Matrix *testmr = [Matrix matrixFromArray:testmrarr Rows:2 Columns:3];
+    Matrix *testmr = [Matrix matrixFromArray:testmrarr rows:2 columns:3];
     Matrix *rowm = [testmr row:1]; // This is being tested.
     CleanNSLog(@"%@", rowm);
     double templatermatrixarr[3] = { 4.0, 5.0, 6.0 };
-    Matrix *templatemr = [Matrix matrixFromArray:templatermatrixarr Rows:1 Columns:3];
+    Matrix *templatemr = [Matrix matrixFromArray:templatermatrixarr rows:1 columns:3];
     XCTAssertTrue([rowm isEqual:templatemr], @"Matrix row retrieval error.");
 }
 
@@ -55,12 +55,12 @@
 {
     TitleNSLog(@"Multiple matrix row retrieval");
     double testmrarr[9] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0 };
-    Matrix *testmr = [Matrix matrixFromArray:testmrarr Rows:3 Columns:3];
+    Matrix *testmr = [Matrix matrixFromArray:testmrarr rows:3 columns:3];
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 2)];
     Matrix *rowm = [testmr rows:indexSet]; // This is being tested.
     CleanNSLog(@"%@", rowm);
     double templatermatrixarr[6] = { 4.0, 5.0, 6.0, 7.0, 8.0, 9.0 };
-    Matrix *templatemr = [Matrix matrixFromArray:templatermatrixarr Rows:2 Columns:3];
+    Matrix *templatemr = [Matrix matrixFromArray:templatermatrixarr rows:2 columns:3];
     XCTAssertTrue([rowm isEqual:templatemr], @"Multiple matrix row retrieval error.");
 }
 
@@ -68,11 +68,11 @@
 {
     TitleNSLog(@"Matrix column retrieval");
     double testmcarr[6] = { 1.0, 4.0, 2.0, 5.0, 3.0, 6.0 };
-    Matrix *testmc = [Matrix matrixFromArray:testmcarr Rows:3 Columns:2];
+    Matrix *testmc = [Matrix matrixFromArray:testmcarr rows:3 columns:2];
     Matrix *columnm = [testmc column:1]; // This is being tested.
     CleanNSLog(@"%@", columnm);
     double templatecmatrixarr[3] = { 4.0, 5.0, 6.0 };
-    Matrix *templatemc = [Matrix matrixFromArray:templatecmatrixarr Rows:3 Columns:1];
+    Matrix *templatemc = [Matrix matrixFromArray:templatecmatrixarr rows:3 columns:1];
     XCTAssertTrue([columnm isEqual:templatemc], @"Matrix column retrieval error.");
 }
 
@@ -80,12 +80,12 @@
 {
     TitleNSLog(@"Multiple matrix column retrieval");
     double testmcarr[9] = { 1.0, 4.0, 7.0, 2.0, 5.0, 8.0, 3.0, 6.0, 9.0 };
-    Matrix *testmc = [Matrix matrixFromArray:testmcarr Rows:3 Columns:3];
+    Matrix *testmc = [Matrix matrixFromArray:testmcarr rows:3 columns:3];
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 2)];
     Matrix *columnm = [testmc columns:indexSet]; // This is being tested.
     CleanNSLog(@"%@", columnm);
     double templatecmatrixarr[6] = { 4.0, 7.0, 5.0, 8.0, 6.0, 9.0 };
-    Matrix *templatemc = [Matrix matrixFromArray:templatecmatrixarr Rows:3 Columns:2];
+    Matrix *templatemc = [Matrix matrixFromArray:templatecmatrixarr rows:3 columns:2];
     XCTAssertTrue([columnm isEqual:templatemc], @"Multiple matrix column retrieval error.");
 }
 
@@ -96,13 +96,13 @@
         5.0, 6.0, 7.0, 8.0,
         9.0, 10.0, 11.0, 12.0};
     double firstRow[4] = { 1.0, 2.0, 3.0, 4.0 };
-    Matrix *firstRowMatrix = [Matrix matrixFromArray:firstRow Rows:1 Columns:4];
+    Matrix *firstRowMatrix = [Matrix matrixFromArray:firstRow rows:1 columns:4];
     double secondRow[4] = { 5.0, 6.0, 7.0, 8.0 };
-    Matrix *secondRowMatrix = [Matrix matrixFromArray:secondRow Rows:1 Columns:4];
+    Matrix *secondRowMatrix = [Matrix matrixFromArray:secondRow rows:1 columns:4];
     double thirdRow[4] = { 9.0, 10.0, 11.0, 12.0 };
-    Matrix *thirdRowMatrix = [Matrix matrixFromArray:thirdRow Rows:1 Columns:4];
+    Matrix *thirdRowMatrix = [Matrix matrixFromArray:thirdRow rows:1 columns:4];
     
-    Matrix *rowsColumnsTestMatrix = [Matrix matrixFromArray:rowsColumnsArrayTest Rows:3 Columns:4];
+    Matrix *rowsColumnsTestMatrix = [Matrix matrixFromArray:rowsColumnsArrayTest rows:3 columns:4];
     NSArray *rowsTestRows = [rowsColumnsTestMatrix rowsAsNSArray];
     XCTAssertEqualObjects([rowsTestRows objectAtIndex:0], firstRowMatrix, @"Error in conversion to rows array(1).");
     XCTAssertEqualObjects([rowsTestRows objectAtIndex:1], secondRowMatrix, @"Error in conversion to rows array(2).");
@@ -117,15 +117,15 @@
         5.0, 6.0, 7.0, 8.0,
         9.0, 10.0, 11.0, 12.0};
     double firstColumn[3] = { 1.0, 5.0, 9.0 };
-    Matrix *firstColumnMatrix = [Matrix matrixFromArray:firstColumn Rows:3 Columns:1];
+    Matrix *firstColumnMatrix = [Matrix matrixFromArray:firstColumn rows:3 columns:1];
     double secondColumn[3] = { 2.0, 6.0, 10.0 };
-    Matrix *secondColumnMatrix = [Matrix matrixFromArray:secondColumn Rows:3 Columns:1];
+    Matrix *secondColumnMatrix = [Matrix matrixFromArray:secondColumn rows:3 columns:1];
     double thirdColumn[3] = { 3.0, 7.0, 11.0 };
-    Matrix *thirdColumnMatrix = [Matrix matrixFromArray:thirdColumn Rows:3 Columns:1];
+    Matrix *thirdColumnMatrix = [Matrix matrixFromArray:thirdColumn rows:3 columns:1];
     double fourthColumn[3] = { 4.0, 8.0, 12.0 };
-    Matrix *fourthColumnMatrix = [Matrix matrixFromArray:fourthColumn Rows:3 Columns:1];
+    Matrix *fourthColumnMatrix = [Matrix matrixFromArray:fourthColumn rows:3 columns:1];
 
-    Matrix *rowsColumnsTestMatrix = [Matrix matrixFromArray:rowsColumnsArrayTest Rows:3 Columns:4];
+    Matrix *rowsColumnsTestMatrix = [Matrix matrixFromArray:rowsColumnsArrayTest rows:3 columns:4];
     NSArray *columnsTestColumns = [rowsColumnsTestMatrix columnsAsNSArray];
     XCTAssertEqualObjects([columnsTestColumns objectAtIndex:0], firstColumnMatrix,
                           @"Error in conversion to columns array(1).");
@@ -144,11 +144,11 @@
         5.0, 6.0, 7.0, 8.0,
         9.0, 10.0, 11.0, 12.0,
         13.0, 14.0, 15.0, 16.0 };
-    Matrix *original = [Matrix matrixFromArray:simple_array Rows:4 Columns:4];
+    Matrix *original = [Matrix matrixFromArray:simple_array rows:4 columns:4];
     
     double expected_rows[8] = { 5.0, 6.0, 7.0, 8.0,
         9.0, 10.0, 11.0, 12.0 };
-    Matrix *expectedRows = [Matrix matrixFromArray:expected_rows Rows:2 Columns:4];
+    Matrix *expectedRows = [Matrix matrixFromArray:expected_rows rows:2 columns:4];
     Matrix *resultRows = [original matrixWithRowsInRange:NSMakeRange(1, 2)];
     CleanNSLog(@"%@", resultRows);
     XCTAssertEqualObjects(expectedRows, resultRows, @"Error while extracting rows to sub-matrix");
@@ -157,7 +157,7 @@
         6.0, 7.0,
         10.0, 11.0,
         14.0, 15.0 };
-    Matrix *expectedColumns = [Matrix matrixFromArray:expected_columns Rows:4 Columns:2];
+    Matrix *expectedColumns = [Matrix matrixFromArray:expected_columns rows:4 columns:2];
     Matrix *resultColumns = [original matrixWithColumnsInRange:NSMakeRange(1, 2)];
     CleanNSLog(@"%@", resultColumns);
     XCTAssertEqualObjects(expectedColumns, resultColumns, @"Error while extracting columns to sub-matrix");
@@ -170,10 +170,10 @@
         5.0, 6.0, 7.0, 8.0,
         9.0, 10.0, 11.0, 12.0,
         13.0, 14.0, 15.0, 16.0 };
-    Matrix *original = [Matrix matrixFromArray:simple_array Rows:4 Columns:4];
+    Matrix *original = [Matrix matrixFromArray:simple_array rows:4 columns:4];
     double element[4] = { 4.0, 1.0, -40.0, -22.5 };
-    Matrix *column = [Matrix matrixFromArray:element Rows:4 Columns:1];
-    Matrix *row = [Matrix matrixFromArray:element Rows:1 Columns:4];
+    Matrix *column = [Matrix matrixFromArray:element rows:4 columns:1];
+    Matrix *row = [Matrix matrixFromArray:element rows:1 columns:4];
     Matrix *step1 = [original matrixByAddingRow:row];
     Matrix *step2 = [step1 matrixByAddingColumn:column];
     Matrix *step3 = [step2 matrixBySubtractingColumn:column];
@@ -197,9 +197,9 @@
         4.0,  14.0, 15.0, 0.05
     };
     
-    Matrix *originalMatrix = [Matrix matrixFromArray:original Rows:4 Columns:4];
+    Matrix *originalMatrix = [Matrix matrixFromArray:original rows:4 columns:4];
     Matrix *resultMatrix = [originalMatrix removeRow:1];
-    Matrix *testMatrix = [Matrix matrixFromArray:test Rows:3 Columns:4];
+    Matrix *testMatrix = [Matrix matrixFromArray:test rows:3 columns:4];
     XCTAssertEqualObjects(testMatrix, resultMatrix);
     CleanNSLog(@"Original:\n%@", originalMatrix);
     CleanNSLog(@"Test:\n%@", testMatrix);
@@ -222,9 +222,9 @@
         4.0, 15.0, 0.05
     };
     
-    Matrix *originalMatrix = [Matrix matrixFromArray:original Rows:4 Columns:4];
+    Matrix *originalMatrix = [Matrix matrixFromArray:original rows:4 columns:4];
     Matrix *resultMatrix = [originalMatrix removeColumn:1];
-    Matrix *testMatrix = [Matrix matrixFromArray:test Rows:4 Columns:3];
+    Matrix *testMatrix = [Matrix matrixFromArray:test rows:4 columns:3];
     XCTAssertEqualObjects(testMatrix, resultMatrix);
     CleanNSLog(@"Original:\n%@", originalMatrix);
     CleanNSLog(@"Test:\n%@", testMatrix);
@@ -240,7 +240,7 @@
         4.000000,    40.000000,   400.000000,  4000.000000, 40000.000000
     };
     
-    Matrix *originalMatrix = [Matrix matrixFromArray:original Rows:4 Columns:5];
+    Matrix *originalMatrix = [Matrix matrixFromArray:original rows:4 columns:5];
     CleanNSLog(@"%@", originalMatrix);
     Matrix *shuffledMatrix = [originalMatrix copy];
     [shuffledMatrix shuffleRows];
@@ -263,7 +263,7 @@
         4.000000,    40.000000,   400.000000,  4000.000000, 40000.000000
     };
     
-    Matrix *originalMatrix = [Matrix matrixFromArray:original Rows:4 Columns:5];
+    Matrix *originalMatrix = [Matrix matrixFromArray:original rows:4 columns:5];
     CleanNSLog(@"%@", originalMatrix);
     Matrix *shuffledMatrix = [originalMatrix copy];
     [shuffledMatrix shuffleColumns];

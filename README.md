@@ -66,8 +66,8 @@ values.
 
     @include YCMatrix;
     
-    Matrix *I = [Matrix identityOfRows:3 Columns:3]; // 3x3 Identity
-    Matrix *C = [Matrix matrixOfRows:3 Columns:3 Value:2]; // 3x3 filled with 2s
+    Matrix *I = [Matrix identityOfRows:3 columns:3]; // 3x3 Identity
+    Matrix *C = [Matrix matrixOfRows:3 columns:3 value:2]; // 3x3 filled with 2s
     Matrix *S = [I matrixByAddition:C]; // Outputs a new matrix
     NSLog(@"Result:\n%@", S);
     

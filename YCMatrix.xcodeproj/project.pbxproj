@@ -63,7 +63,7 @@
 		CBBE02DD178F216800744F77 /* Matrix+Advanced.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Matrix+Advanced.m"; sourceTree = "<group>"; };
 		CBBE02DE178F216800744F77 /* Matrix+Manipulate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Matrix+Manipulate.h"; sourceTree = "<group>"; };
 		CBBE02DF178F216800744F77 /* Matrix+Manipulate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Matrix+Manipulate.m"; sourceTree = "<group>"; };
-		CBBE02E7178F218600744F77 /* YCMatrixManipulateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCMatrixManipulateTests.m; sourceTree = "<group>"; };
+		CBBE02E7178F218600744F77 /* YCMatrixManipulateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = YCMatrixManipulateTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		CBD5120519D2D720004DD8D3 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
 		CBD5120619D37764004DD8D3 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		CBD7D3D018A4DD10006A04C0 /* Matrix+Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Matrix+Map.h"; sourceTree = "<group>"; };
