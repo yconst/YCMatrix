@@ -98,7 +98,7 @@
 
 - (void)testCholesky
 {
-    TitleNSLog(@"Cholesky Decomposition Test (A:3x3)");
+    TitleNSLog(@"Cholesky Decomposition Test (A: 3x3)");
     double simple_array[9] = {  4, 12, -16,
         12, 37, -43,
         -16, -43, 98}; // Test from Wikipedia
@@ -107,6 +107,21 @@
     Matrix *ch = [A matrixByCholesky];
     CleanNSLog(@"Cholesky Decomposition of A: %@",ch);
     XCTAssertEqualObjects([ch matrixByTransposingAndMultiplyingWithLeft:ch], A,
+                          @"Error with Cholesky decomposition");
+    
+    TitleNSLog(@"Cholesky Decomposition Test (Correlation Matrix: 4x4)");
+    
+    double correlation_array[16] = { 1, 0.5, 0.5, 0.5,
+                                     0.5, 1, 0.5, 0.5,
+                                     0.5, 0.5, 1, 0.5,
+                                     0.5, 0.5, 0.5, 1 };
+    Matrix *correlationMatrix = [Matrix matrixFromArray:correlation_array rows:4 columns:4];
+    
+    CleanNSLog(@"Correlation Matrix: %@",correlationMatrix);
+    Matrix *correlationCholesky = [correlationMatrix matrixByCholesky];
+    CleanNSLog(@"Cholesky Decomposition of Correlation Matrix: %@",correlationCholesky);
+    Matrix *response = [correlationCholesky matrixByTransposingAndMultiplyingWithLeft:correlationCholesky];
+    XCTAssert([response isEqualToMatrix:correlationMatrix tolerance:1E-9],
                           @"Error with Cholesky decomposition");
 }
 
