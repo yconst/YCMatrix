@@ -92,12 +92,12 @@
     __block int count = 0;
     Matrix *result = [Matrix matrixOfRows:(int)[indexes count] columns:self.columns];
     [indexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-        [result setRow:count++ Value:[self row:(int)idx]];
+        [result setRow:count++ value:[self row:(int)idx]];
     }];
     return result;
 }
 
-- (void)setRow:(int)rowIndex Value:(Matrix *)rowValue
+- (void)setRow:(int)rowIndex value:(Matrix *)rowValue
 {
     if (rowIndex > self->rows - 1)
     {
@@ -169,12 +169,12 @@
     __block int count = 0;
     Matrix *result = [Matrix matrixOfRows:self.rows columns:(int)[indexes count]];
     [indexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-        [result setColumn:count++ Value:[self column:(int)idx]];
+        [result setColumn:count++ value:[self column:(int)idx]];
     }];
     return result;
 }
 
-- (void)setColumn:(int)colNumber Value:(Matrix *)columnValue
+- (void)setColumn:(int)colNumber value:(Matrix *)columnValue
 {
     if (colNumber > self->columns - 1)
     {
@@ -594,7 +594,7 @@
     }
 }
 
-- (Matrix *)matrixBySamplingRows:(NSUInteger)sampleCount Replacement:(BOOL)replacement
+- (Matrix *)matrixBySamplingRows:(NSUInteger)sampleCount replacement:(BOOL)replacement
 {
     int rowSize = self->rows;
     int colSize = self->columns;
@@ -629,7 +629,7 @@
     return new;
 }
 
-- (Matrix *)matrixBySamplingColumns:(NSUInteger)sampleCount Replacement:(BOOL)replacement
+- (Matrix *)matrixBySamplingColumns:(NSUInteger)sampleCount replacement:(BOOL)replacement
 {
     int rowSize = self->rows;
     int colSize = self->columns;
@@ -639,7 +639,7 @@
         for (int i=0; i<sampleCount; i++)
         {
             int rnd = arc4random_uniform((int)self->rows);
-            [new setColumn:i Value:[self column:rnd]];
+            [new setColumn:i value:[self column:rnd]];
         }
     }
     else
@@ -653,7 +653,7 @@
         {
             if (N * (double)arc4random() / 0x1000000000 <= n)
             {
-                [new setColumn:samples - n Value:[self column:i]];
+                [new setColumn:samples - n value:[self column:i]];
                 n--;
             }
             i++;
