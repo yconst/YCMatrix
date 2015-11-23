@@ -88,6 +88,15 @@
 - (NSArray *)rowsAsNSArray;
 
 /**
+ Partitions the receiver into row chunks of size s.
+ 
+ @param s The size of each row chunk.
+ 
+ @return The array of matrices resulting from the partitioning.
+ */
+- (NSArray *)rowWisePartition:(int)size;
+
+/**
  Returns the values of column |colIndex| as a column matrix.
  
  @param colIndex The index of the column
@@ -119,6 +128,15 @@
  @return The NSArray containing the columns of the receiver.
  */
 - (NSArray *)columnsAsNSArray;
+
+/**
+ Partitions the receiver into column chunks of size s.
+ 
+ @param s The size of each column chunk.
+ 
+ @return The array of matrices resulting from the partitioning.
+ */
+- (NSArray *)columnWisePartition:(int)size;
 
 /**
  Returns a matrix resulting from adding the values in the 

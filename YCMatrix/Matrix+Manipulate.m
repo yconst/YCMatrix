@@ -124,6 +124,29 @@
     return rowsArray;
 }
 
+- (NSArray *)rowWisePartition:(int)size
+{
+    int remainder = self.rows % size;
+    int partitions = self.rows / size;
+    if (remainder > 0)
+    {
+        partitions++;
+    }
+    NSMutableArray *result = [NSMutableArray array];
+    for (int i=0; i<partitions; i++)
+    {
+        int sLim = size;
+        if (i == partitions - 1)
+        {
+            sLim = remainder;
+        }
+        NSRange partitionRange = NSMakeRange(i * size, sLim);
+        Matrix *partition = [self rows:[NSIndexSet indexSetWithIndexesInRange:partitionRange]];
+        [result addObject:partition];
+    }
+    return result;
+}
+
 - (Matrix *)column:(int) colIndex
 {
     if (colIndex > self->columns - 1)
@@ -179,6 +202,29 @@
         [columnsArray addObject: [self column:i]];
     }
     return columnsArray;
+}
+
+- (NSArray *)columnWisePartition:(int)size
+{
+    int remainder = self.columns % size;
+    int partitions = self.columns / size;
+    if (remainder > 0)
+    {
+        partitions++;
+    }
+    NSMutableArray *result = [NSMutableArray array];
+    for (int i=0; i<partitions; i++)
+    {
+        int sLim = size;
+        if (i == partitions - 1)
+        {
+            sLim = remainder;
+        }
+        NSRange partitionRange = NSMakeRange(i * size, sLim);
+        Matrix *partition = [self columns:[NSIndexSet indexSetWithIndexesInRange:partitionRange]];
+        [result addObject:partition];
+    }
+    return result;
 }
 
 - (Matrix *)matrixByAddingRow:(Matrix *)row
