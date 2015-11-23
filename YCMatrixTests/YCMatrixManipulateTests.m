@@ -234,10 +234,10 @@
 - (void)testRowShuffling
 {
     double original[20] = {
-        1.000000,    10.000000,   100.000000,  1000.000000, 10000.000000,
-        2.000000,    20.000000,   200.000000,  2000.000000, 20000.000000,
-        3.000000,    30.000000,   300.000000,  3000.000000, 30000.000000,
-        4.000000,    40.000000,   400.000000,  4000.000000, 40000.000000
+        1.0,    10.0,   100.0,  1000.0, 10000.0,
+        2.0,    20.0,   200.0,  2000.0, 20000.0,
+        3.0,    30.0,   300.0,  3000.0, 30000.0,
+        4.0,    40.0,   400.0,  4000.0, 40000.0
     };
     
     Matrix *originalMatrix = [Matrix matrixFromArray:original rows:4 columns:5];
@@ -257,10 +257,10 @@
 - (void)testColumnShuffling
 {
     double original[20] = {
-        1.000000,    10.000000,   100.000000,  1000.000000, 10000.000000,
-        2.000000,    20.000000,   200.000000,  2000.000000, 20000.000000,
-        3.000000,    30.000000,   300.000000,  3000.000000, 30000.000000,
-        4.000000,    40.000000,   400.000000,  4000.000000, 40000.000000
+        1.0,    10.0,   100.0,  1000.0, 10000.0,
+        2.0,    20.0,   200.0,  2000.0, 20000.0,
+        3.0,    30.0,   300.0,  3000.0, 30000.0,
+        4.0,    40.0,   400.0,  4000.0, 40000.0
     };
     
     Matrix *originalMatrix = [Matrix matrixFromArray:original rows:4 columns:5];
@@ -275,6 +275,84 @@
     CleanNSLog(@"%@", shuffledMatrix);
     // Sums of columns should remain the same
     XCTAssertEqualObjects([originalMatrix sumsOfRows], [shuffledMatrix sumsOfRows]);
+}
+
+- (void)testRowPartitioning
+{
+    double original[25] = {
+        1.0,    10.0,   100.0,  1000.0, 10000.0,
+        2.0,    20.0,   200.0,  2000.0, 20000.0,
+        3.0,    30.0,   300.0,  3000.0, 30000.0,
+        4.0,    40.0,   400.0,  4000.0, 40000.0,
+        5.0,    50.0,   500.0,  5000.0, 50000.0
+    };
+    Matrix *originalMatrix = [Matrix matrixFromArray:original rows:5 columns:5];
+    
+    double partition0[10] = {
+        1.0,    10.0,   100.0,  1000.0, 10000.0,
+        2.0,    20.0,   200.0,  2000.0, 20000.0
+    };
+    Matrix *partition0Matrix = [Matrix matrixFromArray:partition0 rows:2 columns:5];
+    
+    double partition1[10] = {
+        3.0,    30.0,   300.0,  3000.0, 30000.0,
+        4.0,    40.0,   400.0,  4000.0, 40000.0
+    };
+    Matrix *partition1Matrix = [Matrix matrixFromArray:partition1 rows:2 columns:5];
+    
+    double partition2[5] = {
+        5.0,    50.0,   500.0,  5000.0, 50000.0
+    };
+    Matrix *partition2Matrix = [Matrix matrixFromArray:partition2 rows:1 columns:5];
+    
+    NSArray *partitions = [originalMatrix rowWisePartition:2];
+    XCTAssertEqualObjects(partitions[0], partition0Matrix, @"Partitions not equal");
+    XCTAssertEqualObjects(partitions[1], partition1Matrix, @"Partitions not equal");
+    XCTAssertEqualObjects(partitions[2], partition2Matrix, @"Partitions not equal");
+}
+
+- (void)testColumnPartitioning
+{
+    double original[25] = {
+        1.0,    10.0,   100.0,  1000.0, 10000.0,
+        2.0,    20.0,   200.0,  2000.0, 20000.0,
+        3.0,    30.0,   300.0,  3000.0, 30000.0,
+        4.0,    40.0,   400.0,  4000.0, 40000.0,
+        5.0,    50.0,   500.0,  5000.0, 50000.0
+    };
+    Matrix *originalMatrix = [Matrix matrixFromArray:original rows:5 columns:5];
+    
+    double partition0[10] = {
+        1.0,    10.0,
+        2.0,    20.0,
+        3.0,    30.0,
+        4.0,    40.0,
+        5.0,    50.0
+    };
+    Matrix *partition0Matrix = [Matrix matrixFromArray:partition0 rows:5 columns:2];
+    
+    double partition1[10] = {
+        100.0,  1000.0,
+        200.0,  2000.0,
+        300.0,  3000.0,
+        400.0,  4000.0,
+        500.0,  5000.0
+    };
+    Matrix *partition1Matrix = [Matrix matrixFromArray:partition1 rows:5 columns:2];
+    
+    double partition2[5] = {
+        10000.0,
+        20000.0,
+        30000.0,
+        40000.0,
+        50000.0
+    };
+    Matrix *partition2Matrix = [Matrix matrixFromArray:partition2 rows:5 columns:1];
+    
+    NSArray *partitions = [originalMatrix columnWisePartition:2];
+    XCTAssertEqualObjects(partitions[0], partition0Matrix, @"Partitions not equal");
+    XCTAssertEqualObjects(partitions[1], partition1Matrix, @"Partitions not equal");
+    XCTAssertEqualObjects(partitions[2], partition2Matrix, @"Partitions not equal");
 }
 
 @end
