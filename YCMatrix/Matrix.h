@@ -435,7 +435,7 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
  @param row    The row index to check.
  @param column The column index to check.
  */
-- (void)checkBoundsForRow:(int)row Column:(int)column;
+- (void)checkBoundsForRow:(int)row column:(int)column;
 
 /**
  Checks if the receiver is square. Throws YCMatrixException if not.
