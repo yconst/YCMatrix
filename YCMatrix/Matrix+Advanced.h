@@ -55,6 +55,8 @@
  */
 + (instancetype)randomValuesMatrixOfRows:(int)rows columns:(int)columns domain:(YCDomain)domain;
 
++ (instancetype)sobolSequenceWithLowerBound:(Matrix *)lower upperBound:(Matrix *)upper count:(int)count;
+
 /**
  Returns the pseudo-inverse of the receiver.
  The calculation is performed using Singular Value Decomposition.
@@ -186,6 +188,34 @@
  @warning This calculates the sample variance.
  */
 - (Matrix *)sampleVariancesOfColumns;
+
+/**
+ Returns a column matrix containing the minimum values of each row of the receiver.
+ 
+ @return The column matrix containing the minimum values of each row.
+ */
+- (Matrix *)minimumsOfRows;
+
+/**
+ Returns a column matrix containing the maximum values of each row of the receiver.
+ 
+ @return The column matrix containing the maximum values of each row.
+ */
+- (Matrix *)maximumsOfRows;
+
+/**
+ Returns a row matrix containing the minimum values of each column of the receiver.
+ 
+ @return The row matrix containing the minimum values of each column.
+ */
+- (Matrix *)minimumsOfColumns;
+
+/**
+ Returns a row matrix containing the maximum values of each column of the receiver.
+ 
+ @return The row matrix containing the maximum values of each column.
+ */
+- (Matrix *)maximumsOfColumns;
 
 /**
  Returns a new matrix with each cell being the result of applying a function to

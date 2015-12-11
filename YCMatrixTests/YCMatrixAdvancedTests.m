@@ -139,8 +139,10 @@
     Matrix *meanMatrix = [Matrix matrixFromArray:mean_array rows:4 columns:3];
     Matrix *rowMeans = [meanMatrix meansOfRows];
     Matrix *columnMeans = [meanMatrix meansOfColumns];
-    XCTAssertEqualObjects(rowMeans, rowMeanTargetMatrix, @"Error in calculating Row Means.");
-    XCTAssertEqualObjects(columnMeans, columnMeanTargetMatrix, @"Error in calculating Column Means.");
+    XCTAssertEqualObjects(rowMeans, rowMeanTargetMatrix,
+                          @"Error in calculating Row Means.");
+    XCTAssertEqualObjects(columnMeans, columnMeanTargetMatrix,
+                          @"Error in calculating Column Means.");
     CleanNSLog(@"%@", rowMeans);
     CleanNSLog(@"%@", columnMeans);
 }
@@ -159,12 +161,63 @@
     Matrix *varMatrix = [Matrix matrixFromArray:var_array rows:4 columns:3];
     Matrix *rowVars = [varMatrix sampleVariancesOfRows];
     Matrix *columnVars = [varMatrix sampleVariancesOfColumns];
-    XCTAssert([rowVars isEqualToMatrix:rowVarTargetMatrix tolerance:0.01], @"Error in calculating Row Variances.");
-    XCTAssert([columnVars isEqualToMatrix:columnVarTargetMatrix tolerance:0.01], @"Error in calculating Column Variances.");
+    XCTAssert([rowVars isEqualToMatrix:rowVarTargetMatrix tolerance:0.01],
+              @"Error in calculating Row Variances.");
+    XCTAssert([columnVars isEqualToMatrix:columnVarTargetMatrix tolerance:0.01],
+              @"Error in calculating Column Variances.");
     CleanNSLog(@"%@", rowVarTargetMatrix);
     CleanNSLog(@"%@", columnVarTargetMatrix);
     CleanNSLog(@"%@", rowVars);
     CleanNSLog(@"%@", columnVars);
+}
+
+- (void)testMins
+{
+    TitleNSLog(@"Minimums Test");
+    double var_array[12] = { 1.0, 10.0, 1.0,
+        2.0, -6.0, -5.0,
+        -153.0, 34.0, 15.67,
+        -110.1, 1900.0, 0.0};
+    double columnMinTargetArray[3] = { -153.0, -6.0, -5.0 };
+    double rowMintargetArray[4] = { 1.0, -6.0, -153.0, -110.1 };
+    Matrix *columnMinTargetMatrix = [Matrix matrixFromArray:columnMinTargetArray rows:1 columns:3];
+    Matrix *rowMinTargetMatrix = [Matrix matrixFromArray:rowMintargetArray rows:4 columns:1];
+    Matrix *minMatrix = [Matrix matrixFromArray:var_array rows:4 columns:3];
+    Matrix *rowMins = [minMatrix minimumsOfRows];
+    Matrix *columnMins = [minMatrix minimumsOfColumns];
+    XCTAssert([rowMins isEqualToMatrix:rowMinTargetMatrix tolerance:0.01],
+              @"Error in calculating Row Minimums.");
+    XCTAssert([columnMins isEqualToMatrix:columnMinTargetMatrix tolerance:0.01],
+              @"Error in calculating Column Minimums.");
+    CleanNSLog(@"%@", rowMinTargetMatrix);
+    CleanNSLog(@"%@", columnMinTargetMatrix);
+    CleanNSLog(@"%@", rowMins);
+    CleanNSLog(@"%@", columnMins);
+}
+
+
+- (void)testMaxs
+{
+    TitleNSLog(@"Maximums Test");
+    double var_array[12] = { 1.0, 10.0, 1.0,
+        2.0, -6.0, -5.0,
+        -153.0, 34.0, 15.67,
+        -110.1, 1900.0, 0.0};
+    double columnMaxTargetArray[3] = { 2.0, 1900.0, 15.67 };
+    double rowMaxTargetArray[4] = { 10.0, 2.00, 34.0, 1900.00 };
+    Matrix *columnMaxTargetMatrix = [Matrix matrixFromArray:columnMaxTargetArray rows:1 columns:3];
+    Matrix *rowMaxTargetMatrix = [Matrix matrixFromArray:rowMaxTargetArray rows:4 columns:1];
+    Matrix *maxMatrix = [Matrix matrixFromArray:var_array rows:4 columns:3];
+    Matrix *rowMaxs = [maxMatrix maximumsOfRows];
+    Matrix *columnMaxs = [maxMatrix maximumsOfColumns];
+    XCTAssert([rowMaxs isEqualToMatrix:rowMaxTargetMatrix tolerance:0.01],
+              @"Error in calculating Row Maximums.");
+    XCTAssert([columnMaxs isEqualToMatrix:columnMaxTargetMatrix tolerance:0.01],
+              @"Error in calculating Column Maximums.");
+    CleanNSLog(@"%@", rowMaxTargetMatrix);
+    CleanNSLog(@"%@", columnMaxTargetMatrix);
+    CleanNSLog(@"%@", rowMaxs);
+    CleanNSLog(@"%@", columnMaxs);
 }
 
 - (void)testEigenvalues
@@ -208,6 +261,18 @@
     Matrix *zeroesWithProbability = [zeroes copy];
     [zeroesWithProbability bernoulli];
     XCTAssertEqualObjects(zeroes, zeroesWithProbability);
+}
+
+- (void)testSobol
+{
+    TitleNSLog(@"Sobol Sequence Test");
+    
+    Matrix *lower = [Matrix matrixOfRows:20 columns:1 value:0.0];
+    Matrix *upper = [Matrix matrixOfRows:20 columns:1 value:1.0];
+    
+    Matrix *result = [Matrix sobolSequenceWithLowerBound:lower upperBound:upper count:100];
+    
+    CleanNSLog(@"%@", result);
 }
 
 @end
