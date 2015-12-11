@@ -136,7 +136,7 @@
     for (int i=0; i<partitions; i++)
     {
         int sLim = size;
-        if (i == partitions - 1)
+        if (i == partitions - 1 && remainder > 0)
         {
             sLim = remainder;
         }
@@ -216,7 +216,7 @@
     for (int i=0; i<partitions; i++)
     {
         int sLim = size;
-        if (i == partitions - 1)
+        if (i == partitions - 1 && remainder > 0)
         {
             sLim = remainder;
         }
