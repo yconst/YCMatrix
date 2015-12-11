@@ -10,6 +10,7 @@
 		CB02F7B51AAF446400EF1E02 /* YCMatrix.h in Headers */ = {isa = PBXBuildFile; fileRef = CB02F7B41AAF446400EF1E02 /* YCMatrix.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB26DAA21A856232007F73E2 /* NSArray+Matrix.h in Headers */ = {isa = PBXBuildFile; fileRef = CB26DAA01A856232007F73E2 /* NSArray+Matrix.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB26DAA31A856232007F73E2 /* NSArray+Matrix.m in Sources */ = {isa = PBXBuildFile; fileRef = CB26DAA11A856232007F73E2 /* NSArray+Matrix.m */; };
+		CB4D3CA81C10F092009CAE8B /* soboldata.h in Headers */ = {isa = PBXBuildFile; fileRef = CB4D3CA71C10F092009CAE8B /* soboldata.h */; settings = {ASSET_TAGS = (); }; };
 		CBBE02BA178F215000744F77 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBBE02B8178F215000744F77 /* InfoPlist.strings */; };
 		CBBE02BE178F215000744F77 /* Matrix.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBE02BD178F215000744F77 /* Matrix.m */; };
 		CBBE02CA178F215100744F77 /* YCMatrix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBE02AC178F215000744F77 /* YCMatrix.framework */; };
@@ -45,6 +46,7 @@
 		CB26DAA01A856232007F73E2 /* NSArray+Matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Matrix.h"; sourceTree = "<group>"; };
 		CB26DAA11A856232007F73E2 /* NSArray+Matrix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Matrix.m"; sourceTree = "<group>"; };
 		CB4BAA9919D2CE3D001E7A7A /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		CB4D3CA71C10F092009CAE8B /* soboldata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = soboldata.h; sourceTree = "<group>"; };
 		CB58B99D19D1ED310097EEB1 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		CB84DE0219D4B254009EED7E /* YCMatrix.podspec.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = YCMatrix.podspec.json; sourceTree = "<group>"; };
 		CB84DE0319D4BD32009EED7E /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 		CBBE02B6178F215000744F77 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				CB4D3CA71C10F092009CAE8B /* soboldata.h */,
 				CBBE02B7178F215000744F77 /* YCMatrix-Info.plist */,
 				CBBE02B8178F215000744F77 /* InfoPlist.strings */,
 				CBD5120619D37764004DD8D3 /* Constants.h */,
@@ -193,6 +196,7 @@
 			files = (
 				CBD5120719D37764004DD8D3 /* Constants.h in Headers */,
 				CB02F7B51AAF446400EF1E02 /* YCMatrix.h in Headers */,
+				CB4D3CA81C10F092009CAE8B /* soboldata.h in Headers */,
 				CBBE02E0178F216800744F77 /* Matrix+Advanced.h in Headers */,
 				CB26DAA21A856232007F73E2 /* NSArray+Matrix.h in Headers */,
 				CBBE02E2178F216800744F77 /* Matrix+Manipulate.h in Headers */,
