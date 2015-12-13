@@ -27,6 +27,8 @@
 #import "Matrix+Manipulate.h"
 #import "Constants.h"
 
+#define ARC4RANDOM_MAX      0x100000000
+
 @implementation Matrix (Manipulate)
 
 + (Matrix *)matrixFromRows:(NSArray *)rows
@@ -617,7 +619,7 @@
         NSUInteger N = rowSize;
         while (n > 0)
         {
-            if (N * (double)arc4random() / 0x1000000000 <= n)
+            if (N * (double)arc4random() / ARC4RANDOM_MAX <= n)
             {
                 memcpy(new->matrix + (samples - n) * colMemory, self->matrix + i * colMemory, colSize);
                 n--;
@@ -651,7 +653,7 @@
         NSUInteger N = colSize;
         while (n > 0)
         {
-            if (N * (double)arc4random() / 0x1000000000 <= n)
+            if (N * (double)arc4random() / ARC4RANDOM_MAX <= n)
             {
                 [new setColumn:samples - n value:[self column:i]];
                 n--;
