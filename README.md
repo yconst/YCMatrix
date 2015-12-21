@@ -1,5 +1,5 @@
 
-<img src="https://raw.githubusercontent.com/yconst/YCMatrix/master/ycmatrix.png" alt="YCMatrix" style="width: 64px; height: 64px;"/>
+<img src="https://raw.githubusercontent.com/yconst/YCMatrix/master/ycmatrix.png" alt="YCMatrix" style="max-width: 64px; max-height: 64px;"/>
 
 #YCMatrix
 
