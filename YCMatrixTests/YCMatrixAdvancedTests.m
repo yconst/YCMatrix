@@ -157,6 +157,38 @@
     CleanNSLog(@"%f", acc);
 }
 
+- (void)testHalton
+{
+    // test integrand from Joe and Kuo paper ... integrates to 1
+    
+    int count = 1000;
+    
+    TitleNSLog(@"Halton Sequence Test");
+    
+    Matrix *lower = [Matrix matrixOfRows:10 columns:1 value:0.0];
+    Matrix *upper = [Matrix matrixOfRows:10 columns:1 value:1.0];
+    
+    Matrix *sequence = [Matrix haltonSequenceWithLowerBound:lower upperBound:upper count:count];
+    
+    NSArray *columns = [sequence columnsAsNSArray];
+    
+    double acc = 0;
+    
+    for (Matrix *column in columns)
+    {
+        double f = 1;
+        for (int j = 1; j <= column.count; ++j) {
+            double cj = pow((double) j, 0.3333333333333333333);
+            f *= (fabs(4*column->matrix[j-1] - 2) + cj) / (1 + cj);
+        }
+        acc += f;
+    }
+    acc /= count;
+    
+    XCTAssertEqualWithAccuracy(acc, 1.0, 0.01);
+    CleanNSLog(@"%f", acc);
+}
+
 - (void)testMeans
 {
     TitleNSLog(@"Mean Test");
