@@ -31,6 +31,7 @@
 
 #import "Matrix+Advanced.h"
 #import "Constants.h"
+#import "HaltonInterface.h"
 
 static void SVDColumnMajor(double *A, __CLPK_integer rows, __CLPK_integer columns,
                            double **s, double **u, double **vt);
@@ -56,12 +57,8 @@ static void sobol_destroy(soboldata *sd);
 
 + (instancetype)randomValuesMatrixWithLowerBound:(Matrix *)lower upperBound:(Matrix *)upper
 {
-    if (lower.rows != upper.rows || lower.columns != upper.columns)
-    {
-        @throw [NSException exceptionWithName:@"YCMatrixException"
-                                       reason:@"Lower and upper bounds are not of the same size."
-                                     userInfo:nil];
-    }
+    NSAssert (lower.rows == upper.rows && lower.columns == upper.columns, @"Matrix size mismatch");
+    
     Matrix *result = [lower copy];
     Matrix *range = [upper matrixBySubtracting:lower];
     
@@ -82,14 +79,12 @@ static void sobol_destroy(soboldata *sd);
     return result;
 }
 
-+ (instancetype)sobolSequenceWithLowerBound:(Matrix *)lower upperBound:(Matrix *)upper count:(int)count;
++ (instancetype)sobolSequenceWithLowerBound:(Matrix *)lower
+                                 upperBound:(Matrix *)upper
+                                      count:(int)count;
 {
-    if (lower.rows != upper.rows || (lower.columns != 1 && upper.columns != 1))
-    {
-        @throw [NSException exceptionWithName:@"YCMatrixException"
-                                       reason:@"Lower and upper bounds are not of suitable size."
-                                     userInfo:nil];
-    }
+    NSAssert (lower.rows == upper.rows && 1 == lower.columns && 1 == upper.columns,
+              @"Matrix size mismatch");
     
     Matrix *result = [Matrix matrixOfRows:lower.rows columns:count];
     Matrix *range = [upper matrixBySubtracting:lower];
@@ -139,6 +134,21 @@ static void sobol_destroy(soboldata *sd);
     return result;
 }
 
++ (instancetype)haltonSequenceWithLowerBound:(Matrix *)lower
+                                  upperBound:(Matrix *)upper
+                                       count:(int)count
+{
+    NSAssert (lower.rows == upper.rows && 1 == lower.columns && 1 == upper.columns,
+              @"Matrix size mismatch");
+    
+    Matrix *result = [HaltonInterface sampleWithDimension:lower.rows count:count];
+    
+    [result multiplyColumn:upper];
+    [result addColumn:lower];
+    
+    return result;
+}
+
 - (Matrix *)pseudoInverse
 {
     Matrix *ret = [Matrix matrixOfRows:self->columns columns:self->rows];
@@ -183,18 +193,8 @@ static void sobol_destroy(soboldata *sd);
     
     dgesv_(&n, &nrhs, aTranspose->matrix, &lda, ipiv, bTranspose->matrix, &ldb, &info);
     
-    if(info < 0)
-    {
-        @throw [NSException exceptionWithName:@"YCMatrixException"
-                                       reason:@"Error while solving linear system A*X=B."
-                                     userInfo:nil];
-    }
-    if(info > 0)
-    {
-        @throw [NSException exceptionWithName:@"YCMatrixException"
-                                       reason:@"Matrix U is singular."
-                                     userInfo:nil];
-    }
+    NSAssert (info <= 0, @"Matrix U is singular.");
+    NSAssert (info >= 0, @"Error solving linear system A*X=B.");
     
     if (B->columns > 1)
     {
