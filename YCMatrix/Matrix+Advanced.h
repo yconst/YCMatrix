@@ -45,17 +45,42 @@
 + (instancetype)randomValuesMatrixWithLowerBound:(Matrix *)lower upperBound:(Matrix *)upper;
 
 /**
- Returns a matrix containing random values within the specified domain.
+ Returns a matrix of pseudorandom values within the specified domain.
  
- @param rows    The number of rows of the matrix
- @param columns The number of columns of the matrix
- @param domain  The domain to generate uniform random number within
+ @param rows    The number of rows of the matrix.
+ @param columns The number of columns of the matrix.
+ @param domain  The domain to generate uniform random number within.
  
  @return A matrix of random values.
  */
 + (instancetype)randomValuesMatrixOfRows:(int)rows columns:(int)columns domain:(YCDomain)domain;
 
-+ (instancetype)sobolSequenceWithLowerBound:(Matrix *)lower upperBound:(Matrix *)upper count:(int)count;
+
+/**
+ Returns a matrix of quasi-random values according to the Sobol sequence.
+ 
+ @param lower Matrix containing values for the lower bounds.
+ @param upper Matrix containing values for the upper bounds.
+ @param count The number of points to sample.
+ 
+ @return A matrix of the values corresponding to the Sobol sequence.
+ */
++ (instancetype)sobolSequenceWithLowerBound:(Matrix *)lower
+                                 upperBound:(Matrix *)upper
+                                      count:(int)count;
+
+/**
+ Returns a matrix of quasi-random values according to the Halton sequence.
+ 
+ @param lower Matrix containing values for the lower bounds.
+ @param upper Matrix containing values for the upper bounds.
+ @param count The number of points to sample.
+ 
+ @return A matrix of the values corresponding to the Halton sequence.
+ */
++ (instancetype)haltonSequenceWithLowerBound:(Matrix *)lower
+                                  upperBound:(Matrix *)upper
+                                       count:(int)count;
 
 /**
  Returns the pseudo-inverse of the receiver.
