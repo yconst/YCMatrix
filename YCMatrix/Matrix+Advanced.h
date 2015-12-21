@@ -30,6 +30,10 @@
 #import "Matrix+Map.h"
 #import <Accelerate/Accelerate.h>
 
+/**
+ Advanced is a category to the Matrix class, that exposes some
+ more complex behavior.
+ */
 @interface Matrix (Advanced)
 
 /**
