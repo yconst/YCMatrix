@@ -12,6 +12,7 @@
 		CB26DAA31A856232007F73E2 /* NSArray+Matrix.m in Sources */ = {isa = PBXBuildFile; fileRef = CB26DAA11A856232007F73E2 /* NSArray+Matrix.m */; };
 		CB4388EA1C2887BE00C6D330 /* halton_sampler.h in Headers */ = {isa = PBXBuildFile; fileRef = CB4388E91C2887BE00C6D330 /* halton_sampler.h */; settings = {ASSET_TAGS = (); }; };
 		CB4D3CA81C10F092009CAE8B /* soboldata.h in Headers */ = {isa = PBXBuildFile; fileRef = CB4D3CA71C10F092009CAE8B /* soboldata.h */; settings = {ASSET_TAGS = (); }; };
+		CB723AFC1C47C37600600043 /* YCMatrixNSArrayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB723AFB1C47C37600600043 /* YCMatrixNSArrayTests.m */; settings = {ASSET_TAGS = (); }; };
 		CBBE02BA178F215000744F77 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBBE02B8178F215000744F77 /* InfoPlist.strings */; };
 		CBBE02BE178F215000744F77 /* Matrix.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBE02BD178F215000744F77 /* Matrix.m */; };
 		CBBE02CA178F215100744F77 /* YCMatrix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBE02AC178F215000744F77 /* YCMatrix.framework */; };
@@ -52,6 +53,7 @@
 		CB4BAA9919D2CE3D001E7A7A /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		CB4D3CA71C10F092009CAE8B /* soboldata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = soboldata.h; sourceTree = "<group>"; };
 		CB58B99D19D1ED310097EEB1 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		CB723AFB1C47C37600600043 /* YCMatrixNSArrayTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCMatrixNSArrayTests.m; sourceTree = "<group>"; };
 		CB84DE0219D4B254009EED7E /* YCMatrix.podspec.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = YCMatrix.podspec.json; sourceTree = "<group>"; };
 		CB84DE0319D4BD32009EED7E /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		CB9F9CFC19DAE83E00B6A1E4 /* ycmatrix.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ycmatrix.png; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 				CBE9E7AC19D0D79600460953 /* YCMatrixAdvancedTests.m */,
 				CBBE02E7178F218600744F77 /* YCMatrixManipulateTests.m */,
 				CBE66B991A6BB0A000E2EF2C /* YCMatrixMapTests.m */,
+				CB723AFB1C47C37600600043 /* YCMatrixNSArrayTests.m */,
 				CBBE02CC178F215100744F77 /* Supporting Files */,
 			);
 			path = YCMatrixTests;
@@ -337,6 +340,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBE9E7AD19D0D79600460953 /* YCMatrixAdvancedTests.m in Sources */,
+				CB723AFC1C47C37600600043 /* YCMatrixNSArrayTests.m in Sources */,
 				CBBE02D3178F215100744F77 /* YCMatrixTests.m in Sources */,
 				CBBE02E9178F218600744F77 /* YCMatrixManipulateTests.m in Sources */,
 				CBE66B9A1A6BB0A000E2EF2C /* YCMatrixMapTests.m in Sources */,
