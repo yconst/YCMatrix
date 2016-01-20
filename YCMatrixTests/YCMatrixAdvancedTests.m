@@ -263,11 +263,11 @@
 - (void)testMaxs
 {
     TitleNSLog(@"Maximums Test");
-    double var_array[12] = { 1.0, 10.0, 1.0,
+    double var_array[12] = { 1.0, 10.0, -1.0,
         2.0, -6.0, -5.0,
-        -153.0, 34.0, 15.67,
-        -110.1, 1900.0, 0.0};
-    double columnMaxTargetArray[3] = { 2.0, 1900.0, 15.67 };
+        -153.0, 34.0, -15.67,
+        -110.1, 1900.0, -0.1};
+    double columnMaxTargetArray[3] = { 2.0, 1900.0, -0.1 };
     double rowMaxTargetArray[4] = { 10.0, 2.00, 34.0, 1900.00 };
     Matrix *columnMaxTargetMatrix = [Matrix matrixFromArray:columnMaxTargetArray rows:1 columns:3];
     Matrix *rowMaxTargetMatrix = [Matrix matrixFromArray:rowMaxTargetArray rows:4 columns:1];

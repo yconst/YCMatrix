@@ -560,7 +560,7 @@
 
 - (double)max
 {
-    double max = DBL_MIN;
+    double max = -DBL_MAX;
     NSUInteger j= [self count];
     for (int i=0; i<j; i++)
     {
