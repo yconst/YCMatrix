@@ -177,22 +177,30 @@
 	return matrix[i*columns + j];
 }
 
-- (void)setValue:(double)vl row:(int)row column:(int)column
+- (void)setValue:(double)value row:(int)row column:(int)column
 {
 	[self checkBoundsForRow:row column:column];
-	matrix[row*columns + column] = vl;
+	matrix[row*columns + column] = value;
 }
 
-- (void)i:(int)i j:(int)j set:(double)vl
+- (void)i:(int)i j:(int)j set:(double)value
 {
 	[self checkBoundsForRow:i column:j];
-	matrix[i*columns + j] = vl;
+	matrix[i*columns + j] = value;
 }
 
-- (void)i:(int)i j:(int)j increment:(double)vl
+- (void)i:(int)i j:(int)j increment:(double)value
 {
     [self checkBoundsForRow:i column:j];
-    matrix[i*columns + j] += vl;
+    matrix[i*columns + j] += value;
+}
+
+- (void)incrementAll:(double)value
+{
+    for (int i=0, j=(int)self.count; i<j; i++)
+    {
+        matrix[i] += value;
+    }
 }
 
 - (void)checkBoundsForRow:(int)row column:(int)column
