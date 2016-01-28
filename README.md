@@ -13,25 +13,11 @@ YCMatrix is available for OS X (10.7+), as well as iOS (8.0+).
 
 ##Getting started
 
-It is recommended to install YCMatrix using [Cocoapods](http://cocoapods.org/).
+### Adding the framework to your project
 
-### Using CocoaPods
+Import the project in your workspace, or open the framework project in XCode, build and import the product.
 
-There is an [official guide to using CocoaPods](https://guides.cocoapods.org/using/using-cocoapods.html). 
-YCMatrix may be easily added as a project dependency by following 
-the guide.
-
-#### Podfile
-
-```ruby
-platform :osx, '10.7'
-pod "YCMatrix"
-```
-
-### Adding the framework manually
-
-Import the project in your workspace, or open the framework project
-in XCode, build and import the product.
+.. or alternatively, just drag+drop the files (.h and .m) that you want to your project, presto.
 
 ### Importing
 
@@ -48,6 +34,20 @@ Alternatively, you can do:
 
 YCMatrix has no dependencies other than system 
 frameworks (namely Foundation.framework and Accelerate.framework). 
+
+### Importing/Using with CocoaPods
+
+Installation using Cocoapods is no longer the recommended way for using YCMatrix, but it is still a perfectly viable option.
+There is an [official guide to using CocoaPods](https://guides.cocoapods.org/using/using-cocoapods.html). 
+YCMatrix may be easily added as a project dependency by following 
+the guide.
+
+#### Podfile
+
+```ruby
+platform :osx, '10.7'
+pod "YCMatrix"
+```
 
 ## Usage
 
@@ -77,23 +77,35 @@ values.
     // 2.0  3.0  2.0
     // 2.0  2.0  3.0
     
-##File Structure
+##What's in there?
 
-The matrix functionality is split into three files: The base class
-definition, and two categories:
+The Framework functionality is split into four files: The base class
+definition, and three categories:
 
-- Matrix.h             : YCMatrix class definition and basic operations.
-- Matrix+Advanced.h    : Interface to more advanced LAPACK functions.
-- Matrix+Manipulate.h  : Functions for manipulating rows/columns etc.
+- Matrix.h                : YCMatrix class definition and basic operations.
+- Matrix+Advanced.h       : Interface to more advanced LAPACK functions.
+- Matrix+Manipulate.h     : Functions for manipulating rows/columns etc.
+- Matrix+Map.h            : Functions for linearly mapping matrices.
+
+In addition, there is a file that implements functionality related to NSArrays containing Matrices.
 
 Please refer to the [docs](http://cocoadocs.org/docsets/YCMatrix/) for a complete overview of the functionality 
 contained in each of the categories.
+
+In addition, YCMatrix comes with many unit tests included. Tests are divided in six files:
+
+- YCMatrixTests           : General Matrix-related tests.
+- YCMatrixAdvancedTests   : Tests related to higher-level operations (decompositions, inverses etc.).
+- YCMatrixManipulateTests : Tests related to matrix manipulation operations.
+- YCMatrixMapTests        : Tests related to linear mapping operations.
+- YCMatrixNSArrayTests    : Tests related to NSArray categories.
+- YCMatrixPerformanceTests: Tests for measuring performance of various operations.
 
 ##License
 
 __YCMatrix__
 
-Copyright (c) 2013 - 2015 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
+Copyright (c) 2013 - 2016 Ioannis (Yannis) Chatzikonstantinou. All rights reserved.
 http://yconst.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
