@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CB02F7B51AAF446400EF1E02 /* YCMatrix.h in Headers */ = {isa = PBXBuildFile; fileRef = CB02F7B41AAF446400EF1E02 /* YCMatrix.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB0B6D391C5A5B05002A76E2 /* YCMatrixPerformanceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB0B6D381C5A5B05002A76E2 /* YCMatrixPerformanceTests.m */; settings = {ASSET_TAGS = (); }; };
 		CB26DAA21A856232007F73E2 /* NSArray+Matrix.h in Headers */ = {isa = PBXBuildFile; fileRef = CB26DAA01A856232007F73E2 /* NSArray+Matrix.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB26DAA31A856232007F73E2 /* NSArray+Matrix.m in Sources */ = {isa = PBXBuildFile; fileRef = CB26DAA11A856232007F73E2 /* NSArray+Matrix.m */; };
 		CB4388EA1C2887BE00C6D330 /* halton_sampler.h in Headers */ = {isa = PBXBuildFile; fileRef = CB4388E91C2887BE00C6D330 /* halton_sampler.h */; settings = {ASSET_TAGS = (); }; };
@@ -44,42 +45,43 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		CB02F7B41AAF446400EF1E02 /* YCMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCMatrix.h; sourceTree = "<group>"; };
+		CB02F7B41AAF446400EF1E02 /* YCMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = YCMatrix.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB0B6D381C5A5B05002A76E2 /* YCMatrixPerformanceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCMatrixPerformanceTests.m; sourceTree = "<group>"; };
 		CB2242AF19D413C0005B3F7E /* AppledocSettings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = AppledocSettings.plist; sourceTree = "<group>"; };
 		CB265CCD1B24BB55004BE740 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/Accelerate.framework; sourceTree = DEVELOPER_DIR; };
-		CB26DAA01A856232007F73E2 /* NSArray+Matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Matrix.h"; sourceTree = "<group>"; };
-		CB26DAA11A856232007F73E2 /* NSArray+Matrix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Matrix.m"; sourceTree = "<group>"; };
+		CB26DAA01A856232007F73E2 /* NSArray+Matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "NSArray+Matrix.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CB26DAA11A856232007F73E2 /* NSArray+Matrix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "NSArray+Matrix.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		CB4388E91C2887BE00C6D330 /* halton_sampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = halton_sampler.h; sourceTree = "<group>"; };
 		CB4BAA9919D2CE3D001E7A7A /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		CB4D3CA71C10F092009CAE8B /* soboldata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = soboldata.h; sourceTree = "<group>"; };
 		CB58B99D19D1ED310097EEB1 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		CB723AFB1C47C37600600043 /* YCMatrixNSArrayTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCMatrixNSArrayTests.m; sourceTree = "<group>"; };
 		CB84DE0219D4B254009EED7E /* YCMatrix.podspec.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = YCMatrix.podspec.json; sourceTree = "<group>"; };
-		CB84DE0319D4BD32009EED7E /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		CB84DE0319D4BD32009EED7E /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; lineEnding = 0; path = LICENSE; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = "<none>"; };
 		CB9F9CFC19DAE83E00B6A1E4 /* ycmatrix.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ycmatrix.png; sourceTree = "<group>"; };
 		CBBE02AC178F215000744F77 /* YCMatrix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = YCMatrix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBBE02B4178F215000744F77 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		CBBE02B7178F215000744F77 /* YCMatrix-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "YCMatrix-Info.plist"; sourceTree = "<group>"; };
 		CBBE02B9178F215000744F77 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		CBBE02BC178F215000744F77 /* Matrix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Matrix.h; sourceTree = "<group>"; };
-		CBBE02BD178F215000744F77 /* Matrix.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Matrix.m; sourceTree = "<group>"; };
+		CBBE02BC178F215000744F77 /* Matrix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Matrix.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CBBE02BD178F215000744F77 /* Matrix.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = Matrix.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		CBBE02C4178F215100744F77 /* YCMatrixTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YCMatrixTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBBE02CD178F215100744F77 /* YCMatrixTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "YCMatrixTests-Info.plist"; sourceTree = "<group>"; };
 		CBBE02CF178F215100744F77 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		CBBE02D2178F215100744F77 /* YCMatrixTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YCMatrixTests.m; sourceTree = "<group>"; };
-		CBBE02DC178F216800744F77 /* Matrix+Advanced.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Matrix+Advanced.h"; sourceTree = "<group>"; };
-		CBBE02DD178F216800744F77 /* Matrix+Advanced.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Matrix+Advanced.m"; sourceTree = "<group>"; };
-		CBBE02DE178F216800744F77 /* Matrix+Manipulate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Matrix+Manipulate.h"; sourceTree = "<group>"; };
-		CBBE02DF178F216800744F77 /* Matrix+Manipulate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Matrix+Manipulate.m"; sourceTree = "<group>"; };
+		CBBE02D2178F215100744F77 /* YCMatrixTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = YCMatrixTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CBBE02DC178F216800744F77 /* Matrix+Advanced.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "Matrix+Advanced.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CBBE02DD178F216800744F77 /* Matrix+Advanced.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "Matrix+Advanced.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CBBE02DE178F216800744F77 /* Matrix+Manipulate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "Matrix+Manipulate.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CBBE02DF178F216800744F77 /* Matrix+Manipulate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "Matrix+Manipulate.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		CBBE02E7178F218600744F77 /* YCMatrixManipulateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = YCMatrixManipulateTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		CBCF36221C28383D009D89D7 /* HaltonInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HaltonInterface.h; sourceTree = "<group>"; };
 		CBCF36231C28383D009D89D7 /* HaltonInterface.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HaltonInterface.mm; sourceTree = "<group>"; };
 		CBD5120519D2D720004DD8D3 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
 		CBD5120619D37764004DD8D3 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
-		CBD7D3D018A4DD10006A04C0 /* Matrix+Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Matrix+Map.h"; sourceTree = "<group>"; };
-		CBD7D3D118A4DD10006A04C0 /* Matrix+Map.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Matrix+Map.m"; sourceTree = "<group>"; };
-		CBE66B991A6BB0A000E2EF2C /* YCMatrixMapTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCMatrixMapTests.m; sourceTree = "<group>"; };
-		CBE9E7AC19D0D79600460953 /* YCMatrixAdvancedTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCMatrixAdvancedTests.m; sourceTree = "<group>"; };
+		CBD7D3D018A4DD10006A04C0 /* Matrix+Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "Matrix+Map.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		CBD7D3D118A4DD10006A04C0 /* Matrix+Map.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "Matrix+Map.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CBE66B991A6BB0A000E2EF2C /* YCMatrixMapTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = YCMatrixMapTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		CBE9E7AC19D0D79600460953 /* YCMatrixAdvancedTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = YCMatrixAdvancedTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -185,6 +187,7 @@
 				CBBE02E7178F218600744F77 /* YCMatrixManipulateTests.m */,
 				CBE66B991A6BB0A000E2EF2C /* YCMatrixMapTests.m */,
 				CB723AFB1C47C37600600043 /* YCMatrixNSArrayTests.m */,
+				CB0B6D381C5A5B05002A76E2 /* YCMatrixPerformanceTests.m */,
 				CBBE02CC178F215100744F77 /* Supporting Files */,
 			);
 			path = YCMatrixTests;
@@ -340,6 +343,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBE9E7AD19D0D79600460953 /* YCMatrixAdvancedTests.m in Sources */,
+				CB0B6D391C5A5B05002A76E2 /* YCMatrixPerformanceTests.m in Sources */,
 				CB723AFC1C47C37600600043 /* YCMatrixNSArrayTests.m in Sources */,
 				CBBE02D3178F215100744F77 /* YCMatrixTests.m in Sources */,
 				CBBE02E9178F218600744F77 /* YCMatrixManipulateTests.m in Sources */,

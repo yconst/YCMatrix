@@ -163,6 +163,30 @@
     CleanNSLog(@"%@",multResult);
 }
 
+- (void)testVDSPAdd
+{
+    Matrix *A = [Matrix matrixOfRows:10 columns:1 value:1];
+    Matrix *B = [Matrix matrixOfRows:10 columns:1 value:1];
+    
+    Matrix *C = [A matrixByAdding:B];
+    Matrix *T = [Matrix matrixOfRows:10 columns:1 value:2];
+    XCTAssertEqualObjects(C, T, @"Matrix subtraction failed");
+    [A add:B];
+    XCTAssertEqualObjects(A, T, @"Matrix subtraction failed");
+}
+
+- (void)testVDSPSubtract
+{
+    Matrix *A = [Matrix matrixOfRows:10 columns:1 value:0];
+    Matrix *B = [Matrix matrixOfRows:10 columns:1 value:1];
+    
+    Matrix *C = [A matrixBySubtracting:B];
+    Matrix *T = [Matrix matrixOfRows:10 columns:1 value:-1];
+    XCTAssertEqualObjects(C, T, @"Matrix subtraction failed");
+    [A subtract:B];
+    XCTAssertEqualObjects(A, T, @"Matrix subtraction failed");
+}
+
 - (void)testTransposedMultiply
 {
     double simple_array[6] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0 };
