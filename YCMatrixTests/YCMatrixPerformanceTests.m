@@ -41,6 +41,32 @@
     }];
 }
 
+- (void)testCAddPerformance {
+    
+    Matrix *lower = [Matrix matrixOfRows:10000 columns:2000 value:0];
+    Matrix *upper = [Matrix matrixOfRows:10000 columns:2000 value:1];
+    
+    Matrix *A = [Matrix randomValuesMatrixWithLowerBound:lower upperBound:upper];
+    Matrix *B = [Matrix randomValuesMatrixWithLowerBound:lower upperBound:upper];
+    
+    double *ma = A->matrix;
+    double *mb = B->matrix;
+
+    [self measureBlock:^{
+        
+        // Need to include memory allocation as well here
+        Matrix *C = [Matrix matrixLike:A];
+        double *mc = C->matrix;
+        
+        #pragma vector always
+        for (int i=0, j=(int)A.count; i<j; i++)
+        {
+            mc[i] = ma[i] + mb[i];
+            
+        }
+    }];
+}
+
 - (void)testVDSPSubtractPerformance {
     
     Matrix *lower = [Matrix matrixOfRows:10000 columns:2000 value:0];
@@ -64,6 +90,32 @@
     
     [self measureBlock:^{
         [A matrixByMultiplyingWithScalar:-1 AndAdding:B];
+    }];
+}
+
+- (void)testCSubtractPerformance {
+    
+    Matrix *lower = [Matrix matrixOfRows:10000 columns:2000 value:0];
+    Matrix *upper = [Matrix matrixOfRows:10000 columns:2000 value:1];
+    
+    Matrix *A = [Matrix randomValuesMatrixWithLowerBound:lower upperBound:upper];
+    Matrix *B = [Matrix randomValuesMatrixWithLowerBound:lower upperBound:upper];
+    
+    double *ma = A->matrix;
+    double *mb = B->matrix;
+    
+    [self measureBlock:^{
+        
+        // Need to include memory allocation as well here
+        Matrix *C = [Matrix matrixLike:A];
+        double *mc = C->matrix;
+        
+#pragma vector always
+        for (int i=0, j=(int)A.count; i<j; i++)
+        {
+            mc[i] = ma[i] - mb[i];
+            
+        }
     }];
 }
 

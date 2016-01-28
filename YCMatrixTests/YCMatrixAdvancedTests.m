@@ -60,7 +60,7 @@
     TitleNSLog(@"Singular Value Decomposition");
     int m = 10;
     int n = 6;
-    double *orig_array = malloc(m*n*sizeof(double));
+    double *orig_array = _mm_malloc(m*n*sizeof(double), 64);
     for (int i=0, j=m*n; i<j; i++)
     {
         orig_array[i] = ((double)arc4random() / ARC4RANDOM_MAX) * 100 - 50;
