@@ -101,6 +101,12 @@ In addition, YCMatrix comes with many unit tests included. Tests are divided in 
 - YCMatrixNSArrayTests    : Tests related to NSArray categories.
 - YCMatrixPerformanceTests: Tests for measuring performance of various operations.
 
+##Performance
+
+YCMatrix has been built from the ground up with performance in mind. vDSP, BLAS and LAPACK are being used extensively throughout the framework. In addition, care has been given in memory allocation during initialization and copying.
+
+The test file YCMatrixPerformanceTests.m contains some benchmarks using different addition/subtraction implementations (vDSP, BLAS, and pure C).
+
 ##License
 
 __YCMatrix__
