@@ -37,7 +37,7 @@ frameworks (namely Foundation.framework and Accelerate.framework).
 
 ### Importing/Using with CocoaPods
 
-Installation using Cocoapods is no longer the recommended way for using YCMatrix, but it is still a perfectly viable option.
+Installation using CocoaPods is no longer the recommended way for using YCMatrix, but it is still a perfectly viable option.
 There is an [official guide to using CocoaPods](https://guides.cocoapods.org/using/using-cocoapods.html). 
 YCMatrix may be easily added as a project dependency by following 
 the guide.
