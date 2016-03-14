@@ -8,12 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		CB02F7B51AAF446400EF1E02 /* YCMatrix.h in Headers */ = {isa = PBXBuildFile; fileRef = CB02F7B41AAF446400EF1E02 /* YCMatrix.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CB0B6D391C5A5B05002A76E2 /* YCMatrixPerformanceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB0B6D381C5A5B05002A76E2 /* YCMatrixPerformanceTests.m */; settings = {ASSET_TAGS = (); }; };
+		CB0B6D391C5A5B05002A76E2 /* YCMatrixPerformanceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB0B6D381C5A5B05002A76E2 /* YCMatrixPerformanceTests.m */; };
 		CB26DAA21A856232007F73E2 /* NSArray+Matrix.h in Headers */ = {isa = PBXBuildFile; fileRef = CB26DAA01A856232007F73E2 /* NSArray+Matrix.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB26DAA31A856232007F73E2 /* NSArray+Matrix.m in Sources */ = {isa = PBXBuildFile; fileRef = CB26DAA11A856232007F73E2 /* NSArray+Matrix.m */; };
-		CB4388EA1C2887BE00C6D330 /* halton_sampler.h in Headers */ = {isa = PBXBuildFile; fileRef = CB4388E91C2887BE00C6D330 /* halton_sampler.h */; settings = {ASSET_TAGS = (); }; };
-		CB4D3CA81C10F092009CAE8B /* soboldata.h in Headers */ = {isa = PBXBuildFile; fileRef = CB4D3CA71C10F092009CAE8B /* soboldata.h */; settings = {ASSET_TAGS = (); }; };
-		CB723AFC1C47C37600600043 /* YCMatrixNSArrayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB723AFB1C47C37600600043 /* YCMatrixNSArrayTests.m */; settings = {ASSET_TAGS = (); }; };
+		CB4388EA1C2887BE00C6D330 /* halton_sampler.h in Headers */ = {isa = PBXBuildFile; fileRef = CB4388E91C2887BE00C6D330 /* halton_sampler.h */; };
+		CB4D3CA81C10F092009CAE8B /* soboldata.h in Headers */ = {isa = PBXBuildFile; fileRef = CB4D3CA71C10F092009CAE8B /* soboldata.h */; };
+		CB723AFC1C47C37600600043 /* YCMatrixNSArrayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB723AFB1C47C37600600043 /* YCMatrixNSArrayTests.m */; };
 		CBBE02BA178F215000744F77 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CBBE02B8178F215000744F77 /* InfoPlist.strings */; };
 		CBBE02BE178F215000744F77 /* Matrix.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBE02BD178F215000744F77 /* Matrix.m */; };
 		CBBE02CA178F215100744F77 /* YCMatrix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBE02AC178F215000744F77 /* YCMatrix.framework */; };
@@ -25,8 +25,8 @@
 		CBBE02E3178F216800744F77 /* Matrix+Manipulate.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBE02DF178F216800744F77 /* Matrix+Manipulate.m */; };
 		CBBE02E9178F218600744F77 /* YCMatrixManipulateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CBBE02E7178F218600744F77 /* YCMatrixManipulateTests.m */; };
 		CBBE0301178F258B00744F77 /* Matrix.h in Headers */ = {isa = PBXBuildFile; fileRef = CBBE02BC178F215000744F77 /* Matrix.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CBCF36241C28383D009D89D7 /* HaltonInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = CBCF36221C28383D009D89D7 /* HaltonInterface.h */; settings = {ASSET_TAGS = (); }; };
-		CBCF36251C28383D009D89D7 /* HaltonInterface.mm in Sources */ = {isa = PBXBuildFile; fileRef = CBCF36231C28383D009D89D7 /* HaltonInterface.mm */; settings = {ASSET_TAGS = (); }; };
+		CBCF36241C28383D009D89D7 /* HaltonInterface.h in Headers */ = {isa = PBXBuildFile; fileRef = CBCF36221C28383D009D89D7 /* HaltonInterface.h */; };
+		CBCF36251C28383D009D89D7 /* HaltonInterface.mm in Sources */ = {isa = PBXBuildFile; fileRef = CBCF36231C28383D009D89D7 /* HaltonInterface.mm */; };
 		CBD5120719D37764004DD8D3 /* Constants.h in Headers */ = {isa = PBXBuildFile; fileRef = CBD5120619D37764004DD8D3 /* Constants.h */; };
 		CBD7D3D218A4DD10006A04C0 /* Matrix+Map.h in Headers */ = {isa = PBXBuildFile; fileRef = CBD7D3D018A4DD10006A04C0 /* Matrix+Map.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CBD7D3D318A4DD10006A04C0 /* Matrix+Map.m in Sources */ = {isa = PBXBuildFile; fileRef = CBD7D3D118A4DD10006A04C0 /* Matrix+Map.m */; };
@@ -268,7 +268,7 @@
 		CBBE02A3178F215000744F77 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "Ioannis Chatzikonstantinou";
 			};
 			buildConfigurationList = CBBE02A6178F215000744F77 /* Build configuration list for PBXProject "YCMatrix" */;
@@ -394,6 +394,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -457,6 +458,7 @@
 				INSTALL_PATH = "@rpath";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = "yconst.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s i386 x86_64";
@@ -480,6 +482,7 @@
 				INSTALL_PATH = "@rpath";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = "yconst.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				VALID_ARCHS = "arm64 armv7 armv7s i386 x86_64";
@@ -503,6 +506,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INFOPLIST_FILE = "YCMatrixTests/YCMatrixTests-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "yconst.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -522,6 +526,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				INFOPLIST_FILE = "YCMatrixTests/YCMatrixTests-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "yconst.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
