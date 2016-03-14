@@ -277,6 +277,92 @@
     XCTAssertEqualObjects([originalMatrix sumsOfRows], [shuffledMatrix sumsOfRows]);
 }
 
+- (void)testRowSplit
+{
+    double original[35] = {
+        1.0,    10.0,   100.0,  1000.0, 10000.0,
+        2.0,    20.0,   200.0,  2000.0, 20000.0,
+        3.0,    30.0,   300.0,  3000.0, 30000.0,
+        4.0,    40.0,   400.0,  4000.0, 40000.0,
+        5.0,    50.0,   500.0,  5000.0, 50000.0,
+        6.0,    60.0,   600.0,  6000.0, 60000.0,
+        7.0,    70.0,   700.0,  7000.0, 70000.0
+    };
+    Matrix *originalMatrix = [Matrix matrixFromArray:original rows:7 columns:5];
+    
+    double res0[15] = {
+        1.0,    10.0,   100.0,  1000.0, 10000.0,
+        2.0,    20.0,   200.0,  2000.0, 20000.0,
+        3.0,    30.0,   300.0,  3000.0, 30000.0
+    };
+    Matrix *res0Matrix = [Matrix matrixFromArray:res0 rows:3 columns:5];
+    
+    double res1[10] = {
+        4.0,    40.0,   400.0,  4000.0, 40000.0,
+        5.0,    50.0,   500.0,  5000.0, 50000.0
+    };
+    Matrix *res1Matrix = [Matrix matrixFromArray:res1 rows:2 columns:5];
+    
+    double res2[10] = {
+        6.0,    60.0,   600.0,  6000.0, 60000.0,
+        7.0,    70.0,   700.0,  7000.0, 70000.0
+    };
+    Matrix *res2Matrix = [Matrix matrixFromArray:res2 rows:2 columns:5];
+    
+    NSMutableIndexSet *indexes = [NSMutableIndexSet indexSet];
+    [indexes addIndex:3];
+    [indexes addIndex:5];
+    NSArray *segments = [originalMatrix rowWiseSplitAtIndexes:indexes];
+    
+    XCTAssertEqualObjects(segments[0], res0Matrix, @"Segments not equal");
+    XCTAssertEqualObjects(segments[1], res1Matrix, @"Segments not equal");
+    XCTAssertEqualObjects(segments[2], res2Matrix, @"Segments not equal");
+}
+
+- (void)testColumnSplit
+{
+    double original[28] = {
+        1.0,    10.0,   100.0,  1000.0, 10000.0, 10001.0, 10002.0,
+        2.0,    20.0,   200.0,  2000.0, 20000.0, 20001.0, 20002.0,
+        3.0,    30.0,   300.0,  3000.0, 30000.0, 30001.0, 30002.0,
+        4.0,    40.0,   400.0,  4000.0, 40000.0, 40001.0, 40002.0
+    };
+    Matrix *originalMatrix = [Matrix matrixFromArray:original rows:4 columns:7];
+    
+    double res0[12] = {
+        1.0,    10.0,   100.0,
+        2.0,    20.0,   200.0,
+        3.0,    30.0,   300.0,
+        4.0,    40.0,   400.0
+    };
+    Matrix *res0Matrix = [Matrix matrixFromArray:res0 rows:4 columns:3];
+    
+    double res1[8] = {
+        1000.0, 10000.0,
+        2000.0, 20000.0,
+        3000.0, 30000.0,
+        4000.0, 40000.0
+    };
+    Matrix *res1Matrix = [Matrix matrixFromArray:res1 rows:4 columns:2];
+    
+    double res2[8] = {
+        10001.0, 10002.0,
+        20001.0, 20002.0,
+        30001.0, 30002.0,
+        40001.0, 40002.0
+    };
+    Matrix *res2Matrix = [Matrix matrixFromArray:res2 rows:4 columns:2];
+    
+    NSMutableIndexSet *indexes = [NSMutableIndexSet indexSet];
+    [indexes addIndex:3];
+    [indexes addIndex:5];
+    NSArray *segments = [originalMatrix columnWiseSplitAtIndexes:indexes];
+    
+    XCTAssertEqualObjects(segments[0], res0Matrix, @"Segments not equal");
+    XCTAssertEqualObjects(segments[1], res1Matrix, @"Segments not equal");
+    XCTAssertEqualObjects(segments[2], res2Matrix, @"Segments not equal");
+}
+
 - (void)testRowPartitioningExact
 {
     double original[20] = {
