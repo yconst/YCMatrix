@@ -26,6 +26,7 @@
 
 @import XCTest;
 @import YCMatrix;
+#import <mm_malloc.h>
 
 #define ARC4RANDOM_MAX 0x100000000 
 
@@ -39,11 +40,11 @@
 
 @implementation YCMatrixAdvancedTests
 
-- (void)testRandom
+- (void)testUniformRandom
 {
     Matrix *lower = [Matrix matrixFromNSArray:@[@10, @5, @5, @10] rows:1 columns:4];
     Matrix *upper = [Matrix matrixFromNSArray:@[@20, @6, @10, @30] rows:1 columns:4];
-    Matrix *random = [Matrix randomValuesMatrixWithLowerBound:lower upperBound:upper];
+    Matrix *random = [Matrix uniformRandomLowerBound:lower upperBound:upper];
     CleanNSLog(@"%@", random);
     XCTAssert([random i:0 j:0]>10);
     XCTAssert([random i:0 j:0]<20);
@@ -53,6 +54,30 @@
     XCTAssert([random i:0 j:2]<10);
     XCTAssert([random i:0 j:3]>10);
     XCTAssert([random i:0 j:3]<30);
+}
+
+- (void)testNormalRandomColumns
+{
+    Matrix *mean = [Matrix matrixFromNSArray:@[@10, @5, @5, @10] rows:1 columns:4];
+    Matrix *variance = [Matrix matrixFromNSArray:@[@1, @2, @3, @4] rows:1 columns:4];
+    Matrix *random = [Matrix normalRandomMean:mean variance:variance count:20000];
+    Matrix *actualMean = [random meansOfColumns];
+    Matrix *actualVariance = [random variancesOfColumns];
+    
+    XCTAssert([mean isEqualToMatrix:actualMean tolerance:0.1]);
+    XCTAssert([variance isEqualToMatrix:actualVariance tolerance:0.1]);
+}
+
+- (void)testNormalRandomRows
+{
+    Matrix *mean = [Matrix matrixFromNSArray:@[@10, @5, @5, @10] rows:4 columns:1];
+    Matrix *variance = [Matrix matrixFromNSArray:@[@1, @2, @3, @4] rows:4 columns:1];
+    Matrix *random = [Matrix normalRandomMean:mean variance:variance count:20000];
+    Matrix *actualMean = [random meansOfRows];
+    Matrix *actualVariance = [random variancesOfRows];
+    
+    XCTAssert([mean isEqualToMatrix:actualMean tolerance:0.1]);
+    XCTAssert([variance isEqualToMatrix:actualVariance tolerance:0.1]);
 }
 
 - (void)testSVD
@@ -136,7 +161,7 @@
     Matrix *lower = [Matrix matrixOfRows:10 columns:1 value:0.0];
     Matrix *upper = [Matrix matrixOfRows:10 columns:1 value:1.0];
     
-    Matrix *sequence = [Matrix sobolSequenceWithLowerBound:lower upperBound:upper count:count];
+    Matrix *sequence = [Matrix sobolSequenceLowerBound:lower upperBound:upper count:count];
     
     NSArray *columns = [sequence columnsAsNSArray];
     

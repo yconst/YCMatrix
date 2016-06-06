@@ -203,8 +203,8 @@
 
 - (void)testGEMMPerformance
 {
-    Matrix *A = [Matrix randomValuesMatrixOfRows:1000 columns:1000 domain:YCMakeDomain(0, 10)];
-    Matrix *B = [Matrix randomValuesMatrixOfRows:1000 columns:1000 domain:YCMakeDomain(0, 10)];
+    Matrix *A = [Matrix uniformRandomRows:1000 columns:1000 domain:YCMakeDomain(0, 10)];
+    Matrix *B = [Matrix uniformRandomRows:1000 columns:1000 domain:YCMakeDomain(0, 10)];
     
     [self measureBlock:^{
         [A matrixByMultiplyingWithRight:B];
@@ -213,8 +213,8 @@
 
 - (void)testGEMM
 {
-    Matrix *A = [Matrix randomValuesMatrixOfRows:10 columns:10 domain:YCMakeDomain(0, 10)];
-    Matrix *B = [Matrix randomValuesMatrixOfRows:10 columns:10 domain:YCMakeDomain(0, 10)];
+    Matrix *A = [Matrix uniformRandomRows:10 columns:10 domain:YCMakeDomain(0, 10)];
+    Matrix *B = [Matrix uniformRandomRows:10 columns:10 domain:YCMakeDomain(0, 10)];
     
     NSLog(@"%@", [A matrixByMultiplyingWithRight:B]);
 }
