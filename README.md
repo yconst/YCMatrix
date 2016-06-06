@@ -35,19 +35,9 @@ Alternatively, you can do:
 YCMatrix has no dependencies other than system 
 frameworks (namely Foundation.framework and Accelerate.framework). 
 
-### Importing/Using with CocoaPods
+### Importing/Using with CocoaPods (no longer supported)
 
-Installation using CocoaPods is no longer the recommended way for using YCMatrix, but it is still a perfectly viable option.
-There is an [official guide to using CocoaPods](https://guides.cocoapods.org/using/using-cocoapods.html). 
-YCMatrix may be easily added as a project dependency by following 
-the guide.
-
-#### Podfile
-
-```ruby
-platform :osx, '10.7'
-pod "YCMatrix"
-```
+Unfortunately Cocoapods is no longer supported as of 0.6.8. The decision to end Cocoapods support is related to the increasing time needed for debugging related to Cocoapods support (e.g. Xcode/OS updates, addition of C++ etc.). Dropping Cocoapods support will allow for more time spent to developing the project. We recommend Carthage for managing your project's dependencies. In addition, YCMatrix can be easily included manually into an Xcode project, by copying header and implementation files (and optionally creating a new target). 
 
 ## Usage
 
