@@ -60,13 +60,20 @@
 + (instancetype)uniformRandomRows:(int)rows columns:(int)columns domain:(YCDomain)domain;
 
 /**
- <#Description#>
+ Returns a matrix containing random values uniformly distributed between |lower| and |upper|.
+ The lower and upper matrices should be either row or column matrices. The method will
+ generate |count| random row or column matrices, and return them in a single matrix.
+ As an example, if the sizes of |lower| and |upper| are mx1 and the value of the count parameter
+ is n, the return matrix will be mxn. Conversely, if |lower| and |upper| are 1xm and count is
+ n, the return matrix will be nxm.
  
- @param lower <#lower description#>
- @param upper <#upper description#>
- @param count <#count description#>
+ @param lower The matrix containing the lower bounds for the uniform random numbers.
+ @param upper The matrix containing the upper bounds for the uniform random numbers.
+ @param count The number of examples to generate.
  
- @return <#return value description#>
+ @return The matrix containing the uniform random numbers.
+ 
+ @warning The lower and upper matrices should be either row or column matrices.
  */
 + (instancetype)uniformRandomLowerBound:(Matrix *)lower
                              upperBound:(Matrix *)upper
@@ -101,13 +108,20 @@
                         variance:(double)variance;
 
 /**
- <#Description#>
+ Returns a matrix containing random values normally distributed with specified mean and variance.
+ The mean and variance matrices should be either row or column matrices. The method will
+ generate |count| random row or column matrices, and return them in a single matrix.
+ As an example, if the sizes of |mean| and |variance| are mx1 and the value of the count parameter
+ is n, the return matrix will be mxn. Conversely, if |mean| and |variance| are 1xm and count is
+ n, the return matrix will be nxm.
  
- @param mean <#lower description#>
- @param variance <#upper description#>
- @param count <#count description#>
+ @param mean The matrix containing the means of the normally distributed random numbers.
+ @param variance The matrix containing the variances of the normally distributed random numbers.
+ @param count The number of examples to generate.
  
- @return <#return value description#>
+ @return The matrix containing the normally distributed random numbers.
+ 
+ @warning The mean and variance matrices should be either row or column matrices.
  */
 + (instancetype)normalRandomMean:(Matrix *)mean
                         variance:(Matrix *)variance
