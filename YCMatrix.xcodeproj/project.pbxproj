@@ -56,7 +56,6 @@
 		CB4D3CA71C10F092009CAE8B /* soboldata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = soboldata.h; sourceTree = "<group>"; };
 		CB58B99D19D1ED310097EEB1 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		CB723AFB1C47C37600600043 /* YCMatrixNSArrayTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCMatrixNSArrayTests.m; sourceTree = "<group>"; };
-		CB84DE0219D4B254009EED7E /* YCMatrix.podspec.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = YCMatrix.podspec.json; sourceTree = "<group>"; };
 		CB84DE0319D4BD32009EED7E /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; lineEnding = 0; path = LICENSE; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = "<none>"; };
 		CB9F9CFC19DAE83E00B6A1E4 /* ycmatrix.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ycmatrix.png; sourceTree = "<group>"; };
 		CBBE02AC178F215000744F77 /* YCMatrix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = YCMatrix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -124,7 +123,6 @@
 				CB4BAA9919D2CE3D001E7A7A /* .gitignore */,
 				CBD5120519D2D720004DD8D3 /* .travis.yml */,
 				CB2242AF19D413C0005B3F7E /* AppledocSettings.plist */,
-				CB84DE0219D4B254009EED7E /* YCMatrix.podspec.json */,
 				CB9F9CFC19DAE83E00B6A1E4 /* ycmatrix.png */,
 			);
 			sourceTree = "<group>";
