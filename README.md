@@ -5,6 +5,7 @@
 
 [![Build Status](https://travis-ci.org/yconst/YCMatrix.svg?branch=master)](https://travis-ci.org/yconst/YCMatrix)
 [![DOI](https://zenodo.org/badge/20003/yconst/YCMatrix.svg)](https://zenodo.org/badge/latestdoi/20003/yconst/YCMatrix)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 A flexible Matrix library for Objective-C and Swift, that interfaces 
 BLAS, LAPACK and vDSP functions via the Accelerate Framework.
@@ -37,7 +38,11 @@ frameworks (namely Foundation.framework and Accelerate.framework).
 
 ### Importing/Using with CocoaPods (no longer supported)
 
-Unfortunately Cocoapods is no longer supported as of 0.6.8. The decision to end Cocoapods support is related to the increasing time needed for debugging related to Cocoapods support (e.g. Xcode/OS updates, addition of C++ etc.). Dropping Cocoapods support will allow for more time spent to developing the project. We recommend Carthage for managing your project's dependencies. In addition, YCMatrix can be easily included manually into an Xcode project, by copying header and implementation files (and optionally creating a new target). 
+Unfortunately Cocoapods is no longer supported as of 0.6.8. The decision to end Cocoapods support is related to the increasing time needed for debugging related to Cocoapods support (e.g. Xcode/OS updates, addition of C++ etc.). Dropping Cocoapods support will allow for more time spent to developing the project. We recommend Carthage for managing your project's dependencies. You may easily include YCMatrix in your cartfile as follows:
+
+    github "yconst/YCMatrix"
+
+In addition, YCMatrix can be easily included manually into an Xcode project, by copying header and implementation files (and optionally creating a new target). 
 
 ## Usage
 
