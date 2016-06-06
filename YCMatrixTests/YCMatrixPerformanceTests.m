@@ -20,8 +20,8 @@
     Matrix *lower = [Matrix matrixOfRows:10000 columns:2000 value:0];
     Matrix *upper = [Matrix matrixOfRows:10000 columns:2000 value:1];
     
-    Matrix *A = [Matrix randomValuesMatrixWithLowerBound:lower upperBound:upper];
-    Matrix *B = [Matrix randomValuesMatrixWithLowerBound:lower upperBound:upper];
+    Matrix *A = [Matrix uniformRandomLowerBound:lower upperBound:upper];
+    Matrix *B = [Matrix uniformRandomLowerBound:lower upperBound:upper];
     
     [self measureBlock:^{
         [A matrixByAdding:B];
@@ -33,8 +33,8 @@
     Matrix *lower = [Matrix matrixOfRows:10000 columns:2000 value:0];
     Matrix *upper = [Matrix matrixOfRows:10000 columns:2000 value:1];
     
-    Matrix *A = [Matrix randomValuesMatrixWithLowerBound:lower upperBound:upper];
-    Matrix *B = [Matrix randomValuesMatrixWithLowerBound:lower upperBound:upper];
+    Matrix *A = [Matrix uniformRandomLowerBound:lower upperBound:upper];
+    Matrix *B = [Matrix uniformRandomLowerBound:lower upperBound:upper];
     
     [self measureBlock:^{
         [A matrixByMultiplyingWithScalar:1 AndAdding:B];
@@ -46,8 +46,8 @@
     Matrix *lower = [Matrix matrixOfRows:10000 columns:2000 value:0];
     Matrix *upper = [Matrix matrixOfRows:10000 columns:2000 value:1];
     
-    Matrix *A = [Matrix randomValuesMatrixWithLowerBound:lower upperBound:upper];
-    Matrix *B = [Matrix randomValuesMatrixWithLowerBound:lower upperBound:upper];
+    Matrix *A = [Matrix uniformRandomLowerBound:lower upperBound:upper];
+    Matrix *B = [Matrix uniformRandomLowerBound:lower upperBound:upper];
     
     double *ma = A->matrix;
     double *mb = B->matrix;
@@ -72,8 +72,8 @@
     Matrix *lower = [Matrix matrixOfRows:10000 columns:2000 value:0];
     Matrix *upper = [Matrix matrixOfRows:10000 columns:2000 value:1];
     
-    Matrix *A = [Matrix randomValuesMatrixWithLowerBound:lower upperBound:upper];
-    Matrix *B = [Matrix randomValuesMatrixWithLowerBound:lower upperBound:upper];
+    Matrix *A = [Matrix uniformRandomLowerBound:lower upperBound:upper];
+    Matrix *B = [Matrix uniformRandomLowerBound:lower upperBound:upper];
     
     [self measureBlock:^{
         [A matrixBySubtracting:B];
@@ -85,8 +85,8 @@
     Matrix *lower = [Matrix matrixOfRows:10000 columns:2000 value:0];
     Matrix *upper = [Matrix matrixOfRows:10000 columns:2000 value:1];
     
-    Matrix *A = [Matrix randomValuesMatrixWithLowerBound:lower upperBound:upper];
-    Matrix *B = [Matrix randomValuesMatrixWithLowerBound:lower upperBound:upper];
+    Matrix *A = [Matrix uniformRandomLowerBound:lower upperBound:upper];
+    Matrix *B = [Matrix uniformRandomLowerBound:lower upperBound:upper];
     
     [self measureBlock:^{
         [A matrixByMultiplyingWithScalar:-1 AndAdding:B];
@@ -98,8 +98,8 @@
     Matrix *lower = [Matrix matrixOfRows:10000 columns:2000 value:0];
     Matrix *upper = [Matrix matrixOfRows:10000 columns:2000 value:1];
     
-    Matrix *A = [Matrix randomValuesMatrixWithLowerBound:lower upperBound:upper];
-    Matrix *B = [Matrix randomValuesMatrixWithLowerBound:lower upperBound:upper];
+    Matrix *A = [Matrix uniformRandomLowerBound:lower upperBound:upper];
+    Matrix *B = [Matrix uniformRandomLowerBound:lower upperBound:upper];
     
     double *ma = A->matrix;
     double *mb = B->matrix;
@@ -124,7 +124,7 @@
     Matrix *lower = [Matrix matrixOfRows:10000 columns:2000 value:0];
     Matrix *upper = [Matrix matrixOfRows:10000 columns:2000 value:1];
     
-    Matrix *A = [Matrix randomValuesMatrixWithLowerBound:lower upperBound:upper];
+    Matrix *A = [Matrix uniformRandomLowerBound:lower upperBound:upper];
     
     [self measureBlock:^{
         cblas_dscal(A->rows*A->columns, 10, A->matrix, 1);
@@ -136,7 +136,7 @@
     Matrix *lower = [Matrix matrixOfRows:10000 columns:2000 value:0];
     Matrix *upper = [Matrix matrixOfRows:10000 columns:2000 value:1];
     
-    Matrix *A = [Matrix randomValuesMatrixWithLowerBound:lower upperBound:upper];
+    Matrix *A = [Matrix uniformRandomLowerBound:lower upperBound:upper];
     
     [self measureBlock:^{
         [A multiplyWithScalar:10];
