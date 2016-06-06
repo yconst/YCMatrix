@@ -647,7 +647,7 @@ static double boxMuller()
         double v = (double)arc4random() / ARC4RANDOM_MAX;
         
         double r = sqrt(-2*log(u));
-        double theta = 2*pi*v;
+        double theta = 2*M_PI*v;
         
         x = r*cos(theta);
         y = r*sin(theta);
