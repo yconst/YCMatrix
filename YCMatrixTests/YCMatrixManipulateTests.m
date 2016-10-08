@@ -51,6 +51,18 @@
     XCTAssertTrue([rowm isEqual:templatemr], @"Matrix row retrieval error.");
 }
 
+- (void)testRowReference
+{
+    TitleNSLog(@"Matrix row referencing");
+    double testmrarr[6] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0 };
+    Matrix *testmr = [Matrix matrixFromArray:testmrarr rows:2 columns:3];
+    Matrix *rowm = [testmr rowReference:1]; // This is being tested.
+    CleanNSLog(@"%@", rowm);
+    double templatermatrixarr[3] = { 4.0, 5.0, 6.0 };
+    Matrix *templatemr = [Matrix matrixFromArray:templatermatrixarr rows:1 columns:3];
+    XCTAssertTrue([rowm isEqual:templatemr], @"Matrix row retrieval error.");
+}
+
 - (void)testMultipleRowRetrieval
 {
     TitleNSLog(@"Multiple matrix row retrieval");

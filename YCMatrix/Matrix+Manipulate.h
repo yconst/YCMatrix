@@ -69,6 +69,17 @@
 - (Matrix *)row:(int)rowIndex;
 
 /**
+ Returns a row matrix by referencing the contents of row |rowNumber|.
+ 
+ @param rowIndex The index of the row to copy
+ 
+ @return The row matrix.
+ 
+ @warning The returned matrix does not retain it's data.
+ */
+- (Matrix *)rowReference:(int)rowIndex;
+
+/**
  Returns a new matrix with the contents of the rows at the specified indexes.
  
  @param indexes The indexes of the rows.
