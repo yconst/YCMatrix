@@ -10,7 +10,7 @@
 A flexible Matrix library for Objective-C and Swift, that interfaces 
 BLAS, LAPACK and vDSP functions via the Accelerate Framework.
 
-YCMatrix is available for OS X (10.7+), as well as iOS (8.0+).
+YCMatrix is available for MacOS (10.7+), as well as iOS (8.0+).
 
 ##Getting started
 
