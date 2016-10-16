@@ -63,6 +63,38 @@
     XCTAssertTrue([rowm isEqual:templatemr], @"Matrix row retrieval error.");
 }
 
+- (void)testRowVectorReference
+{
+    TitleNSLog(@"Matrix row referencing vector");
+    double testmrarr[6] = { 1.0, 2.0, 3.0, 4.0, 5.0, 6.0 };
+    Matrix *testmr = [Matrix matrixFromArray:testmrarr rows:2 columns:3];
+    Matrix *rowm = [testmr rowReferenceVector:1]; // This is being tested.
+    CleanNSLog(@"%@", rowm);
+    double templatermatrixarr[3] = { 4.0, 5.0, 6.0 };
+    Matrix *templatemr = [Matrix matrixFromArray:templatermatrixarr rows:3 columns:1];
+    XCTAssertTrue([rowm isEqual:templatemr], @"Matrix row retrieval error.");
+}
+
+- (void)testMultiplyRowReference
+{
+    Matrix *source = [Matrix matrixFromNSArray:@[@21.600,
+                                                 @15.000,
+                                                 @1.700,
+                                                 @3.000,
+                                                 @44.000,
+                                                 @12.000,
+                                                 @69.000] rows:1 columns:7];
+    Matrix *row = [source rowReference:0];
+    row->rows = row->columns;
+    row->columns = 1;
+    
+    Matrix *result = [row matrixByTransposingAndMultiplyingWithRight:row];
+    XCTAssertEqual(result.rows, 1);
+    XCTAssertEqual(result.columns, 1);
+    double val = [result i:0 j:0];
+    XCTAssertEqual(val, 7544.450);
+}
+
 - (void)testMultipleRowRetrieval
 {
     TitleNSLog(@"Multiple matrix row retrieval");

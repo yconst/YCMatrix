@@ -92,6 +92,14 @@
                            columns:self->columns mode:YCMWeak];
 }
 
+- (Matrix *)rowReferenceVector:(int)rowIndex
+{
+    NSAssert(rowIndex < self->rows, @"Index out of bounds");
+    int startIndex = rowIndex * self->columns;
+    return [Matrix matrixFromArray:self->matrix+startIndex rows:self->columns
+                           columns:1 mode:YCMWeak];
+}
+
 - (Matrix *)rows:(NSIndexSet *)indexes
 {
     NSAssert([indexes lastIndex] < self->rows, @"Index out of bounds");

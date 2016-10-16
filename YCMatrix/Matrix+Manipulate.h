@@ -73,11 +73,22 @@
  
  @param rowIndex The index of the row to copy
  
- @return The row matrix.
+ @return The row referencing matrix.
  
  @warning The returned matrix does not retain it's data.
  */
 - (Matrix *)rowReference:(int)rowIndex;
+
+/**
+ Returns a column (vector) matrix by referencing the contents of row |rowNumber|.
+ 
+ @param rowIndex The index of the row to copy
+ 
+ @return The referencing vector.
+ 
+ @warning The returned matrix does not retain it's data.
+ */
+- (Matrix *)rowReferenceVector:(int)rowIndex;
 
 /**
  Returns a new matrix with the contents of the rows at the specified indexes.

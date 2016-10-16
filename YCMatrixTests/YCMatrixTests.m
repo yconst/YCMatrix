@@ -216,16 +216,16 @@
     Matrix *A = [Matrix uniformRandomRows:10 columns:10 domain:YCMakeDomain(0, 10)];
     Matrix *B = [Matrix uniformRandomRows:10 columns:10 domain:YCMakeDomain(0, 10)];
     
+    Matrix *ACopy = [A copy];
+    Matrix *BCopy = [B copy];
     NSLog(@"%@", [A matrixByMultiplyingWithRight:B]);
+    XCTAssertEqualObjects(A, ACopy);
+    XCTAssertEqualObjects(B, BCopy);
 }
 
 - (void)testSerialization
 {
-    double matrix_array[16] = { 1.0, 2.0, 3.0, 192837.445,
-        4.0, 5.0, 6.0, -4000005.5,
-        7.0, 8.0, 9.0, -0.000032348,
-        1.1, 0.00218, 0.5, -0.000121937};
-    Matrix *testm1 = [Matrix matrixFromArray:matrix_array rows:4 columns:4];
+    Matrix *testm1 = [Matrix uniformRandomRows:10 columns:10 domain:YCMakeDomain(0, 10)];
     NSData *serialized = [NSKeyedArchiver archivedDataWithRootObject:testm1];
     Matrix *recovered = [NSKeyedUnarchiver unarchiveObjectWithData:serialized];
     XCTAssertEqualObjects(testm1, recovered, @"Error in deserialization");
