@@ -2,3 +2,7 @@ language: objective-c
 xcode_project: YCMatrix.xcodeproj
 osx_image: xcode7
 xcode_scheme: YCMatrix
+
+branches:
+only:
+- master
