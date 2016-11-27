@@ -414,13 +414,21 @@
     }
 }
 
+- (void)setDiagonalTo:(double)value
+{
+    for (int i=0, j=MIN(rows, columns); i<j; i++)
+    {
+        self->matrix[i * (columns + 1)] = value;
+    }
+}
+
 - (double)trace
 {
     NSAssert(columns == rows, @"Matrix not square");
 	double trace = 0;
 	for (int i=0; i<rows; i++)
 	{
-		trace += matrix[i*(columns + 1)];
+		trace += matrix[i * (columns + 1)];
 	}
 	return trace;
 }

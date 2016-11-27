@@ -412,6 +412,13 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
 - (void)elementWiseDivide:(Matrix *)mt;
 
 /**
+ Sets all values of the matrix on its diagonal to the specified value
+ 
+ @param value The value to set the values on the diagonal to.
+ */
+- (void)setDiagonalTo:(double)value;
+
+/**
  Returns the trace of this matrix.
  
  @return A double corresponding to the calculated trace of the receiver.
