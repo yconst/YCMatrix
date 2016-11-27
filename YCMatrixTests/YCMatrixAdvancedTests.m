@@ -333,10 +333,10 @@
         -0.7489, 0.5461, -0.2132,
         -0.2678, 0.1268, 0.7106};
     Matrix *original = [Matrix matrixFromArray:simple_array rows:3 columns:3];
-    Matrix *leftTarget = [Matrix matrixFromArray:left_result rows:3 columns:3];
+    Matrix *rightTarget = [Matrix matrixFromArray:left_result rows:3 columns:3];
     NSDictionary *e = [original eigenvectorsAndEigenvalues];
-    XCTAssert([[e[@"Left Eigenvectors"] matrixByTransposing]
-               isEqualToMatrix:leftTarget tolerance:1E-3]);
+    XCTAssert([e[@"Right Eigenvectors"]
+               isEqualToMatrix:rightTarget tolerance:1E-3]);
 }
 
 - (void)testDeterminant
