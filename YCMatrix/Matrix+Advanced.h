@@ -213,8 +213,11 @@
  "Eigenvalues" : nx1 vector containing the matrix eigenvalues.
  "Left Eigenvectors" : nxn matrix containing the matrix left eigenvectors, one per row.
  "Right Eigenvectors" : nxn matrix containing the matrix right eigenvectors, one per row.
+ 
+ @warning The eigenvectors appear per ROW in the result. If you wish to obtain per column
+ results, yuo need to transpose the resulting eigenvector matrix.
  */
-- (NSDictionary *)eigenvaluesAndEigenvectors;
+- (NSDictionary *)eigenvectorsAndEigenvalues;
 
 /**
  Returns the determinant of the receiver.

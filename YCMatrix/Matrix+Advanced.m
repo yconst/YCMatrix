@@ -357,20 +357,19 @@ static void sobol_destroy(soboldata *sd);
     return [Matrix matrixFromArray:evArray rows:1 columns:self->columns];
 }
 
-- (NSDictionary *)eigenvaluesAndEigenvectors
+- (NSDictionary *)eigenvectorsAndEigenvalues
 {
     NSAssert(columns == rows, @"Matrix not square");
     int m = self->rows;
-    int n = self->columns;
     double *evArray = malloc(m * sizeof(double));
-    double *leVecArray = malloc(m * n * sizeof(double));
-    double *reVecArray = malloc(m * n * sizeof(double));
+    double *leVecArray = malloc(m * m * sizeof(double));
+    double *reVecArray = malloc(m * m * sizeof(double));
     
-    MEVV(self->matrix, m, n, evArray, nil, leVecArray, reVecArray);
+    MEVV(self->matrix, m, m, evArray, nil, leVecArray, reVecArray);
     
-    Matrix *evMatrix = [Matrix matrixFromArray:evArray rows:1 columns:n];
-    Matrix *leVecMatrix = [Matrix matrixFromArray:leVecArray rows:m columns:n];
-    Matrix *reVecMatrix = [Matrix matrixFromArray:reVecArray rows:m columns:n];
+    Matrix *evMatrix = [Matrix matrixFromArray:evArray rows:1 columns:m];
+    Matrix *leVecMatrix = [Matrix matrixFromArray:leVecArray rows:m columns:m];
+    Matrix *reVecMatrix = [Matrix matrixFromArray:reVecArray rows:m columns:m];
     return @{@"Eigenvalues":evMatrix,
              @"Left Eigenvectors":leVecMatrix,
              @"Right Eigenvectors":reVecMatrix};
@@ -687,21 +686,28 @@ static void MEVV(double *A, int m, int n, double *vr, double *vi, double *vecL, 
     dup = malloc(m * n * sizeof(double));
     memcpy(dup, A, m * n * sizeof(double));
     
-    lwork = 3 * rank;
+    /* query workspace size */
+    lwork = -1;
+    work = malloc(sizeof(double));
+    
+    dgeev_(&jobvl, &jobvr, &rank, dup, &rank,
+           wr, wi, vecL, &vecLSize, vecR, &vecRSize, work, &lwork, &info);
+    
+    assert(info == 0 && work[0] > 0);
+    lwork = work[0];
+    free(work);
+    
+    /* perform calculation */
     work = malloc(lwork *sizeof(double));
     
     dgeev_(&jobvl, &jobvr, &rank, dup, &rank,
            wr, wi, vecL, &vecLSize, vecR, &vecRSize, work, &lwork, &info);
+    
+    assert(info == 0);
     free(dup);
     free(work);
     if(vr == NULL) free(wr);
     if(vi == NULL) free(wi);
-    if(info > 0)
-    {
-        @throw [NSException exceptionWithName:@"YCMatrixException"
-                                       reason:@"Error while calculating Eigenvalues."
-                                     userInfo:nil];
-    }
 }
 
 #pragma mark - Compute the Singular Value Decomposition of *column-major* matrix A
