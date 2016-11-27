@@ -314,13 +314,29 @@
     TitleNSLog(@"Eigenvalues Test");
     double simple_array[9] = { 1.000,  2.000,  3.000,
         5.000, 10.000, 15.000,
-        0.100,  0.200,  0.300,};
+        0.100,  0.200,  0.300 };
     double ref_array[3] = {11.3, 0.0, 0.0};
     Matrix *original = [Matrix matrixFromArray:simple_array rows:3 columns:3];
     Matrix *ev = [original eigenvalues];
     Matrix *evRef = [Matrix matrixFromArray:ref_array  rows:1 columns:3];
     CleanNSLog(@"%@", ev);
     XCTAssert([ev isEqualToMatrix:evRef tolerance:1E-4], @"Error with Eigenvalue calculation");
+}
+
+- (void)testEigenValuesandVectors
+{
+    TitleNSLog(@"Eigenvectors Test");
+    double simple_array[9] = { 35.000, 100.000,  42.000,
+        87.000,  72.000,  97.000,
+        28.000,  21.000,  55.000 };
+    double left_result[9] = {-0.6062, -0.8280, -0.6705,
+        -0.7489, 0.5461, -0.2132,
+        -0.2678, 0.1268, 0.7106};
+    Matrix *original = [Matrix matrixFromArray:simple_array rows:3 columns:3];
+    Matrix *leftTarget = [Matrix matrixFromArray:left_result rows:3 columns:3];
+    NSDictionary *e = [original eigenvectorsAndEigenvalues];
+    XCTAssert([[e[@"Left Eigenvectors"] matrixByTransposing]
+               isEqualToMatrix:leftTarget tolerance:1E-3]);
 }
 
 - (void)testDeterminant
