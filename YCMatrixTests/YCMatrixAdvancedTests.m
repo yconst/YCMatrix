@@ -317,7 +317,7 @@
         0.100,  0.200,  0.300 };
     double ref_array[3] = {11.3, 0.0, 0.0};
     Matrix *original = [Matrix matrixFromArray:simple_array rows:3 columns:3];
-    Matrix *ev = [original eigenvalues];
+    Matrix *ev = [original realEigenvalues];
     Matrix *evRef = [Matrix matrixFromArray:ref_array  rows:1 columns:3];
     CleanNSLog(@"%@", ev);
     XCTAssert([ev isEqualToMatrix:evRef tolerance:1E-4], @"Error with Eigenvalue calculation");
