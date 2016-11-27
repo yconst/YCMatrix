@@ -347,7 +347,7 @@ static void sobol_destroy(soboldata *sd);
     return newMatrix;
 }
 
-- (Matrix *)eigenvalues
+- (Matrix *)realEigenvalues
 {
     NSAssert(columns == rows, @"Matrix not square");
     double *evArray = malloc(self->rows * sizeof(double));
@@ -361,16 +361,19 @@ static void sobol_destroy(soboldata *sd);
 {
     NSAssert(columns == rows, @"Matrix not square");
     int m = self->rows;
-    double *evArray = malloc(m * sizeof(double));
+    double *revArray = malloc(m * sizeof(double));
+    double *ievArray = malloc(m * sizeof(double));
     double *leVecArray = malloc(m * m * sizeof(double));
     double *reVecArray = malloc(m * m * sizeof(double));
     
-    MEVV(self->matrix, m, m, evArray, nil, leVecArray, reVecArray);
+    MEVV(self->matrix, m, m, revArray, ievArray, leVecArray, reVecArray);
     
-    Matrix *evMatrix = [Matrix matrixFromArray:evArray rows:1 columns:m];
+    Matrix *revMatrix = [Matrix matrixFromArray:revArray rows:1 columns:m];
+    Matrix *ievMatrix = [Matrix matrixFromArray:ievArray rows:1 columns:m];
     Matrix *leVecMatrix = [Matrix matrixFromArray:leVecArray rows:m columns:m];
     Matrix *reVecMatrix = [Matrix matrixFromArray:reVecArray rows:m columns:m];
-    return @{@"Eigenvalues":evMatrix,
+    return @{@"Real Eigenvalues":revMatrix,
+             @"Imaginary Eigenvalues":ievMatrix,
              @"Left Eigenvectors":leVecMatrix,
              @"Right Eigenvectors":reVecMatrix};
 }
