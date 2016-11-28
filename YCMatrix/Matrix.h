@@ -333,11 +333,18 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
 - (Matrix *)matrixByNegating;
 
 /**
- Returns a matrix by squaring the elements fo the receiver.
+ Returns a matrix by squaring the elements of the receiver.
  
  @return The matrix with squared elements.
  */
 - (Matrix *)matrixBySquaring;
+
+/**
+ Returns a matrix by absolute values of the receiver.
+ 
+ @return The matrix with the absolute values of the elements.
+ */
+- (Matrix *)matrixByAbsolute;
 
 /**
  Returns the transpose of the receiver.
@@ -388,14 +395,19 @@ typedef enum refMode { YCMWeak, YCMStrong, YCMCopy } refMode;
 - (void)multiplyWithScalar:(double)ms;
 
 /**
- Performs an in-place negation of this matrix.
+ Performs an in-place negation of the receiver's elements.
  */
 - (void)negate;
 
 /**
-  Performs and in-place squaring of the receiver's elements.
+  Performs an in-place squaring of the receiver's elements.
  */
 - (void)square;
+
+/**
+ Performs an in-place absolute of the receiver's elements.
+ */
+- (void)absolute;
 
 /**
  Returns the result of an elementwise multiplication with matrix |mt|.

@@ -347,6 +347,13 @@
     return result;
 }
 
+- (Matrix *)matrixByAbsolute
+{
+    Matrix *result = [Matrix dirtyMatrixOfRows:self->rows columns:self->columns];
+    vDSP_vabsD(self->matrix, 1, result->matrix, 1, self.count);
+    return result;
+}
+
 - (Matrix *)matrixByTransposing
 {
 	Matrix *trans = [Matrix dirtyMatrixOfRows:columns columns:rows];
@@ -394,6 +401,11 @@
 - (void)square
 {
     vDSP_vsqD(self->matrix, 1, self->matrix, 1, self.count);
+}
+
+- (void)absolute
+{
+    vDSP_vabsD(self->matrix, 1, self->matrix, 1, self.count);
 }
 
 - (void)elementWiseMultiply:(Matrix *)mt
