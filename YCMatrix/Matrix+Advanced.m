@@ -360,8 +360,12 @@ static void sobol_destroy(soboldata *sd);
 - (NSDictionary *)eigenvectorsAndEigenvalues
 {
     // DGEEV accepts column-major matrices, so a transpose of both
-    // input and output is necessary here.
-    // TODO: Avoid unnecessary transposing of input matrices
+    // input and output would be necessary here.
+    // We do away with one of the transpositions, by considering the
+    // eigenvectors of A^T at the input, and then switching between
+    // left and right eigenvectors as a result.
+    // Still we need to do a transposition of the outputs though.
+    // TODO: Avoid unnecessary transposing of output matrices
     NSAssert(columns == rows, @"Matrix not square");
     int m = self->rows;
     double *revArray = malloc(m * sizeof(double));
@@ -369,13 +373,14 @@ static void sobol_destroy(soboldata *sd);
     double *leVecArray = malloc(m * m * sizeof(double));
     double *reVecArray = malloc(m * m * sizeof(double));
     
-    Matrix *transpose = [self matrixByTransposing];
-    MEVV(transpose->matrix, m, m, revArray, ievArray, leVecArray, reVecArray);
+    MEVV(self->matrix, m, m, revArray, ievArray, leVecArray, reVecArray);
     
     Matrix *revMatrix = [Matrix matrixFromArray:revArray rows:1 columns:m];
     Matrix *ievMatrix = [Matrix matrixFromArray:ievArray rows:1 columns:m];
-    Matrix *leVecMatrix = [[Matrix matrixFromArray:leVecArray rows:m columns:m] matrixByTransposing];
-    Matrix *reVecMatrix = [[Matrix matrixFromArray:reVecArray rows:m columns:m] matrixByTransposing];
+    
+    // Column-wise left eigenvector = Row-wise right eigenvector (transpose) and vice versa
+    Matrix *leVecMatrix = [[Matrix matrixFromArray:reVecArray rows:m columns:m] matrixByTransposing];
+    Matrix *reVecMatrix = [[Matrix matrixFromArray:leVecArray rows:m columns:m] matrixByTransposing];
     return @{@"Real Eigenvalues":revMatrix,
              @"Imaginary Eigenvalues":ievMatrix,
              @"Left Eigenvectors":leVecMatrix,
