@@ -63,6 +63,19 @@
     XCTAssertEqualObjects(template, match, @"Error in creating matrix of ones.");
 }
 
+- (void)testAbsolute
+{
+    Matrix *absoluteMatrix = [Matrix uniformRandomRows:10 columns:10 domain:YCMakeDomain(-1.0, 1.0)];
+    [absoluteMatrix absolute];
+    for (int i=0, k=absoluteMatrix.rows; i<k; i++)
+    {
+        for (int j=0; j<k; j++)
+        {
+            NSAssert([absoluteMatrix i:i j:j] >= 0, @"Negative value in absolute matrix");
+        }
+    }
+}
+
 - (void)testRetrieval
 {
     TitleNSLog(@"Simple Array Test");
