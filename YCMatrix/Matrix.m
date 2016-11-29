@@ -584,6 +584,29 @@
 	return YES;
 }
 
+- (NSUInteger)hash
+{
+    unsigned long hash = 5381;
+    int c;
+    char ch[10];
+    
+    for (int i=0, k=(int)self.count; i<k; i++)
+    {
+        double d = self->matrix[i];
+        sprintf(ch , "%lf" , d);
+        c = 0;
+        
+        for (int j=0; j<8; j++)
+        {
+            c += ch[j] - '0';
+        }
+        
+        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+    }
+    
+    return hash;
+}
+
 - (BOOL)isEqualToMatrix:(Matrix *)aMatrix tolerance:(double)tolerance
 {
     if (self->rows != aMatrix->rows || self->columns != aMatrix->columns) return NO;
