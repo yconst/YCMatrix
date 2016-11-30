@@ -239,10 +239,10 @@
 - (void)testDictionaryContainsKey
 {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-    Matrix *m1 = [Matrix uniformRandomRows:5 columns:5 domain:YCMakeDomain(0, 1)];
+    Matrix *m1 = [Matrix uniformRandomRows:1 columns:5 domain:YCMakeDomain(0, 1)];
     [dict setObject:@1 forKey:[m1 copy]];
-    id val = dict[m1];
-    XCTAssert([val isEqual:@1], @"Matrix dictionary key lookup unsuccessful");
+    XCTAssert([dict[m1] isEqual:@1], @"Matrix dictionary key lookup unsuccessful");
+    XCTAssertNil(dict[[m1 matrixByTransposing]], @"Value of transpose not nil");
 }
 
 - (void)testHash
