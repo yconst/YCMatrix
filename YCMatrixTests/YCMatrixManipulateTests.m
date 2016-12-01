@@ -546,4 +546,24 @@
     XCTAssertEqualObjects(partitions[2], partition2Matrix, @"Partitions not equal");
 }
 
+- (void)testApplyMatrix
+{
+    // Test by applying matrices of different values and checking the sum
+    Matrix *large = [Matrix matrixOfRows:100 columns:100 value:1];
+    Matrix *small = [Matrix matrixOfRows:10 columns:10 value:0];
+    XCTAssert(large.sum == 10000, @"Sum incorrect");
+    [large applyMatrix:small i:50 j:50];
+    XCTAssert(large.sum == 9900, @"Sum incorrect");
+    [large applyMatrix:small i:10 j:10];
+    XCTAssert(large.sum == 9800, @"Sum incorrect");
+    [large applyMatrix:small i:15 j:15];
+    XCTAssert(large.sum == 9725, @"Sum incorrect");
+    [large applyMatrix:small i:55 j:55];
+    XCTAssert(large.sum == 9650, @"Sum incorrect");
+    [large applyMatrix:small i:55 j:55];
+    XCTAssert(large.sum == 9650, @"Sum incorrect");
+    [large applyMatrix:small i:50 j:55];
+    XCTAssert(large.sum == 9625, @"Sum incorrect");
+}
+
 @end
