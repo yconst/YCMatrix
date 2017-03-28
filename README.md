@@ -1,7 +1,7 @@
 
 <img src="https://raw.githubusercontent.com/yconst/YCMatrix/master/ycmatrix.png" alt="YCMatrix" style="max-width: 64px; max-height: 64px;"/>
 
-#YCMatrix
+# YCMatrix
 
 [![Build Status](https://travis-ci.org/yconst/YCMatrix.svg?branch=master)](https://travis-ci.org/yconst/YCMatrix)
 [![DOI](https://zenodo.org/badge/20003/yconst/YCMatrix.svg)](https://zenodo.org/badge/latestdoi/20003/yconst/YCMatrix)
@@ -12,7 +12,7 @@ BLAS, LAPACK and vDSP functions via the Accelerate Framework.
 
 YCMatrix is available for MacOS (10.7+), as well as iOS (8.0+).
 
-##Getting started
+## Getting started 
 
 ### Adding the framework to your project
 
@@ -72,7 +72,7 @@ values.
     // 2.0  3.0  2.0
     // 2.0  2.0  3.0
     
-##What's in there?
+## What's in there?
 
 The Framework functionality is split into four files: The base class
 definition, and three categories:
@@ -96,13 +96,13 @@ In addition, YCMatrix comes with many unit tests included. Tests are divided in 
 - YCMatrixNSArrayTests    : Tests related to NSArray categories.
 - YCMatrixPerformanceTests: Tests for measuring performance of various operations.
 
-##Performance
+## Performance
 
 YCMatrix has been built from the ground up with performance in mind. vDSP, BLAS and LAPACK are being used extensively throughout the framework. In addition, care has been given in memory allocation during initialization and copying.
 
 The test file YCMatrixPerformanceTests.m contains some benchmarks using different addition/subtraction implementations (vDSP, BLAS, and pure C).
 
-##License
+## License
 
 __YCMatrix__
 
@@ -127,7 +127,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-##Acknowledgments
+## Acknowledgments
 
 This software relies on the following copyrighted material, the use of which is hereby acknowledged.
 
